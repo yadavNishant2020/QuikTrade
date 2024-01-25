@@ -1151,7 +1151,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                       <Row  className='mt-1'> 
                                             <Col xl="4" xs="6" className='py-1'>
                                                    <div className="your-required-wrapper" style={{width: "100%", height: "22px"}}>
-        {/* <SwitchSelector           
+        <SwitchSelector           
             options={optionsInfo}             
             backgroundColor={"#FFFFFF"}
             border={ '1px solid #5e72e4'} 
@@ -1159,7 +1159,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             initial={0}
             value={'future'}
             onChange={handleSwitchSelectorChange}
-        /> */}
+        />
     </div>
                                             </Col>
                                             <Col xl="4" xs="3" className='py-2' style={{textAlign:"right"}}>
