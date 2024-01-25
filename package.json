@@ -23,7 +23,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-switch": "^7.0.0",
-    "react-switch-selector": "^1.2.0",
+    "react-switch-selector": "^2.2.1",
     "react-tabs": "^6.0.2",
     "reactstrap": "^9.2.0",
     "redux": "^4.2.1",
