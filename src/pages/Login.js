@@ -12,6 +12,7 @@ const Login = () => {
   const { updateGlobleFnotraderUserId,
     updateGlobleFnotraderSecret
  } = useContext(PostContext);
+ 
   useEffect(() => {
     // Function to get query string parameter by name
     const getQueryStringValue = (name) => {
