@@ -22,8 +22,7 @@ import { Container, Row, Col,   Button,
    import { LiveTradingAPI } from "../api/LiveTradingAPI";      
    import alertify from 'alertifyjs';
    import 'alertifyjs/build/css/alertify.css';
-   import 'alertifyjs/build/css/themes/default.css';
-   import KiteConnect from 'kiteconnect';
+   import 'alertifyjs/build/css/themes/default.css'; 
    import { Constant } from "../Config/Constant";
    
 
@@ -384,7 +383,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             orderqty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty.toString()),
             nooforderlot:(defaultLotSize===undefined?"1":defaultLotSize.toString()),
             maxorderqty:(defaultSliceQty===undefined?chaindata.volumeFreeze.toString():defaultSliceQty.toString()),
-            orderprice:(defaultOrderType==='MKT'? chaindata.ltp.toString():(Math.round(Number(orderPrice) * 20) / 20).toString()),
+            orderprice:(defaultOrderType==='MKT'? chaindata.ltp.toString():
+            (Math.round(Number(orderPrice) * 20) / 20).toString()),
             tradermode:globleSelectedTradingType,
             orderidbybroker:"" ,
             clientid:globleSelectedClientInfo,

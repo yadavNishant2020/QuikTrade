@@ -275,7 +275,7 @@ const AdminStraddle = ({filterOptionChainList}) => {
       nooforderlot:data.celot.toString(),
       maxorderqty:defaultSliceQty.toString(),
       orderprice:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?data.ltp.toString():
-      orderprice.toString()),
+      (Math.round(Number(orderprice) * 20) / 20).toString()),
       tradermode:globleSelectedTradingType,
       orderidbybroker:"" ,
       clientid:globleSelectedClientInfo,
