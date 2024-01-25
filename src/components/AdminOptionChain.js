@@ -22,7 +22,8 @@ import { Container, Row, Col,   Button,
    import { LiveTradingAPI } from "../api/LiveTradingAPI";      
    import alertify from 'alertifyjs';
    import 'alertifyjs/build/css/alertify.css';
-   import 'alertifyjs/build/css/themes/default.css'; 
+   import 'alertifyjs/build/css/themes/default.css';
+   import KiteConnect from 'kiteconnect';
    import { Constant } from "../Config/Constant";
    
 
