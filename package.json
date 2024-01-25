@@ -60,6 +60,6 @@
   "devDependencies": {
     "sass": "^1.69.5"
   }, "engines": {
-    "node": "16.x"
+    "node": "18.2.0"
   }
 }
