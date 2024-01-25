@@ -1,0 +1,1031 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.footer{
+  padding: 0px 0 !important;
+  margin-top: 10px !important;
+  background-color: #dcdcdc40;
+}
+
+.card-header {
+  padding: 0.5rem 1.3rem 0.2rem 1.3rem !important; 
+  
+}
+
+.dashboard .col-xl,.dashboard  .col-xl-auto,.dashboard  .col-xl-12,.dashboard  .col-xl-11,.dashboard  .col-xl-10,.dashboard  .col-xl-9,.dashboard  .col-xl-8,.dashboard .col-xl-7,.dashboard  .col-xl-6,.dashboard  .col-xl-5,.dashboard  .col-xl-4,.dashboard  .col-xl-3,.dashboard  .col-xl-2,.dashboard  .col-xl-1,.dashboard  .col-lg,.dashboard  .col-lg-auto,.dashboard  .col-lg-12,.dashboard  .col-lg-11,.dashboard  .col-lg-10,.dashboard  .col-lg-9,.dashboard  .col-lg-8,.dashboard  .col-lg-7,.dashboard  .col-lg-6,.dashboard  .col-lg-5,.dashboard  .col-lg-4,.dashboard  .col-lg-3,.dashboard  .col-lg-2,.dashboard .col-lg-1,.dashboard  .col-md,.dashboard  .col-md-auto,.dashboard  .col-md-12,.dashboard  .col-md-11,.dashboard  .col-md-10,.dashboard  .col-md-9,.dashboard  .col-md-8,.dashboard  .col-md-7,.dashboard  .col-md-6,.dashboard  .col-md-5,.dashboard  .col-md-4,.dashboard  .col-md-3,.dashboard  .col-md-2,.dashboard  .col-md-1,.dashboard  .col-sm,.dashboard  .col-sm-auto,.dashboard  .col-sm-12,.dashboard  .col-sm-11,.dashboard  .col-sm-10,.dashboard  .col-sm-9,.dashboard  .col-sm-8,.dashboard  .col-sm-7,.dashboard  .col-sm-6,.dashboard  .col-sm-5,.dashboard  .col-sm-4,.dashboard  .col-sm-3,.dashboard  .col-sm-2,.dashboard  .col-sm-1,.dashboard  .col,.dashboard  .col-auto,.dashboard  .col-12,.dashboard  .col-11,.dashboard  .col-10,.dashboard  .col-9,.dashboard  .col-8,.dashboard  .col-7,.dashboard  .col-6,.dashboard  .col-5,.dashboard  .col-4,.dashboard  .col-3,.dashboard  .col-2,.dashboard  .col-1 {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+ 
+hr {
+  margin-top: 0px !important;
+  margin-bottom: 2px !important;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+ 
+.form-control-label{
+  font-size: 9px !important;
+  margin-bottom: 0px !important;
+}
+
+ 
+
+input.form-control {
+  height: 25px !important;
+  font-size: 9px !important;
+}
+
+
+
+.react-tabs__tab-panel .card-body{
+  padding: 0rem 0rem !important;
+}
+ 
+.card-body {    
+    padding: 0.2rem 0.2rem !important;
+}
+
+.btn {
+  padding: 0.3rem 0.5rem !important;
+  font-size: 9px !important;
+  border-radius: 5px !important;   
+  text-transform: uppercase !important;
+}
+
+.uppercase{
+  text-transform: uppercase !important;
+}
+
+.react-tabs__tab {
+  text-transform: uppercase !important;
+}
+
+label {
+  text-transform: uppercase !important;
+}
+
+
+.hide{
+  display: none !important;
+}
+
+.optionChain .btn,.straddle .btn, .strangle .btn{
+  padding: 0.2rem 0.3rem !important;
+  font-size: 9px !important;
+  letter-spacing: 0.025em !important;
+  border-radius: 5px !important;
+}
+
+.optionChain .btn:hover,.straddle .btn:hover,.strangle .btn:hover{
+
+  box-shadow: none !important; 
+  transform: none !important; 
+}
+
+.optionChain tr .btn:not(:last-child) {
+  margin-right: 0rem;
+}
+
+.optionChain tr .btn{
+  height: 22px !important;
+}
+
+.col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+}
+
+.row { 
+  margin-right: -5px !important;
+  margin-left: -5px !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0rem !important;   
+  line-height: 1.5;
+  
+}
+
+
+.text-white{
+  color: #FFFFFF !important;
+}
+
+.text-white label{
+  color: #FFFFFF !important;
+}
+
+
+.text-bold{
+  font-weight: bolder;
+}
+
+.react-tabs{
+  font-size: 10px !important;
+}
+
+
+/* .css-1u9des2-indicatorSeparator { 
+  margin-bottom: 15px !important;
+  margin-top: 5px !important;
+   
+} */
+
+.sticky-column {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0
+}
+
+ 
+
+.css-1xc3v61-indicatorContainer,.css-15lsz6c-indicatorContainer { 
+  padding: 0px !important;  
+}
+
+.admindefaultconfig .mb-3{
+  margin-bottom: 0px !important;
+}
+
+.admindefaultconfig{
+  margin-top: 0px;
+  border-top-left-radius: 0px !important;
+}
+
+ 
+
+.stockindexinfo .header{
+  font-weight: bold;
+  font-size: 9px;
+}
+
+.stockindexinfo .stockvalue{
+  font-weight: bold;
+  font-size: 10px;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+.react-tabs__tab { 
+  padding: 1px 5px !important;  
+}
+
+.react-tabs__tab-list {  
+  margin: 0 0 0px !important;   
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #5e72e4 #11cdef;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #11cdef;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color:#5e72e4;
+  border-radius: 10px;
+  border: 1px solid   #11cdef;
+}
+
+.optionChain div{
+  scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: #11cdef #5e72e4;   /* scroll thumb and track */ 
+}
+
+.currentstock{
+    font-size: 9px !important;
+    font-weight: bold !important;
+    text-align: center;
+}
+
+.defualtConfig-Open{
+   width: 16.66%;
+    height: 400px;
+    background-color: #FFFFFF;
+    right: 0px;
+    position: absolute;
+    z-index: 99999999;
+    border-top:1px solid gray ;
+    border-left:1px solid gray ;
+    border-bottom:1px solid gray ;
+    border-bottom-left-radius: 5px;
+    transition: .5s linear;
+}
+
+.defualtConfig-Close{
+  width: 0px;
+  height: 400px;
+  background-color: 3#FFFFFF;
+  right: 30px;
+  position: absolute;
+  z-index: 99999999;
+  transition: .5s linear;
+}
+
+
+.ruleInfo-Open{
+  width: 16.66%;
+   height: 400px;
+   background-color: #FFFFFF;
+   right: 0px;
+   position: absolute;
+   z-index: 99999999;
+   border-top:1px solid gray ;
+   border-left:1px solid gray ;
+   border-bottom:1px solid gray ;
+   border-bottom-left-radius: 5px;
+   transition: .5s linear;
+}
+
+.ruleInfo-Close{
+ width: 0px;
+ height: 400px;
+ background-color: 3#FFFFFF;
+ right: 30px;
+ position: absolute;
+ z-index: 99999999;
+ transition: .5s linear;
+}
+
+.ruleInfoSwitch{
+  background-color: #FFFFFF;
+  height: auto;
+  
+  margin-left: -12%;
+  text-align: justify !important;
+  padding: 5px 5px 5px 7px !important;
+  color: #5e72e4;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top:1px solid gray ;
+  border-left:1px solid gray ;
+  border-bottom:1px solid gray ;
+  cursor: pointer !important;
+}
+
+.defualtConfigSwitch{
+    background-color: #FFFFFF;
+    height: auto;
+    margin-left: -12%;
+    text-align: justify !important;
+    padding: 5px 20px 5px 5px !important;
+    color: #5e72e4;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top:1px solid gray ;
+    border-left:1px solid gray ;
+    border-bottom:1px solid gray ;
+    cursor: pointer !important;
+}
+
+.react-switch-selector-option-label{
+  font-size: 9px !important;
+  padding-top: 10px !important;
+}
+
+
+.text-disabled {
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+@media (min-width: 768px){ 
+    .main-content .container-fluid, .main-content .container-sm, .main-content .container-md, .main-content .container-lg, .main-content .container-xl {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}
+
+.hide{
+  display: none;
+}
+
+.full-close{
+  width:97%;
+}
+
+.full-open{
+  width:80.5%;
+}
+
+.mainpanel{  
+  float:left;
+  height: 100vh !important;
+}
+
+body, .main-content,.admindefaultconfig {
+  height: 100vh !important;
+}
+
+.container-fluid{
+  height: 100%;
+}
+
+
+
+
+ 
+
+
+
+.sidemenu .text-theam{
+  color:  #888888 !important;
+}
+
+.dashboard{
+  flex: 1 !important;
+}
+
+.sidemenu hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #888888;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.sidemenu{
+  width:2.5%;
+  float:right;
+  background-color:#dcdcdc40;  
+  height: 100vh;
+}
+
+.sidepanel{
+  width:17%;
+  float:left;
+  height: 100vh !important;
+  background-color:#dcdcdc40; 
+  border-right:1px solid #888888 ;
+}
+
+
+.sidemenu .row{
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.sidemenu i {
+  cursor: pointer;
+}
+
+
+
+
+.bg-warning-light{
+  background-color: #e9ecef !important;
+}
+
+.react-tabs__tab--selected{
+  font-weight: bold !important;
+}
+
+.busketView{
+  width: 100% !important;
+}
+
+/* Create a wrapper for the table */
+/* .optionChain .table-wrapper {
+  height : 140px;
+  overflow-y: auto;
+}
+
+ */
+
+.basketList .table-wrapper {
+  height : 130px;
+  overflow-y: auto;
+}
+
+.busketView .css-1fdsijx-ValueContainer{
+  padding: 2px 4px !important;
+}
+
+.table  .defaultqty{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+
+.sell-light{
+  background-color: #ff00002b !important;
+  padding: 5px 5px;
+  border-radius: 5px !important;
+}
+
+.buy-light{
+  background-color:#00800026 !important;
+  padding: 5px 5px;
+  border-radius: 5px !important;
+}
+
+.basketList .text-success{
+   color: #076e42 !important;
+}
+
+
+table  input.form-control{
+  height: 20px !important;
+}
+
+.text-right{
+  text-align: right !important;
+}
+
+table  fieldset .form-control {
+  border: none !important;
+  padding: 0px 0.3rem !important;
+  margin-top: -5px !important;
+  
+}
+
+fieldset.was-validated{
+  border: 1px solid hsl(0deg 100% 50%) !important;
+}
+
+.form-control.was-validated{
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e);
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+table fieldset label{
+   
+  margin-bottom: 0.25rem !important;
+}
+
+table  fieldset  {
+  line-height: 1.2 !important;
+  
+}
+
+.cursor-row{
+  cursor: pointer !important;
+}
+
+
+
+.card {
+  max-height: 100%; /* Set max height for the card */
+  
+  height: 100%; /* Set the height of the card to 100% */
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+
+
+thead th{
+  position: sticky !important;
+  top: 0;
+  background-color: #5e72e4;
+  z-index: 99;  
+}
+/* Create a pseudo-sticky effect for each additional header row */
+
+
+
+
+.busketView, .OrderList,.CloseOrderList{
+  position: relative;
+}
+
+
+/* Style the header table */
+.header-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #f2f2f2;
+}
+
+ 
+
+/* Style the content table */
+.content-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+legend {   
+  margin-right: 10px;
+    top: 4px;
+    left: 17px;
+  width: auto !important; 
+  padding: 0px;
+  margin-bottom: 0 !important;
+  font-size: 9px !important;  
+  font-weight: bold;
+}
+
+fieldset .form-control
+{
+  border: none !important;
+  padding: 0px 0.75rem !important;
+  margin-top: -5px !important;
+}
+
+fieldset{
+  border-radius: 0.375rem;
+    box-shadow: none;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+   
+}
+
+
+fieldset.border{
+  border-color: hsl(0, 0%, 80%) !important;
+}
+
+.busketView .btn:not(:last-child) {
+  margin-right: 0rem !important;
+ }
+
+ .busketView .btn {
+  padding: 0.1rem 0.2rem !important;
+  
+}
+
+.busketView .btn + .btn {
+  margin-left: 2px;
+}
+
+
+.ccs-w2rpwu-menu {
+  z-index: 9999999999px !important;
+  position: absolute;
+}
+
+.form-row-data{
+  /* width: 90% !important; */
+  margin: auto;
+}
+
+.ajs-message{
+  color: #FFFFFF;
+  color: 9px !important;
+}
+
+.row_action_icon{
+  cursor: pointer !important;
+}
+
+
+.font-9px{
+  font-size: 9px !important;
+}
+
+.font-11px{
+  font-size: 11px !important;
+}
+
+.font-10px{
+  font-size: 10px !important;
+}
+
+.font-12px{
+  font-size: 12px !important;
+}
+ 
+.font-13px{
+  font-size: 13px !important;
+}
+
+.font-14px{
+  font-size: 14px !important;
+}
+
+.font-8px{
+  font-size: 8px !important;
+}
+
+.text-data-secondary {
+  color: #989898!important;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom:0px !important;
+}
+
+
+.orderposition .btn{
+  height: 20px !important;
+  padding: 0.3rem 0.5rem !important;
+  line-height: 1 !important;
+}
+
+.font-bold{
+  font-weight: bold;
+}
+
+
+.text-product-mis{
+  color: #8484f6 !important;
+  border-radius: 5px;
+  padding: 5px 10px !important;
+  background-color: #ccccff96 !important;
+}
+
+
+.text-product-nmrd{
+  background-color: #73C2FB !important;
+  border-radius: 5px;
+}
+
+
+.badge-cancel{
+  background-color: #8888887d;
+  color: #000000;
+}
+
+
+.optionchaindashboard,.positiondashboardlist,.orderdashboardlist{   
+  display: flex;
+  flex-direction: column;
+}
+
+.optionchaindashboard .firstDiv,.positiondashboardlist .firstDiv,.orderdashboardlist .firstDiv{
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
+
+.stoplosstarget fieldset {
+  line-height: 0.9 !important;
+}
+
+.stoplosstarget label
+{
+  padding: 0px 0.75rem !important;
+  font-size: 9px;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+
+.stoplosstarget fieldset .form-control 
+{
+  padding: 0px 0.75rem !important;
+  margin-top: -3px !important;
+}
+
+ 
+
+
+/* Common styles for all devices */
+
+/* Styles for devices with a maximum width of 768 pixels (typical for mobile devices) */
+@media only screen and (max-width: 768px) {
+  /* Styles for smaller screens (e.g., mobile devices) */
+      /* .optionchaindashboard{
+        height: 70% !important;        
+      } */
+
+      .busketView {
+        overflow-x: auto;
+      }
+      .table td,.table th {
+        font-size: 11px !important;
+        padding: 0.2rem !important;
+      }
+
+      .optionChain .table-container {
+        height : 170px;
+        overflow-y: auto;
+        font-size: 11px !important;
+      } 
+
+      .busketView  .table-container {
+        height : 175px;
+        overflow-y: auto;
+        font-size: 11px !important;
+        width: 1000px !important;
+      }  
+
+      .Straddle,  .strangle{
+        overflow-x: auto; 
+      }
+
+     
+      .Straddle .table-container {
+        height : 215px;
+        overflow-y: auto;  
+        width: 1200px !important;             
+      }
+    
+      .strangle .table-container {
+        height : 215px;
+        overflow-y: auto;  
+        width: 1200px !important;    
+        overflow: auto;     
+      }
+
+      .busketList{
+        margin-top: 10px !important;
+        background-color:none !important
+      }
+
+      .stoplosstarget {
+          margin-top: 10px !important;
+          margin-bottom: 10px !important;
+      }
+      
+      .orderposition {
+        overflow-x: auto;
+      }
+
+      .orderposition  .table-container {
+        height : 120px;
+        overflow-y: auto;
+        font-size: 11px !important;
+        width: 1500px !important;
+      }
+
+      .completeorderlist{
+        overflow-x: auto;
+      }
+
+      .completeorderlist  .table-container {
+        height : 80px;
+        overflow-y: auto;
+        font-size: 11px !important;
+        width: 800px !important;
+      }
+
+      .closeorderlist{
+        overflow-x: auto;
+      }
+
+      .closeorderlist .table-container {
+        height : 80px;
+        overflow-y: auto;
+        font-size: 11px !important;
+        width: 800px !important;
+      }
+
+      /* .sidemenu  {         
+        height: 175vh !important;
+    } */
+   
+    .sidepanel {
+     
+      background-color: #FFFFFF;
+    }
+
+ 
+    table fieldset{
+      background-color: #FFFFFF !important;
+    }
+    table fieldset .form-control
+    {
+      border: none !important;
+      padding: 0px 0.75rem !important;
+      margin-top: -2px !important;
+    }
+    
+      
+}
+
+/* Styles for devices with a minimum width of 769 pixels (typical for tablets) up to 1024 pixels */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  /* Styles for medium-sized screens (e.g., tablets) */
+  .optionchaindashboard{
+    height: 33% !important;    
+  } 
+  .table td,.table th {
+    font-size: 11px !important;
+    padding: 0.2rem !important;
+  }
+
+ 
+  
+}
+
+/* Styles for devices with a minimum width of 1025 pixels (typical for laptops) up to 1440 pixels */
+@media only screen and (min-width: 1025px) and (max-width: 1440px) {
+  /* Styles for larger screens (e.g., laptops) */
+  .optionchaindashboard{
+    height: 42% !important; 
+     
+  }
+  .optionChain .table-container {
+    height : 170px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+  .Straddle .table-container {
+    height : 215px;
+    overflow-y: auto;
+  }
+
+  .strangle .table-container {
+    height : 215px;
+    overflow-y: auto;
+  }
+
+  .busketView  .table-container {
+    height : 175px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+  
+ 
+  .table td,.table th {
+    font-size: 9px !important;
+    padding: 0.2rem !important;
+  }
+
+  .positiondashboardlist{
+    height: 31% !important;    
+  }
+  
+  .orderdashboardlist{
+    height: 20% !important;
+    
+  }
+
+  .orderposition  .table-container {
+    height : 120px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+
+  .completeorderlist .table-container {
+    height : 80px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+  .closeorderlist .table-container {
+    height : 80px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }
+
+  .logorderlist .table-container {
+    height : 105px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }
+
+  thead tr:not(:first-child) th {
+    position: static;  
+    top: 18px !important;
+  }
+
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* .addexistnewqty  .form-control-alternative:focus { 
+  box-shadow: none !important;
+}
+
+.addexistnewqty{
+box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+} */
+
+.text-black{
+  color: #525f7f !important;
+}
+
+.moveinout .btn{
+    width: 47% !important;
+    padding: 5px 5px !important;
+    display: block !important;
+    height: 22px !important;
+    letter-spacing: 0.025em !important;
+    font-weight: normal !important;
+    font-size: 10px;
+     
+}
+
+.movein-light {
+  background-color: #ff00000a !important; 
+  padding: 5px 5px;
+  border-radius: 5px !important;
+}
+
+.moveout-light {
+  background-color: #0080000a !important;
+  padding: 5px 5px;
+  border-radius: 5px !important;
+}
+
+/* Styles for devices with a minimum width of 1441 pixels (typical for desktops) */
+@media only screen and (min-width: 1441px) {
+  /* Styles for extra-large screens (e.g., desktops) */
+  .optionchaindashboard{
+    height: 30% !important;   
+     
+  }
+
+  .optionChain .table-container {
+    height : 200px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+
+  .busketView  .table-container {
+    height : 225px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+
+  .table td,.table th {
+    font-size: 11px !important;
+    padding: 0.35rem !important;
+  }
+
+  .Straddle .table-container {
+    height : 260px;
+    overflow-y: auto;
+  }
+  
+  .strangle .table-container {
+    height : 260px;
+    overflow-y: auto;
+  }
+
+  .positiondashboardlist{
+    height: 40% !important;
+    
+  }
+
+  .orderposition  .table-container {
+    height : 325px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+
+  .orderdashboardlist{
+    height: 25% !important;  
+    
+  }
+
+  .completeorderlist .table-container {
+    height : 185px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }  
+  .closeorderlist .table-container {
+    height : 185px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }
+
+  .logorderlist .table-container {
+    height : 185px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }
+
+  thead tr:not(:first-child) th {
+    position: static;  
+    top: 28px !important;
+  }
+  
+
+}
+
