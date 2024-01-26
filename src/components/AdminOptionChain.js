@@ -1,8 +1,8 @@
 import React, { useEffect, useState,useRef, useContext } from 'react' 
-import SwitchSelector from "react-switch-selector";
 import Switch from "react-switch";
 import Centrifuge from 'centrifuge';
 import { CookiesConfig } from '../Config/CookiesConfig.js';
+import SwitchSelector from "react-native-switch-selector";
 import { Container, Row, Col,   Button,
    Card,
    CardHeader,
