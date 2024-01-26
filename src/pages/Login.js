@@ -14,6 +14,7 @@ const Login = () => {
  } = useContext(PostContext);
  
   useEffect(() => {
+    alert("hiii")
     // Function to get query string parameter by name
     const getQueryStringValue = (name) => {
       const params = new URLSearchParams(window.location.search);
