@@ -350,7 +350,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 orderqty:(dataInfo.defaultlotqty*parseInt((2*currentLotQty))).toString(),
                 nooforderlot:(2*currentLotQty).toString(),
                 maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-                orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():orderprice.toString()),
+                orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():
+                (Math.round(Number(orderprice) * 20) / 20).toString()),
                 tradermode:globleSelectedTradingType,
                 orderidbybroker:"" ,
                 clientid:globleSelectedClientInfo,

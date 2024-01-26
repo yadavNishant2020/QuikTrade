@@ -322,7 +322,7 @@ const AdminStrangle = ({filterOptionChainList}) => {
           nooforderlot:data.celot.toString(),
           maxorderqty:defaultSliceQty.toString(),
           orderprice:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?data.ltp.toString():
-          orderprice.toString()), 
+          (Math.round(Number(orderprice) * 20) / 20).toString()), 
           tradermode:globleSelectedTradingType,
           orderidbybroker:"" ,
           clientid:globleSelectedClientInfo,
@@ -478,7 +478,7 @@ const AdminStrangle = ({filterOptionChainList}) => {
         nooforderlot:data.pelot.toString(),
         maxorderqty:defaultSliceQty.toString(),        
         orderprice:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?pedata.ltp.toString():
-        orderprice.toString()),  
+        (Math.round(Number(orderprice) * 20) / 20).toString()),  
         tradermode:globleSelectedTradingType,
         orderidbybroker:"" ,
         clientid:globleSelectedClientInfo,
@@ -635,7 +635,7 @@ const AdminStrangle = ({filterOptionChainList}) => {
       totalnooforderlot:data.totallot.toString(),
       maxorderqty:defaultSliceQty.toString(),
       orderprice:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?data.ltp.toString():
-      orderpricece.toString()), 
+      (Math.round(Number(orderpricece) * 20) / 20).toString() ), 
       tradermode:globleSelectedTradingType,
       orderidbybroker:"" ,
       clientid:globleSelectedClientInfo,
@@ -704,7 +704,7 @@ const AdminStrangle = ({filterOptionChainList}) => {
       totalnooforderlot:data.totallot.toString(),
       maxorderqty:defaultSliceQty.toString(),
       orderprice:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?pedata.ltp.toString():
-      orderpricepe.toString()),  
+      (Math.round(Number(orderpricepe) * 20) / 20).toString()),  
       tradermode:globleSelectedTradingType,
       orderidbybroker:"" ,
       clientid:globleSelectedClientInfo,

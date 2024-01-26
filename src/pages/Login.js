@@ -14,27 +14,27 @@ const Login = () => {
  } = useContext(PostContext);
  
   useEffect(() => {
-    alert("hiii")
-    // // Function to get query string parameter by name
-    // const getQueryStringValue = (name) => {
-    //   const params = new URLSearchParams(window.location.search);
-    //   return params.get(name);
-    // };
-    // // Example: Get the value of the 'paramName' query string parameter     
-    // const fnotraderUserid = getQueryStringValue('Fnotrader-Userid');     
-    // const fnotraderSecret = getQueryStringValue('Fnotrader-Secret');    
-    // if(fnotraderUserid!==null && fnotraderSecret!==null){
-    //   sessionStorage.setItem("fnotraderUserid",fnotraderUserid);
-    //   sessionStorage.setItem("fnotraderSecret",fnotraderSecret);  
-    //   window.open("/authlogin", '_self');
-    // }else{
-    //         alertify.alert(
-    //           'Information',
-    //           'Invalid requested URL. Please check the URL and try again.',
-    //           () => {
-    //             window.open("https://www.fnotrader.com/trading/broker-accounts", '_self');
-    //           });    
-    // }
+   // alert("hiii")
+    // Function to get query string parameter by name
+    const getQueryStringValue = (name) => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    };
+    // Example: Get the value of the 'paramName' query string parameter     
+    const fnotraderUserid = getQueryStringValue('Fnotrader-Userid');     
+    const fnotraderSecret = getQueryStringValue('Fnotrader-Secret');    
+    if(fnotraderUserid!==null && fnotraderSecret!==null){
+      sessionStorage.setItem("fnotraderUserid",fnotraderUserid);
+      sessionStorage.setItem("fnotraderSecret",fnotraderSecret);  
+      window.open("/authlogin", '_self');
+    }else{
+            alertify.alert(
+              'Information',
+              'Invalid requested URL. Please check the URL and try again.',
+              () => {
+                window.open("https://www.fnotrader.com/trading/broker-accounts", '_self');
+              });    
+    }
     
   }, []);  
 return (
