@@ -1,8 +1,9 @@
 import React, { useEffect, useState,useRef, useContext } from 'react' 
 import Switch from "react-switch";
 import Centrifuge from 'centrifuge';
+import CustomSwitch from '../CustomSwitch/CustomSwitch.js';
 import { CookiesConfig } from '../Config/CookiesConfig.js';
-import SwitchSelector from "react-native-switch-selector";
+ 
 import { Container, Row, Col,   Button,
    Card,
    CardHeader,
@@ -1149,7 +1150,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                       <Row  className='mt-1'> 
                                             <Col xl="4" xs="6" className='py-1'>
                                                    <div className="your-required-wrapper" style={{width: "100%", height: "22px"}}>
-        <SwitchSelector           
+        {/* <SwitchSelector           
             options={optionsInfo}             
             backgroundColor={"#FFFFFF"}
             border={ '1px solid #5e72e4'} 
@@ -1157,7 +1158,10 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             initial={0}
             value={'future'}
             onChange={handleSwitchSelectorChange}
-        />
+        /> */}
+
+<CustomSwitch options={optionsInfo} onChange={handleSwitchSelectorChange} />
+
     </div>
                                             </Col>
                                             <Col xl="4" xs="3" className='py-2' style={{textAlign:"right"}}>
