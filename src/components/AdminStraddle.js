@@ -13,6 +13,7 @@ import { Container, Row, Col,   Button,
    Table } from "reactstrap";
    import Select from 'react-select'
    import { PostProvider,PostContext } from '../PostProvider.js';
+   import { LiveTradingAPI } from "../api/LiveTradingAPI"; 
    import alertify from 'alertifyjs';
    import 'alertifyjs/build/css/alertify.css';
    import 'alertifyjs/build/css/themes/default.css';
@@ -870,31 +871,43 @@ const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{
     processInsertUpdateOrderBulk(scopedUpdatedRowsArray);
 }
 
-const processInsertUpdateOrder=async(requestNewBucketList)=>{
-  debugger;
-  const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestNewBucketList);
-  debugger;
-  if(resultData!=null){ 
-    // updateGlobleOrderList(resultData.orderitems);
-    // updateGlobleOrderPosition(resultData.positionitems);
-    // updateGlobleClosedList(resultData.closedresponseitem);
-    alertify.success("Order added successfully.")
+const processInsertUpdateOrder=async(requestOrderList)=>{
+  if(globleSelectedTradingType.toLowerCase()==="paper"){
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestOrderList);
+      debugger;
+      if(resultData!=null){     
+        alertify.success("Order added successfully.")
+      }else{
+        let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
+        const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
+        if(resultData!=null){           
+          alertify.success("Order added successfully.")
+        }
+      }
   }else{
-    
+
   }
 }
 
-const processInsertUpdateOrderBulk=async(requestNewBucketList)=>{
-  debugger;
-  const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestNewBucketList);
-  debugger;
-  if(resultData!=null){ 
-    // updateGlobleOrderList(resultData.orderitems);
-    // updateGlobleOrderPosition(resultData.positionitems);
-    // updateGlobleClosedList(resultData.closedresponseitem);
-    alertify.success("Order added successfully.")
+const processInsertUpdateOrderBulk=async(requestOrderList)=>{
+  if(globleSelectedTradingType.toLowerCase()==="paper"){
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestOrderList);
+      if(resultData!=null){     
+        alertify.success("Order added successfully.")
+      }else{
+        
+      }
   }else{
-    
+    let dataInfo={
+      logintoken:sessionStorage.getItem("apiSecret"),
+      orderitems :requestOrderList
+    }
+    const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
+    if(resultData!=null){     
+      alertify.success("Order added successfully.")
+    }else{
+      
+    }
   }
 }
     

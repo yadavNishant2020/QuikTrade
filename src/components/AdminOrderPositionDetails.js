@@ -496,7 +496,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 nooforderlot:dataInfo.newqty.toString(),
                 maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
                 orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():
-                orderprice.toString()),
+                (Math.round(Number(orderprice) * 20) / 20).toString()),
                 tradermode:globleSelectedTradingType,
                 orderidbybroker:"" ,
                 clientid:globleSelectedClientInfo,
@@ -698,7 +698,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 orderqty: ((getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)!=null?parseInt(getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty) : defaultQty) * parseInt(dataInfo.exitqty)).toString(),
                 nooforderlot:dataInfo.exitqty.toString(),
                 maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-                orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():orderprice.toString()),
+                orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():
+                (Math.round(Number(orderprice) * 20) / 20).toString()),
                 tradermode:globleSelectedTradingType,
                 orderidbybroker:"" ,
                 clientid:globleSelectedClientInfo,
@@ -897,7 +898,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 nooforderlot: exitqty.toString(),
                 maxorderqty:getSetting(positioninstrumentname, positionexpirydate).defaultSliceQty.toString(),
                 orderprice: ((positiontype===undefined?'MKT': positiontype)==='MKT'?ltp:
-                (parseFloat(calculateOrderPrice(getSetting(positioninstrumentname, positionexpirydate)?.defaultLMTPerCentage,positiontype,positionsidetype,ltp))<=parseFloat(ltp)?ltp:calculateOrderPrice(getSetting(positioninstrumentname, positionexpirydate)?.defaultLMTPerCentage,positiontype,positionsidetype,ltp).toString())
+                (parseFloat(calculateOrderPrice(getSetting(positioninstrumentname, positionexpirydate)?.defaultLMTPerCentage,positiontype,positionsidetype,ltp))<=parseFloat(ltp)?ltp:calculateOrderPrice(getSetting(positioninstrumentname, positionexpirydate)?.defaultLMTPerCentage,positiontype,positionsidetype,ltp).toString())                
                 ).toString(),
                 tradermode: globleSelectedTradingType,
                 orderidbybroker: "",
@@ -1050,7 +1051,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               (parseFloat(parseFloat(ltp)+(parseFloat(ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
               (parseFloat(parseFloat(ltp)-(parseFloat(ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
               :parseFloat(ltp)) 
-        return orderprice; 
+        return (Math.round(Number(orderprice) * 20) / 20); 
       }
 
       const processExitAllPositionInBulk=async (requestData)=>{           

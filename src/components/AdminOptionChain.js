@@ -1072,7 +1072,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
       const dataSetting=globalConfigPostionData.find((data)=>data.instrumentname===instrumentname && data.expirydate===expiryDate);
       return dataSetting;
   }
-  const processInsertUpdateOrderBulk=async(requestNewBucketList)=>{     
+  const processInsertUpdateOrderBulk=async(requestNewBucketList)=>{    
+    if(globleSelectedTradingType.toLowerCase()==="paper"){
       const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestNewBucketList);
       if(resultData!=null){
         setDiableBasketExecute(false);
@@ -1085,6 +1086,24 @@ const AdminOptionChain = ({filterOptionChainList}) => {
       }else{
         setDiableBasketExecute(false);
       }
+    }else{
+      let dataInfo={
+        logintoken:sessionStorage.getItem("apiSecret"),
+        orderitems :requestNewBucketList
+      }
+      const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
+      if(resultData!=null){
+        setDiableBasketExecute(false);
+        let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;
+        CookiesConfig.removeLocalStorageItem(basketName);
+        setBucketList([]);
+        setBusketMargin(Constant.CurrencyFormat(parseFloat(0)))
+        setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(0)))         
+          alertify.success("Basket Order added successfully.")
+      }else{
+        setDiableBasketExecute(false);
+      }
+    }
   }
   const processBasketMargin=async(newBasketList)=>{
     if(newBasketList!=null){
