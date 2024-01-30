@@ -30,7 +30,7 @@ export const LiveTradingAPI = {
             try {  
                   var axiosConfig = {
                     method: "POST",
-                    url: `${BASE_URL}paperTrading/processInsertUpdateOrderBulk`,  
+                    url: `${BASE_URL}LiveTrading/processInsertUpdateOrderBulk`,  
                     headers: {        
                       "Content-Type": "application/json",
                     },    

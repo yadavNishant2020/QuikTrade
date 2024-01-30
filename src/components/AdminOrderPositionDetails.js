@@ -17,6 +17,7 @@ import { PaperTradingAPI } from '../api/PaperTradingAPI.js';
 import * as signalR from "@microsoft/signalr";
 import { BASE_SIGNALR_HUB } from "../Config/BaseUrl";
 import { Constant } from "../Config/Constant";
+import { LiveTradingAPI } from "../api/LiveTradingAPI"; 
 import Centrifuge from 'centrifuge';
 
 const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
@@ -797,14 +798,19 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               processInsertUpdateOrder(data);
       }
 
-      const processInsertUpdateOrder=async (requestData)=>{
-        const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestData);        
-        if(resultData!=null){
-        //   updateGlobleOrderList(resultData.orderitems);
-        //   updateGlobleOrderPosition(resultData.positionitems);
-        //   updateGlobleClosedList(resultData.closedresponseitem);
-          alertify.success("Order added successfully.")
-          setChangeOrderPosition((data)=>data+1)
+      const processInsertUpdateOrder=async (requestOrderList)=>{
+        if(globleSelectedTradingType.toLowerCase()==="paper"){ 
+            const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestOrderList);        
+            if(resultData!=null){ 
+              alertify.success("Order added successfully.")
+              setChangeOrderPosition((data)=>data+1)
+            }
+        }else{
+          let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
+          const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
+          if(resultData!=null){           
+            alertify.success("Order added successfully.")
+          }
         }
     }
 
@@ -1054,30 +1060,47 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
         return (Math.round(Number(orderprice) * 20) / 20); 
       }
 
-      const processExitAllPositionInBulk=async (requestData)=>{           
-        const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);         
-        if(resultData!=null){                
-                alertify.success("All open closed successfully.")
-                setChangeOrderPosition((data)=>data+1)
+      const processExitAllPositionInBulk=async (requestData)=>{    
+        if(globleSelectedTradingType.toLowerCase()==="paper"){       
+            const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);         
+            if(resultData!=null){                
+                    alertify.success("All open order closed successfully.")
+                    setChangeOrderPosition((data)=>data+1)
+            }
+        }else{
+            let dataInfo={
+              logintoken:sessionStorage.getItem("apiSecret"),
+              orderitems :requestData
+            }
+            const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
+            if(resultData!=null){     
+              alertify.success("All open order closed successfully.")
+            }else{
+              
+            }
         }
      }
 
-     const processInsertUpdateOrderBulkMoveInOut=async (requestData,message)=>{           
-      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);         
-      if(resultData!=null){                
-              alertify.success(message)
-              setChangeOrderPosition((data)=>data+1)
+     const processInsertUpdateOrderBulkMoveInOut=async (requestData,message)=>{  
+      if(globleSelectedTradingType.toLowerCase()==="paper"){         
+          const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);         
+          if(resultData!=null){                
+                  alertify.success(message)
+                  setChangeOrderPosition((data)=>data+1)
+          }
+      }else{
+                  let dataInfo={
+                    logintoken:sessionStorage.getItem("apiSecret"),
+                    orderitems :requestData
+                  }
+                  const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
+                  if(resultData!=null){     
+                      alertify.success(message)
+                      setChangeOrderPosition((data)=>data+1)
+                  }
       }
    }
-
-     const processInsertUpdateOrderBulk=async (requestData)=>{           
-        const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);         
-        if(resultData!=null){                
-                alertify.success("All open closed successfully.")
-                setChangeOrderPosition((data)=>data+1)
-        }
-     }
-
+   
     const processAllPendingOrder=async (requestData)=>{           
             const resultData=await PaperTradingAPI.processAllPendingOrderForClient(requestData);         
             if(resultData!=null){                   
