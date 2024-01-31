@@ -88,7 +88,7 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
 
 
     useEffect(()=>{         
-      alert("Hi")
+       
         if(filterOrderPositionList?.length>0){ 
             setOptionChainDataForPosition(filterOrderPositionList);            
         } 
