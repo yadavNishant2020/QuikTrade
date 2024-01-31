@@ -1145,8 +1145,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 updateGlobleOrderList(resultData.orderitems);
                 let tokentoRegister=[];
                 debugger;
-                resultData.positionitems.map((data)=>{
-                    debugger;
+                resultData.positionitems.map((data)=>{                    
                     let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
                     data.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(data.defaultlotqty);
                     data.newaddtotalqty=parseInt(data.newqty)*parseInt(data.defaultlotqty);
@@ -1170,12 +1169,11 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 const dataResult= resultData.positionitems.map((data)=>{
                     const matchingOption=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.instrumentToken);
                     if(matchingOption!=null){
-                        data.ltp=matchingOption.ltp ;
-                        data.unrealisedpnl= calculateUnrealisedPnl(data,matchingOption)  ; 
+                        data.ltp=matchingOption.ltp;
+                        data.unrealisedpnl= calculateUnrealisedPnl(data,matchingOption); 
                     }else{
-                        data.unrealisedpnl= calculateUnrealisedPnl(data,data)  ; 
+                        data.unrealisedpnl= calculateUnrealisedPnl(data,data); 
                     }
-
                     const matchingOptionFirstInStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstInInstrumentToken);
                     if(matchingOptionFirstInStrick!=null){
                         data.firstInltp=matchingOptionFirstInStrick.ltp ;                         
@@ -1246,7 +1244,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             orderqty: ((getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)!=null?parseInt(getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty) : defaultQty) * parseInt(dataInfo.moveinoutqty)).toString(),
             nooforderlot:dataInfo.moveinoutqty.toString(),
             maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-            orderprice:orderprice.toString(),
+            orderprice:(Math.round(Number(orderprice) * 20) / 20).toString(),
             tradermode:globleSelectedTradingType,
             orderidbybroker:"" ,
             clientid:globleSelectedClientInfo,
@@ -1293,7 +1291,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
 
           let temptype=dataInfo.positionordertype;
           let dataNewStrick=Constant.GetNewStrike(dataInfo.positioninstrumentname,currentStrike,temptype);
-          const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
+          //let dataNewTradingSymbol=Constant.GetNewTradingSymbol(dataInfo.positioninstrumentname,currentStrike,temptype);
+         
+          const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike,tradingSymbol}=dataNewStrick;
           let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newFirstInStrike,temptype);
           let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newSecondInStrike,temptype)
           let newFirstOutInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newFirstOutStrike,temptype)
@@ -1302,6 +1302,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
           let newSecondInExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newSecondInStrike,temptype);
           let newFirstOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newFirstOutStrike,temptype);
           let newSecondOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,newSecondOutStrike,temptype);
+
+        
           let orderpriceNew=(
             positiontype===undefined?'MKT': positiontype)==='MKT'? dataInfo.ltp:
               (parseFloat(defaultLMTPer)>0?
@@ -1309,6 +1311,10 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               (parseFloat(parseFloat(currentltp)+(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
               (parseFloat(parseFloat(currentltp)-(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
               :parseFloat(currentltp))   
+
+              let newCurrentTradingSymbol=Constant.GetTradaingSymbol(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              let newCurrentTradingExchange=Constant.GetStrikeExchange(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              
 
           let dataNew={
             strikePrice:currentStrike,   
@@ -1320,7 +1326,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             orderqty: ((getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)!=null?parseInt(getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty) : defaultQty) * parseInt(dataInfo.moveinoutqty)).toString(),
             nooforderlot:dataInfo.moveinoutqty.toString(),
             maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-            orderprice:orderpriceNew,
+            orderprice:(Math.round(Number(orderpriceNew) * 20) / 20).toString() ,
             tradermode:globleSelectedTradingType,
             orderidbybroker:"" ,
             clientid:globleSelectedClientInfo,
@@ -1344,8 +1350,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             secondInExchangeToken:newSecondInExchangeToken.toString(),
             firstOutExchangeToken:newFirstOutExchangeToken.toString(),
             secondOutExchangeToken:newSecondOutExchangeToken.toString() ,
-            tradingSymbol:dataInfo.tradingSymbol,
-            exchange:dataInfo.exchange,
+            tradingSymbol:newCurrentTradingSymbol,
+            exchange:newCurrentTradingExchange,
             brokerName:globleBrokerName
           }  
           
@@ -1457,7 +1463,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               (parseFloat(parseFloat(currentltp)+(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
               (parseFloat(parseFloat(currentltp)-(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
               :parseFloat(currentltp))   
-
+              let newCurrentTradingSymbol=Constant.GetTradaingSymbol(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              let newCurrentTradingExchange=Constant.GetStrikeExchange(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              
           let dataNew={
             strikePrice:currentStrike,   
             productname:dataInfo.positionproductname,
@@ -1500,8 +1508,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             secondInExchangeToken:newSecondInExchangeToken.toString(),
             firstOutExchangeToken:newFirstOutExchangeToken.toString(),
             secondOutExchangeToken:newSecondOutExchangeToken.toString() ,
-            tradingSymbol:dataInfo.tradingSymbol,
-            exchange:dataInfo.exchange,
+            tradingSymbol:newCurrentTradingSymbol,
+            exchange:newCurrentTradingExchange,
             brokerName:globleBrokerName
           }  
           
@@ -1552,7 +1560,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             orderqty: ((getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)!=null?parseInt(getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty) : defaultQty) * parseInt(dataInfo.moveinoutqty)).toString(),
             nooforderlot:dataInfo.moveinoutqty.toString(),
             maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-            orderprice:orderprice.toString(),
+            orderprice:(Math.round(Number(orderprice) * 20) / 20).toString(),
             tradermode:globleSelectedTradingType,
             orderidbybroker:"" ,
             clientid:globleSelectedClientInfo,
@@ -1615,7 +1623,11 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               dataInfo.positionsidetype.toLowerCase()==='buy'?
               (parseFloat(parseFloat(currentltp)+(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
               (parseFloat(parseFloat(currentltp)-(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-              :parseFloat(currentltp))   
+              :parseFloat(currentltp))  
+              
+              let newCurrentTradingSymbol=Constant.GetTradaingSymbol(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              let newCurrentTradingExchange=Constant.GetStrikeExchange(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              
 
           let dataNew={
             strikePrice:currentStrike,   
@@ -1627,7 +1639,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             orderqty: ((getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)!=null?parseInt(getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty) : defaultQty) * parseInt(dataInfo.moveinoutqty)).toString(),
             nooforderlot:dataInfo.moveinoutqty.toString(),
             maxorderqty:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultSliceQty.toString(),
-            orderprice:orderpriceNew.toString(),
+            orderprice:(Math.round(Number(orderpriceNew) * 20) / 20).toString(),
             tradermode:globleSelectedTradingType,
             orderidbybroker:"" ,
             clientid:globleSelectedClientInfo,
@@ -1651,8 +1663,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             secondInExchangeToken:newSecondInExchangeToken.toString(),
             firstOutExchangeToken:newFirstOutExchangeToken.toString(),
             secondOutExchangeToken:newSecondOutExchangeToken.toString() ,
-            tradingSymbol:dataInfo.tradingSymbol,
-            exchange:dataInfo.exchange,
+            tradingSymbol:newCurrentTradingSymbol,
+            exchange:newCurrentTradingExchange,
             brokerName:globleBrokerName
           }       
           const orderArray = [];
@@ -1664,6 +1676,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
   }
 
   const handdleSecondPositionPaper=(dataInfo,positionmovetype)=>{
+    debugger;
     let message='';
     var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
@@ -1766,6 +1779,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               (parseFloat(parseFloat(currentltp)-(parseFloat(currentltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
               :parseFloat(currentltp))   
 
+              let newCurrentTradingSymbol=Constant.GetTradaingSymbol(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              let newCurrentTradingExchange=Constant.GetStrikeExchange(globleOptionChainList,dataInfo.positioninstrumentname,dataInfo.positionexpirydate,currentStrike,temptype);
+              
           let dataNew={
             strikePrice:currentStrike,   
             productname:dataInfo.positionproductname,
@@ -1808,8 +1824,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             secondInExchangeToken:newSecondInExchangeToken.toString(),
             firstOutExchangeToken:newFirstOutExchangeToken.toString(),
             secondOutExchangeToken:newSecondOutExchangeToken.toString() ,
-            tradingSymbol:dataInfo.tradingSymbol,
-            exchange:dataInfo.exchange,
+            tradingSymbol:newCurrentTradingSymbol,
+            exchange:newCurrentTradingExchange,
             brokerName:globleBrokerName
           }       
           const orderArray = [];

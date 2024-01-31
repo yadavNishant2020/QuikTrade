@@ -73,6 +73,22 @@ export const Constant = {
                             && dataInfo.instrumentType===orderType)
     return filterData?.exchangeToken;
 
+},GetTradaingSymbol:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{
+    debugger;
+    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
+                            && dataInfo.expiryDate===orderexpiry
+                            && dataInfo.strikePrice===currentStrikePrice.toString()
+                            && dataInfo.instrumentType===orderType)
+    return filterData?.tradingSymbol;
+
+},GetStrikeExchange:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{
+    debugger;
+    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
+                            && dataInfo.expiryDate===orderexpiry
+                            && dataInfo.strikePrice===currentStrikePrice.toString()
+                            && dataInfo.instrumentType===orderType)
+    return filterData?.exchange;
+
 }
 
       
