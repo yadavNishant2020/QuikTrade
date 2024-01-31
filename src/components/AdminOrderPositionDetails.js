@@ -1110,6 +1110,13 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
      }
 
 
+     useEffect(() => {  
+      if(globleSelectedTradingType.length>0){
+        getOrderCompletedList();
+      }
+     },[globleSelectedTradingType])
+
+
       useEffect(() => {       
         getOrderCompletedList();
         const connectionData = new  signalR.HubConnectionBuilder()
