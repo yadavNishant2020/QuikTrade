@@ -857,11 +857,8 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             'Information',
             'Do you want to exit all penditing order ?',
             () => {
-                    let data={
-                        clientid:globleSelectedClientInfo,
-                        tradermode:globleSelectedTradingType
-                    }
-                    processAllPendingOrder(data)
+                   
+                    processAllPendingOrder()
             },
             () => {
                
@@ -1102,13 +1099,32 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
       }
    }
    
-    const processAllPendingOrder=async (requestData)=>{           
+    const processAllPendingOrder=async ()=>{   
+             
+      if(globleSelectedTradingType.toLowerCase()==="paper"){  
+        let requestData={
+          clientid:globleSelectedClientInfo,
+          tradermode:globleSelectedTradingType
+      }    
             const resultData=await PaperTradingAPI.processAllPendingOrderForClient(requestData);         
             if(resultData!=null){                   
                     alertify.success("Pending order successfully cancelled.")
                     setChangeOrderPosition((data)=>data+1)
             }
-     }
+      }else{
+        let requestData={
+          clientid:globleSelectedClientInfo,
+          tradermode:globleSelectedTradingType,
+          logintoken:sessionStorage.getItem("apiSecret"),
+        } 
+        const resultData=await LiveTradingAPI.processAllPendingOrderForClient(requestData);         
+        if(resultData!=null){        
+                debugger;           
+                alertify.success(resultData)
+                setChangeOrderPosition((data)=>data+1)
+        }
+      }
+    }
 
 
      useEffect(() => {  

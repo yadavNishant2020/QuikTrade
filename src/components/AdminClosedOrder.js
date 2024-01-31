@@ -63,9 +63,7 @@ const AdminClosedOrder = () => {
                                                                             
                                                                             <tr className="text-center">
                                                                                 <th scope="col">Product</th>
-                                                                                <th scope="col">Instrument</th>                                                                                  
-                                                                                                                                                          
-                                                                                <th scope="col" >Type</th>       
+                                                                                <th scope="col">Instrument</th> 
                                                                                 <th scope="col" >LOT</th>                                                                                  
                                                                                 <th scope="col" >PNL</th>                        
                                                                             </tr>
@@ -93,7 +91,7 @@ const AdminClosedOrder = () => {
                                                                                     
                                                                                 </td>
                                                                                 
-                                                                                <td className='text-center'>{data.closepositiontype}</td>
+                                                                                
                                                                                 <td className='text-center' style={{width:"10%"}}>
                                                                                   <fieldset className='border'>
                                                                                   <legend align="right">{data.closepositionqty}</legend>
