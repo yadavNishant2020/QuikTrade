@@ -130,7 +130,7 @@ const AdminCompletedOrder = () => {
                                                                                 </td>
                                                                                 <td className='text-right'>{Constant.CurrencyFormat(data.orderprice)}</td>
                                                                                 <td className='text-center'>
-                                                                                <span style={{fontSize:"8px"}} className={`badge ${data.orderstatus === 'Completed' ? 'badge-success' : (data.orderstatus === 'Pending' || data.orderstatus.toLowerCase() === 'open')  ? 'badge-warning' : 'badge-cancel'}`}>
+                                                                                <span style={{fontSize:"8px"}} className={`badge ${data.orderstatus.toLowerCase() === 'completed' ? 'badge-success' : (data.orderstatus.toLowerCase() === 'pending' || data.orderstatus.toLowerCase() === 'open')  ? 'badge-warning' : 'badge-cancel'}`}>
                                                                                         {data.orderstatus}
                                                                                         </span>
                                                                                 </td>
