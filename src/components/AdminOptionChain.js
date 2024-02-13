@@ -251,16 +251,16 @@ const AdminOptionChain = ({filterOptionChainList}) => {
       }else{
         temptype='PE'
       }      
-      // let dataNewStrick=Constant.GetNewStrike(globleSymbol,chaindata.strikePrice,temptype);
-      // const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
-      // let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
-      // let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
-      // let newFirstOutInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstOutStrike,temptype)
-      // let newSecondOutInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondOutStrike,temptype)
-      // let newFirstInExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
-      // let newSecondInExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype);
-      // let newFirstOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstOutStrike,temptype);
-      // let newSecondOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondOutStrike,temptype);
+      let dataNewStrick=Constant.GetNewStrike(globleSymbol,chaindata.strikePrice,temptype);
+      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
+      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
+      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
+      let newFirstOutInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstOutStrike,temptype)
+      let newSecondOutInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondOutStrike,temptype)
+      let newFirstInExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
+      let newSecondInExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype);
+      let newFirstOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstOutStrike,temptype);
+      let newSecondOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondOutStrike,temptype);
       let expiryNewDate=(globleOptionChainType==='opt'?globleExpityvalue: chaindata.expiry.split('T')[0])
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
       let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
@@ -274,20 +274,20 @@ const AdminOptionChain = ({filterOptionChainList}) => {
 
       if(globleSelectedTradingType.toLowerCase()==="paper"){
         processPaperModeOptionChanin(chaindata,temptype,side,expiryNewDate,
-          "","","","",
-          "","","","",
-          "","","","",
+          newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike,
+          newFirstInInstrumentToken,newSecondInInstrumentToken,newFirstOutInstrumentToken,newSecondOutInstrumentToken,
+          newFirstInExchangeToken,newSecondInExchangeToken,newFirstOutExchangeToken,newSecondOutExchangeToken,
           defaultProductName,defaultOrderType,defaultShowQty,defaultLMTPer,
           defaultSliceQty,defaultLotSize,defaultQty
           )
       }else{
-        // processLiveModeOptionChanin(chaindata,temptype,side,expiryNewDate,
-        //   newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike,
-        //   newFirstInInstrumentToken,newSecondInInstrumentToken,newFirstOutInstrumentToken,newSecondOutInstrumentToken,
-        //   newFirstInExchangeToken,newSecondInExchangeToken,newFirstOutExchangeToken,newSecondOutExchangeToken,
-        //   defaultProductName,defaultOrderType,defaultShowQty,defaultLMTPer,
-        //   defaultSliceQty,defaultLotSize,defaultQty
-        //   )
+        processLiveModeOptionChanin(chaindata,temptype,side,expiryNewDate,
+          newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike,
+          newFirstInInstrumentToken,newSecondInInstrumentToken,newFirstOutInstrumentToken,newSecondOutInstrumentToken,
+          newFirstInExchangeToken,newSecondInExchangeToken,newFirstOutExchangeToken,newSecondOutExchangeToken,
+          defaultProductName,defaultOrderType,defaultShowQty,defaultLMTPer,
+          defaultSliceQty,defaultLotSize,defaultQty
+          )
       }
   }
 
