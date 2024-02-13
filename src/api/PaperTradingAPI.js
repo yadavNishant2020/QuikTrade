@@ -128,7 +128,86 @@ export const PaperTradingAPI = {
     }
       
   
-    }, processAllPendingOrderForClient: async (requestData) => { 
+    }, 
+    getAllOpenPositionList: async (requestData) => { 
+      debugger;
+    try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}paperTrading/getAllOpenPositionList`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                },    
+                data:requestData,
+              };
+              const response = await axios(axiosConfig);    
+              console.log(response);
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+    } catch (error) {
+          console.log(error);
+          return null;
+    }
+      
+  
+    },
+    getOrderClosedList: async (requestData) => { 
+      debugger;
+    try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}paperTrading/getOrderClosedList`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                },    
+                data:requestData,
+              };
+              const response = await axios(axiosConfig);    
+              console.log(response);
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+    } catch (error) {
+          console.log(error);
+          return null;
+    }
+      
+  
+    },
+    getLogList: async (requestData) => { 
+      debugger;
+    try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}paperTrading/getLogList`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                },    
+                data:requestData,
+              };
+              const response = await axios(axiosConfig);    
+              console.log(response);
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+    } catch (error) {
+          console.log(error);
+          return null;
+    }
+      
+  
+    },
+    processAllPendingOrderForClient: async (requestData) => { 
        
     try {  
               var axiosConfig = {

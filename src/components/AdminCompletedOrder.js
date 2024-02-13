@@ -27,26 +27,24 @@ const AdminCompletedOrder = () => {
       } = useContext(PostContext); 
 
 
-      useEffect(()=>{    
-        debugger;               
-        if(globleSelectedClientInfo.length >0){                   
-            getOrderCompletedList()
-      }
-  },[globleSelectedClientInfo,globleSelectedTradingType])
+  //     useEffect(()=>{    
+  //       debugger;               
+  //       if(globleSelectedClientInfo.length >0){                   
+  //           getOrderCompletedList()
+  //     }
+  // },[globleSelectedClientInfo,globleSelectedTradingType])
       
 
-  const getOrderCompletedList=async()=>{
-        let requestData={
-            clientid:globleSelectedClientInfo,
-            tradermode:globleSelectedTradingType
-        }
-         const resultData=await PaperTradingAPI.getOrderCompletedList(requestData);        
-        if(resultData!=null){
-          updateGlobleOrderList(resultData.orderitems);
-          updateGlobleOrderPosition(resultData.positionitems);
-          updateGlobleClosedList(resultData.closedresponseitem);
-        }
-  }
+  // const getOrderCompletedList=async()=>{
+  //       let requestData={
+  //           clientid:globleSelectedClientInfo,
+  //           tradermode:globleSelectedTradingType
+  //       }
+  //        const resultData=await PaperTradingAPI.getOrderCompletedList(requestData);        
+  //       if(resultData!=null){
+  //         updateGlobleOrderList(resultData.orderitems);         
+  //       }
+  //  }
 
     return (
         <>

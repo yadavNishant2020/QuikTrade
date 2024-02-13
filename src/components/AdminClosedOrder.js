@@ -30,7 +30,7 @@ const AdminClosedOrder = () => {
 
       useEffect(()=>{    
         let totalRMTM=0;                 
-        if(globleClosedList.length >0){              
+        if(globleClosedList?.length >0){              
             totalRMTM = globleClosedList.reduce((accumulator, data) => {
                     return accumulator + (parseFloat(data?.closepositionpnl) || 0);
                 }, 0);
@@ -70,7 +70,7 @@ const AdminClosedOrder = () => {
 
                                                                 </thead>
                                                                 <tbody>
-                                                                { globleClosedList.map((data)=>
+                                                                { globleClosedList?.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>
                                                                                 <span className={ data.closepositionproductname.toLowerCase()==='mis'?'text-product-mis text-bold buy-light':'text-product-nmrd text-bold sell-light'}>

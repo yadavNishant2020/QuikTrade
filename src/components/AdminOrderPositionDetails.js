@@ -125,7 +125,6 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
                 position.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(defaultSaveedQty);
                 position.newaddtotalqty=parseInt(data.newqty)*parseInt(defaultSaveedQty);
                 position.exittotalqty=parseInt(data.exitqty)*parseInt(defaultSaveedQty);
-
                 const matchingOptionFirstInStrick = optionChainDataForPosition.find((dataOrder) => dataOrder.instrumentToken === data.firstInInstrumentToken);
                 if (matchingOptionFirstInStrick != null) {
                   position.firstInltp = matchingOptionFirstInStrick.ltp;
@@ -215,11 +214,6 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
             setOrderPosition([]);
         }
       },[globleOrderPosition]); 
-
-
-
- 
-
 
   const calculateUnrealisedPnl = (position, infodata) => {         
     return position.positionsidetype.toLowerCase() === 'buy'
@@ -903,8 +897,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
          processExitAllPositionInBulk(scopedUpdatedRowsArray);
       }
 
-      const processExitAllPositionPaper=()=>{
-        debugger;
+      const processExitAllPositionPaper=()=>{       
         var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
         let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
             const{  defaultProductName,   defaultSliceQty, 
@@ -1091,14 +1084,16 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
 
      useEffect(() => {  
       if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0){
+        getAllOpenPositionList();
         getOrderCompletedList();
+        getOrderClosedList();
+        getLogList();
         gettrailingvalues();
       }
      },[globleSelectedTradingType,globleSelectedClientInfo])
 
 
-      useEffect(() => {       
-        getOrderCompletedList();
+      useEffect(() => {   
         const connectionData = new  signalR.HubConnectionBuilder()
             .withUrl(BASE_SIGNALR_HUB)
             .withAutomaticReconnect()
@@ -1109,7 +1104,11 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
         }).catch((err) => console.log(err));
     
         connectionData.on('ReceiveData', (receivedData) => {
-            getOrderCompletedList();
+          getAllOpenPositionList();
+          getOrderCompletedList();
+          getOrderClosedList();
+          getLogList();
+          gettrailingvalues();
         });
     
         return () => {
@@ -1118,7 +1117,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
     }, []);
 
     
-   const gettrailingvalues=async()=>{         
+const gettrailingvalues=async()=>{         
         let requestData={
             clientid:sessionStorage.getItem("clienttoken"),
             tradermode:sessionStorage.getItem("tradingtype")  ,
@@ -1137,80 +1136,109 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               updateGlobalTarget(0);   
             }                                    
         }
-  }
+}
     
-    
+const getAllOpenPositionList=async()=>{         
+    let requestData={
+        clientid:sessionStorage.getItem("clienttoken"),
+        tradermode:sessionStorage.getItem("tradingtype")  
+    }
+     const resultData=await PaperTradingAPI.getAllOpenPositionList(requestData);        
+    if(resultData!=null){                  
+            let tokentoRegister=[];                 
+            resultData.map((data)=>{                    
+                let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
+                data.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(data.defaultlotqty);
+                data.newaddtotalqty=parseInt(data.newqty)*parseInt(data.defaultlotqty);
+                data.exittotalqty=parseInt(data.exitqty)*parseInt(data.defaultlotqty);
+                tokentoRegister.push(data.instrumentToken);
+                if(data.firstInInstrumentToken!==""){
+                  tokentoRegister.push(data.firstInInstrumentToken);
+                }
+                if(data.secondInInstrumentToken!==""){
+                  tokentoRegister.push(data.secondInInstrumentToken);
+                }
+                if(data.firstOutInstrumentToken!==""){
+                  tokentoRegister.push(data.firstOutInstrumentToken);
+                }
+                if(data.secondOutInstrumentToken!==""){
+                  tokentoRegister.push(data.secondOutInstrumentToken);
+                }
+            })
+            const uniqueChannelData = [...new Set(tokentoRegister)];               
+            updateGlobleUniqueChannelData(uniqueChannelData);
+            const dataResult= resultData.map((data)=>{
+                const matchingOption=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.instrumentToken);
+                if(matchingOption!=null){
+                    data.ltp=matchingOption.ltp;
+                    data.unrealisedpnl= calculateUnrealisedPnl(data,matchingOption); 
+                }else{
+                    data.unrealisedpnl= calculateUnrealisedPnl(data,data); 
+                }
+                const matchingOptionFirstInStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstInInstrumentToken);
+                if(matchingOptionFirstInStrick!=null){
+                    data.firstInltp=matchingOptionFirstInStrick.ltp ;                         
+                }else{
+                    data.firstInltp=parseFloat(0).toFixed(2)
+                }
+                const matchingOptionSecondInStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondInInstrumentToken);
+                if(matchingOptionSecondInStrick!=null){
+                    data.secondInltp=matchingOptionSecondInStrick.ltp ;                         
+                } else{
+                    data.secondInltp=parseFloat(0).toFixed(2)
+                }
+                const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
+                if(matchingOptionFirstOutStrick!=null){
+                    data.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
+                } else{
+                    data.firstOutltp=parseFloat(0).toFixed(2)
+                }
+                const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
+                if(matchingOptionSecondOutStrick!=null){
+                    data.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
+                } else{
+                    data.secondOutltp=parseFloat(0).toFixed(2)
+                }
+                return data;
+            })
+            updateGlobleOrderPosition(dataResult);
+            updateGlobleClosedList(resultData.closedresponseitem);    
+            updateGlobleLogList(resultData.logitem);                           
+    }
+}   
 
-    const getOrderCompletedList=async()=>{         
+const getOrderCompletedList=async()=>{         
         let requestData={
             clientid:sessionStorage.getItem("clienttoken"),
             tradermode:sessionStorage.getItem("tradingtype")  
         }
          const resultData=await PaperTradingAPI.getOrderCompletedList(requestData);        
         if(resultData!=null){      
-                updateGlobleOrderList(resultData.orderitems);
-                let tokentoRegister=[];
-                debugger;
-                resultData.positionitems.map((data)=>{                    
-                    let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
-                    data.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(data.defaultlotqty);
-                    data.newaddtotalqty=parseInt(data.newqty)*parseInt(data.defaultlotqty);
-                    data.exittotalqty=parseInt(data.exitqty)*parseInt(data.defaultlotqty);
-                    tokentoRegister.push(data.instrumentToken);
-                    if(data.firstInInstrumentToken!==""){
-                      tokentoRegister.push(data.firstInInstrumentToken);
-                    }
-                    if(data.secondInInstrumentToken!==""){
-                      tokentoRegister.push(data.secondInInstrumentToken);
-                    }
-                    if(data.firstOutInstrumentToken!==""){
-                      tokentoRegister.push(data.firstOutInstrumentToken);
-                    }
-                    if(data.secondOutInstrumentToken!==""){
-                      tokentoRegister.push(data.secondOutInstrumentToken);
-                    }
-                })
-                const uniqueChannelData = [...new Set(tokentoRegister)];               
-                updateGlobleUniqueChannelData(uniqueChannelData);
-                const dataResult= resultData.positionitems.map((data)=>{
-                    const matchingOption=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.instrumentToken);
-                    if(matchingOption!=null){
-                        data.ltp=matchingOption.ltp;
-                        data.unrealisedpnl= calculateUnrealisedPnl(data,matchingOption); 
-                    }else{
-                        data.unrealisedpnl= calculateUnrealisedPnl(data,data); 
-                    }
-                    const matchingOptionFirstInStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstInInstrumentToken);
-                    if(matchingOptionFirstInStrick!=null){
-                        data.firstInltp=matchingOptionFirstInStrick.ltp ;                         
-                    }else{
-                        data.firstInltp=parseFloat(0).toFixed(2)
-                    }
-                    const matchingOptionSecondInStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondInInstrumentToken);
-                    if(matchingOptionSecondInStrick!=null){
-                        data.secondInltp=matchingOptionSecondInStrick.ltp ;                         
-                    } else{
-                        data.secondInltp=parseFloat(0).toFixed(2)
-                    }
-                    const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
-                    if(matchingOptionFirstOutStrick!=null){
-                        data.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
-                    } else{
-                        data.firstOutltp=parseFloat(0).toFixed(2)
-                    }
-                    const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
-                    if(matchingOptionSecondOutStrick!=null){
-                        data.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
-                    } else{
-                        data.secondOutltp=parseFloat(0).toFixed(2)
-                    }
-                    return data;
-                })
-                updateGlobleOrderPosition(dataResult);
-                updateGlobleClosedList(resultData.closedresponseitem);    
-                updateGlobleLogList(resultData.logitem);                           
+                updateGlobleOrderList(resultData);                                         
         }
+}
+
+const getOrderClosedList=async()=>{         
+    let requestData={
+        clientid:sessionStorage.getItem("clienttoken"),
+        tradermode:sessionStorage.getItem("tradingtype")  
+    }
+     const resultData=await PaperTradingAPI.getOrderClosedList(requestData);        
+    if(resultData!=null){   
+            updateGlobleClosedList(resultData);  
+    }
+}
+
+const getLogList=async()=>{         
+  let requestData={
+      clientid:sessionStorage.getItem("clienttoken"),
+      tradermode:sessionStorage.getItem("tradingtype")  
   }
+   const resultData=await PaperTradingAPI.getLogList(requestData);        
+  if(resultData!=null){   
+          updateGlobleLogList(resultData);                           
+  }
+}
 
   const handdleFirstPosition=(dataInfo,positionmovetype)=>{
     if(globleSelectedTradingType.toLowerCase()==="paper"){
