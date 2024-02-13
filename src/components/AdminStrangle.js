@@ -933,7 +933,11 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
       let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
       const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
       if(resultData!=null){           
-        alertify.success("Order added successfully.")
+        if(resultData==="true"){
+          alertify.success("Order added successfully.")
+        }else{
+          alertify.error("Order rejected, Markets are closed right now.")
+        } 
       }
     }
     
@@ -954,7 +958,11 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
         }
         const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
         if(resultData!=null){     
-          alertify.success("Order added successfully.")
+          if(resultData==="true"){
+            alertify.success("Order added successfully.")
+          }else{
+            alertify.error("Order rejected, Markets are closed right now.")
+          } 
         }else{
           
         }

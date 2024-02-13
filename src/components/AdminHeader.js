@@ -209,6 +209,7 @@ const getStockIndex=()=>{
         callApiToGetPreviosDayData()
       }
       channelName.map((cName) => {
+          debugger;
           const channel = centrifugeInstance.subscribe(cName.instrumentToken);
           channel.on('publish', (data) => {            
             if(data.data!=null){ 

@@ -595,75 +595,6 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               processInsertUpdateOrder(data);
       }
 
-      // const processExistOrder=(dataInfo)=>{   
-      //   var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
-      //   let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
-      //       const{  defaultProductName,   defaultSliceQty, 
-      //       defaultOrderType,     defaultLotSize,       
-      //       defaultQty,           defaultLMTPerCentage,
-      //       defaultShowQty
-      //   }={...configInformation};
-      //   let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
-      //   let positiontype=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultProductName;
-      //   let orderprice=(
-      //     positiontype===undefined?'MKT': positiontype)==='MKT'? dataInfo.ltp:
-      //         (parseFloat(defaultLMTPer)>0?
-      //         (dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
-      //         (parseFloat(parseFloat(dataInfo.ltp)+(parseFloat(dataInfo.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
-      //         (parseFloat(parseFloat(dataInfo.ltp)-(parseFloat(dataInfo.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-      //         :parseFloat(dataInfo.ltp))   
-            
-      //       let data={
-      //           strikePrice:dataInfo.strikeprice,   
-      //           productname:dataInfo.positionproductname,
-      //           ordertype:positiontype,
-      //           expirydate:dataInfo.positionexpirydate,
-      //           instrumentname:dataInfo.positioninstrumentname,             
-      //           orderside:dataInfo.positionordertype,
-      //           orderqty:(dataInfo.defaultlotqty*parseInt(dataInfo.newqty)).toString(),
-      //           nooforderlot:dataInfo.newqty.toString(),
-      //           maxorderqty:(defaultSliceQty===undefined?dataInfo.maxorderqty.toString():defaultSliceQty.toString()),
-      //           orderprice:((positiontype===undefined?'MKT': positiontype)==='MKT'?dataInfo.ltp.toString():
-      //           ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
-      //           (parseFloat(orderprice)>=parseFloat(dataInfo.ltp)?dataInfo.ltp.toString(): orderprice.toString()):
-      //           (parseFloat(orderprice)<=parseFloat(dataInfo.ltp)?dataInfo.ltp.toString(): orderprice.toString()))
-      //           ),
-      //           tradermode:globleSelectedTradingType,
-      //           orderidbybroker:"" ,
-      //           clientid:globleSelectedClientInfo,
-      //           lotsize:defaultQty.toString(),
-      //           instrumentToken:dataInfo.instrumentToken,
-      //           orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-      //           stoploss:globalStopLoss.toString(),
-      //           target:globalTarget.toString(),
-      //           trailling:globalTP.toString(),
-      //           orderexchangetoken:dataInfo.positionexchangetoken,
-      //           orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
-      //           ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
-      //           (parseFloat(orderprice)>=parseFloat(dataInfo.ltp)?'Completed':'Pending'):
-      //           (parseFloat(orderprice)<=parseFloat(dataInfo.ltp)?'Completed':'Pending'))
-      //           ),
-      //           firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
-      //           secondInInstrumentToken:dataInfo.secondInInstrumentToken.toString(),
-      //           firstOutInstrumentToken:dataInfo.firstOutInstrumentToken.toString(),
-      //           secondOutInstrumentToken:dataInfo.secondOutInstrumentToken.toString(),
-      //           firstInStrike:dataInfo.firstInStrike.toString(),
-      //           secondInStrike:dataInfo.secondInStrike.toString(),
-      //           firstOutStrike:dataInfo.firstOutStrike.toString(),
-      //           secondOutStrike:dataInfo.secondOutStrike.toString(),            
-      //           firstInExchangeToken:dataInfo.firstInExchangeToken.toString(),
-      //           secondInExchangeToken:dataInfo.secondInExchangeToken.toString(),
-      //           firstOutExchangeToken:dataInfo.firstOutExchangeToken.toString(),
-      //           secondOutExchangeToken:dataInfo.secondOutExchangeToken.toString() ,
-      //           tradingSymbol:dataInfo.tradingSymbol,
-      //           exchange:dataInfo.exchange,
-      //           brokerName:globleBrokerName
-      //         }               
-      //         processInsertUpdateOrder(data);
-      // }
-
-      
-
       const handdleOrderExist=(dataInfo)=>{   
         if(globleSelectedTradingType.toLowerCase()==="paper"){
           processExitOrderPaper(dataInfo);
@@ -809,8 +740,12 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
         }else{
           let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
           const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
-          if(resultData!=null){           
-            alertify.success("Order added successfully.")
+          if(resultData!=null){ 
+            if(resultData==="true"){
+              alertify.success("Order added successfully.")
+            }else{
+              alertify.error("Order rejected, Markets are closed right now.")
+            } 
           }
         }
     }
@@ -831,9 +766,27 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 setTragetEdit(false);
             }else if(e.target.name==="globalStopLoss"){
                 setSLEdit(false);
-            }         
+            }   
+            processtrailingvalues();      
         }
       };
+
+      const processtrailingvalues=async ()=>{
+          debugger;
+            let requestData={
+                clientid:globleSelectedClientInfo,
+                tradermode:globleSelectedTradingType,
+                brockername:globleBrokerName,
+                stopLoss:globalStopLoss.toString(),
+                trailingpoint:globalTP.toString(),
+                target:globalTarget.toString(),
+            }    
+            const resultData=await PaperTradingAPI.processtrailingvalues(requestData);                 
+            if(resultData!=null){                   
+                     
+                     
+            }
+      }
 
       const handleExitAllPosition=(e)=>{
         alertify.confirm(
@@ -1071,8 +1024,13 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               orderitems :requestData
             }
             const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
-            if(resultData!=null){     
-              alertify.success("All open order closed successfully.")
+            if(resultData!=null){ 
+              if(resultData==="true"){
+                        alertify.success("All open positions closed successfully.")
+                      }else{
+                        alertify.error("All open positions rejected,Markets are closed right now.")
+                      }     
+              
             }else{
               
             }
@@ -1092,8 +1050,12 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                     orderitems :requestData
                   }
                   const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
-                  if(resultData!=null){     
-                      alertify.success(message)
+                  if(resultData!=null){  
+                      if(resultData==="true"){
+                        alertify.success(message)
+                      }else{
+                        alertify.error("Order rejected,Markets are closed right now.")
+                      } 
                       setChangeOrderPosition((data)=>data+1)
                   }
       }
@@ -1128,10 +1090,11 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
 
 
      useEffect(() => {  
-      if(globleSelectedTradingType.length>0){
+      if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0){
         getOrderCompletedList();
+        gettrailingvalues();
       }
-     },[globleSelectedTradingType])
+     },[globleSelectedTradingType,globleSelectedClientInfo])
 
 
       useEffect(() => {       
@@ -1155,7 +1118,26 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
     }, []);
 
     
-
+   const gettrailingvalues=async()=>{         
+        let requestData={
+            clientid:sessionStorage.getItem("clienttoken"),
+            tradermode:sessionStorage.getItem("tradingtype")  ,
+            brockername:globleBrokerName
+        }
+         const resultData=await PaperTradingAPI.gettrailingvalues(requestData);    
+         debugger;       
+        if(resultData!=null){ 
+            if(resultData.length>0){
+                updateGlobalStopLoss(resultData[0].stopLoss);
+                updateGlobalTP(resultData[0].trailingpoint);
+                updateGlobalTarget(resultData[0].target);     
+            }else{
+              updateGlobalStopLoss(0);
+              updateGlobalTP(0);
+              updateGlobalTarget(0);   
+            }                                    
+        }
+  }
     
     
 
