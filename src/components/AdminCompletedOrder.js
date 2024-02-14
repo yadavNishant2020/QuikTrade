@@ -72,7 +72,9 @@ const AdminCompletedOrder = () => {
 
                                                                         </thead>
                                                                         <tbody>
-                                                                        {globleOrderList.map((data)=>
+                                                                        {
+                                                                        globleOrderList !== undefined && globleOrderList !== null && globleOrderList.length > 0 && (
+                                                                            globleOrderList.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>{data.ordertimestamp}</td>
                                                                                 <td className='text-center'>{data.orderreferanceid}</td>
@@ -116,7 +118,7 @@ const AdminCompletedOrder = () => {
                                                                                         </span>
                                                                                 </td>
                                                                             </tr>
-                                                                        )}
+                                                                        ))}
                                                                         </tbody>
                                               </Table>
                                         </div>

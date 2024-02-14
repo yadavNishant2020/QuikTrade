@@ -2026,7 +2026,7 @@ const getLogList=async()=>{
                                                          <tbody>
                                                             {
                                                                 
-                                                                filterOrderPosition!==undefined?(
+                                                                filterOrderPosition !== undefined && filterOrderPosition !== null && filterOrderPosition.length > 0 && (
                                                                     filterOrderPosition?.map((dataInfo,index)=>(
                                                                     <tr key={index}>
                                                                         <td className='text-center'>
@@ -2213,7 +2213,7 @@ const getLogList=async()=>{
                                                                              
                                                                         </td>
                                                                     </tr>
-                                                                ))):""
+                                                                )))
                                                             }
                                                          </tbody>
                                                         </Table>

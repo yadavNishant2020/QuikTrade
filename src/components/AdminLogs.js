@@ -35,13 +35,16 @@ const AdminLogs = () => {
                                                                                     </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                    {globleLogList.map((data,index)=>
-                                                                                         <tr key={index}>
-                                                                                             <td className='text-center'>{data.logdatetime}</td>
-                                                                                            <td className='text-left' style={{whiteSpace: "normal"}}>{data.logtext}</td>
-                                                                                        </tr>
-                                                                                        )
-                                                                                    }
+                                                                                    {
+    globleLogList !== undefined && globleLogList !== null && globleLogList.length > 0 && (
+        globleLogList.map((data, index) => (
+            <tr key={index}>
+                <td className='text-center'>{data.logdatetime}</td>
+                <td className='text-left' style={{ whiteSpace: "normal" }}>{data.logtext}</td>
+            </tr>
+        ))
+    )
+}
                                                                                     </tbody>
                                                                        
                                                 </Table>

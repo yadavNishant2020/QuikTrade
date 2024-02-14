@@ -70,7 +70,8 @@ const AdminClosedOrder = () => {
 
                                                                 </thead>
                                                                 <tbody>
-                                                                { globleClosedList?.map((data)=>
+                                                                { globleClosedList !== undefined && globleClosedList !== null && globleClosedList.length > 0 && (
+                                                                        globleClosedList?.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>
                                                                                 <span className={ data.closepositionproductname.toLowerCase()==='mis'?'text-product-mis text-bold buy-light':'text-product-nmrd text-bold sell-light'}>
@@ -112,6 +113,7 @@ const AdminClosedOrder = () => {
                                                                                 </td>
                                                                             </tr>
                                                                     )
+                                                                  )
                                                                 }
                                                                             
                                                                 
