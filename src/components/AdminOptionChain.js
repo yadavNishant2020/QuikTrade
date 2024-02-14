@@ -832,8 +832,10 @@ const AdminOptionChain = ({filterOptionChainList}) => {
           }
          
         }     
+        processBasketMargin(prevRowData)
         return prevRowData;
       });
+      
 
   }
   const handleClearBasket=()=>{
