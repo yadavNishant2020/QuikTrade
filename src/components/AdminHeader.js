@@ -64,35 +64,40 @@ const AdminHeader = () => {
 
   useEffect(()=>{
     if(globleBrokerClientList!=null){
+      debugger;
       if(globleBrokerClientList.length>0){
-          let brokerName=[];
+          let brokerName=[];          
           let clientList=[];
-          globleBrokerClientList.map((dataClient)=>{
-              debugger;
+          globleBrokerClientList.map((dataClient)=>{              
               let index=brokerName.findIndex((databroker)=>databroker.value===dataClient.type);
               if(index===-1){
                 let data={value:dataClient.type.toUpperCase(),label:dataClient.type.toUpperCase()}
                 brokerName.push(data);
-              }
-              let indexClient=clientList.findIndex((dataClient)=>dataClient.value===dataClient.userName);
-              if(index===-1){
-                let data={value:dataClient.userName,label:dataClient.userName}
-                clientList.push(data);
-              }
+              }              
           });         
           setOptionsBroker(brokerName);
           if(brokerSelect===''){
-              setBrokerSelect(brokerName[0])
+              setBrokerSelect(brokerName[0]);
+              debugger;
+              let indexClient=globleBrokerClientList.findIndex((dataClient)=>dataClient.userName===brokerName[0].value);
               updateGlobleBrokerName(brokerName[0].value);
           }
           sessionStorage.setItem("apiSecret",globleBrokerClientList[0].apiKey+":"+globleBrokerClientList[0].apiToken);
+          if (brokerName.length > 0) {
+            const firstBrokerNameValue = brokerName[0].value; // Assuming brokerName[0].value exists
+            clientList = globleBrokerClientList
+            .filter(dataClient => dataClient.type.toUpperCase() === firstBrokerNameValue)
+            .map(dataInfo => ({ value: dataInfo.userName, label: dataInfo.userName }));
+          } else {
+              clientList = []; // Provide a default value if brokerName is empty
+          }         
           setOptionsClient(clientList);
           if(clientSelect===''){          
             setClientSelect(clientList[0])
             updateGlobleSelectedClientInfo(clientList[0].value);
             sessionStorage.setItem("clienttoken",clientList[0].value);
             
-          }
+          } 
       }
     }
   },[globleBrokerClientList]); 
@@ -352,6 +357,26 @@ const handleClientData = (e) => {
   sessionStorage.setItem("clienttoken",e.value)
 }; 
 
+const handleBrokerData = (e) => {
+  let clientList=[];
+  setBrokerSelect(e);
+  updateGlobleBrokerName(e.value)
+  sessionStorage.setItem("brokername",e.value);
+  if (e.value.length > 0) {
+    const firstBrokerNameValue = e.value; // Assuming brokerName[0].value exists
+    clientList = globleBrokerClientList
+    .filter(dataClient => dataClient.type.toUpperCase() === firstBrokerNameValue)
+    .map(dataInfo => ({ value: dataInfo.userName, label: dataInfo.userName }));
+  } else {
+      clientList = []; // Provide a default value if brokerName is empty
+  }         
+  setOptionsClient(clientList);
+  setClientSelect(clientList[0])
+  updateGlobleSelectedClientInfo(clientList[0].value);
+  sessionStorage.setItem("clienttoken",clientList[0].value);
+}; 
+
+
 const handleTradingTypeData = (e) => {
   setTradingTypeSelect(e);
   sessionStorage.setItem("tradingtype",e.value); 
@@ -500,7 +525,9 @@ const handleTradingTypeData = (e) => {
                    <Col xl="2"  xs="12">
                         <Row>
                               <Col xl="6" xs="6">
-                                    <Select options={optionsBroker} value={brokerSelect} styles={customStyles}/>
+                                    <Select options={optionsBroker} value={brokerSelect} styles={customStyles}
+                                     onChange={handleBrokerData}
+                                    />
                               
                               </Col>
                               <Col xl="6" xs="6">

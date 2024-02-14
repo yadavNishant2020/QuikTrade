@@ -80,8 +80,9 @@ const getBrockerAccountList=async(fnotraderUserid,fnotraderSecret)=>{
     const resultData = await ZerodaAPI.getFNOBrockerAccountList(fnotraderUserid,fnotraderSecret);
     if(resultData!=null){    
           const {code,data}=resultData;
-          if(code===200){             
-            updateGlobleBrokerClientList(data.brokers);  
+          if(code===200){  
+            let brokersList=data.brokers.sort((a, b) => (a.isDefault === b.isDefault) ? 0 : a.isDefault ? -1 : 1);    
+            updateGlobleBrokerClientList(brokersList);  
             processBrokerServerData(data.brokers); 
           }
     } 
