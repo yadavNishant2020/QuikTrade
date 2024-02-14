@@ -643,7 +643,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
           if(resultData==="true"){
             alertify.success("Order added successfully.")
           }else{
-            alertify.error("Order rejected, Markets are closed right now.")
+            alertify.error("Order rejected.")
           } 
         }
       }
@@ -1107,7 +1107,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
         if(resultData==="true"){
           alertify.success("Basket Orders added successfully.")
         }else{
-          alertify.error("Basket Orders are Rejected, Markets are closed right now.")
+          alertify.error("Basket Orders are Rejected.")
         }          
           
       }else{

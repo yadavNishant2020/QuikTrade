@@ -884,7 +884,7 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
           if(resultData==="true"){
             alertify.success("Order added successfully.")
           }else{
-            alertify.error("Order rejected, Markets are closed right now.")
+            alertify.error("Order rejected.")
           } 
         }
       }
@@ -911,7 +911,7 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
       if(resultData==="true"){
         alertify.success("Order added successfully.")
       }else{
-        alertify.error("Order rejected, Markets are closed right now.")
+        alertify.error("Order rejected.")
       } 
     }else{
       

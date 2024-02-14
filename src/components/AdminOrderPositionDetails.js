@@ -738,7 +738,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             if(resultData==="true"){
               alertify.success("Order added successfully.")
             }else{
-              alertify.error("Order rejected, Markets are closed right now.")
+              alertify.error("Order rejected.")
             } 
           }
         }
@@ -1021,7 +1021,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
               if(resultData==="true"){
                         alertify.success("All open positions closed successfully.")
                       }else{
-                        alertify.error("All open positions rejected,Markets are closed right now.")
+                        alertify.error("All open positions rejected.")
                       }     
               
             }else{
@@ -1047,7 +1047,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                       if(resultData==="true"){
                         alertify.success(message)
                       }else{
-                        alertify.error("Order rejected,Markets are closed right now.")
+                        alertify.error("Order rejected.")
                       } 
                       setChangeOrderPosition((data)=>data+1)
                   }
