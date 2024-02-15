@@ -11,12 +11,36 @@ import { Container, Row, Col,   Button,
    Input,
    Table } from "reactstrap";
    import { PostProvider,PostContext } from '../PostProvider.js';
+   import { PaperTradingAPI } from '../api/PaperTradingAPI.js';
    import Select from 'react-select'
 
 const AdminLogs = () => {
             const { 
-                globleLogList
+                globleLogList,
+                updateGlobleLogList,
+                globleSelectedTradingType,
+                globleSelectedClientInfo
         } = useContext(PostContext);
+
+        useEffect(() => {  
+            if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0){      
+                getLogList();    
+            }
+           },[globleSelectedTradingType,globleSelectedClientInfo]);
+
+
+           const getLogList=async()=>{         
+            let requestData={
+                clientid:sessionStorage.getItem("clienttoken"),
+                tradermode:sessionStorage.getItem("tradingtype")  
+            }
+             const resultData=await PaperTradingAPI.getLogList(requestData);        
+            if(resultData!=null){   
+                    updateGlobleLogList(resultData);                           
+            }
+          }
+
+
     return (
         <>
                 <Card className="shadow">

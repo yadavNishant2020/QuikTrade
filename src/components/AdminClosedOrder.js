@@ -38,6 +38,23 @@ const AdminClosedOrder = () => {
       updateGloblemltRealized(totalRMTM);
   },[globleClosedList])
 
+  useEffect(() => {  
+    if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0){      
+      getOrderClosedList();    
+    }
+   },[globleSelectedTradingType,globleSelectedClientInfo]);
+
+   const getOrderClosedList=async()=>{         
+            let requestData={
+                clientid:sessionStorage.getItem("clienttoken"),
+                tradermode:sessionStorage.getItem("tradingtype")  
+            }
+            const resultData=await PaperTradingAPI.getOrderClosedList(requestData);        
+            if(resultData!=null){   
+                    updateGlobleClosedList(resultData);  
+            }
+    }
+
     return (
         <>
                 <Card className="shadow">
