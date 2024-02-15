@@ -1516,7 +1516,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                                   <Col xl="2" xs="3" style={{textAlign:"center" ,lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
                                                   <label  
                                                                   style={{marginBottom:"0px"}}
-                                                                    className={'font-13px'}
+                                                                    className='font-13px'
                                                                 >
                                                                    {busketMargin}
                                                                   </label>
