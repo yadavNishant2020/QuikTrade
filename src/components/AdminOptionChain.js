@@ -244,7 +244,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
   
     
 
-  const handleBasketQuickBuySell=(chaindata,type,side)=>{      
+  const handleBasketQuickBuySell=(chaindata,type,side)=>{  
+      debugger;    
       let temptype='';
       if(type==='Call'){
         temptype='CE';
@@ -1514,8 +1515,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                                   </Col>
                                                   <Col xl="2" xs="3" style={{textAlign:"center" ,lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
                                                   <label  
-                                                                  style={{marginBottom:"0px"}}
-                                                                    className={busketMargin>=requiredBusketMargin?'text-success font-13px':' font-13px text-danger'}
+                                                                  style={{marginBottom:"0px"}}                                                                     
                                                                 >
                                                                    {busketMargin}
                                                                   </label>
