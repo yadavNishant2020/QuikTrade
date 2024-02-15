@@ -1112,6 +1112,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
     }
   }
   const processBasketMargin=async(newBasketList)=>{
+    debugger;
     if(newBasketList!=null){
           if(newBasketList.length>0){      
       const processBasket = newBasketList.map(({                   
@@ -1141,9 +1142,13 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(data.initial.total)))
             setBucketList((previousData) => {
               if (previousData !== null) {
-                const updatedOrderPosition = previousData.map((position) => {
+                const updatedOrderPosition = previousData.map((position,index) => {
                   debugger;
-                  const matchingOption = data.orders.find((item) => item.tradingsymbol === position.baskettradingSymbol.toString() && item.exchange === position.basketexchange);
+                  const matchingOption = data.orders.find((item) => {
+                    return item.tradingsymbol === position.baskettradingSymbol.toString() && 
+                           item.exchange === position.basketexchange &&
+                           data.orders.indexOf(item) === index;
+                  });
                   if (matchingOption) {
                     return {
                       ...position,
