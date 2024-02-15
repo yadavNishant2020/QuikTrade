@@ -941,7 +941,7 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
 
 const processInsertUpdateOrderBulk=async(requestOrderList)=>{
   if(globleSelectedTradingType.toLowerCase()==="paper"){
-      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulk(requestOrderList);
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestOrderList);
       if(resultData!=null){      
         alertify.success("Order added successfully.")
       }else{
