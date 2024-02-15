@@ -828,8 +828,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             prevRowData[index][refType] =selectedValue;
           }
          
-        }     
-        processBasketMargin(prevRowData)
+        }            
         return prevRowData;
       });
       
@@ -852,7 +851,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
   const handleKeyDown=(e,index)=>{
       if (e.key === 'Enter' || e.key === 'Tab') {
         setEditBucketRow(false);
-        setEditBucketRowNo("-1");    
+        setEditBucketRowNo("-1");   
+        processBasketMargin(bucketList) 
       }  
   }
   const handdleRowChange=(refValue,index,refType)=>{
