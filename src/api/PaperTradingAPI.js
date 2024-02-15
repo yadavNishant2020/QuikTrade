@@ -258,7 +258,7 @@ export const PaperTradingAPI = {
         
     
       },processtrailingvalues: async (requestData) => { 
-       
+     
         try {  
                   var axiosConfig = {
                     method: "POST",
@@ -307,7 +307,32 @@ export const PaperTradingAPI = {
           }
             
         
-          }
+          },processpositiontrailingData: async (requestData) => { 
+            debugger;
+            try {  
+                      var axiosConfig = {
+                        method: "POST",
+                        url: `${BASE_URL}paperTrading/processpositiontrailingData`,  
+                        headers: {        
+                          "Content-Type": "application/json",
+                        },    
+                        data:requestData,
+                      };
+                      const response = await axios(axiosConfig);    
+                      console.log(response);
+                      const {status,data}=response;
+                      if(status===200){
+                          return data;
+                      }else{
+                          return null;
+                      }
+            } catch (error) {
+                  console.log(error);
+                  return null;
+            }
+              
+          
+            }
 
     
 }

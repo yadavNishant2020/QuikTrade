@@ -70,7 +70,8 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
     const [tpValue,setTpValue]=useState(0);
     const [centrifugePositionInstance, setCentrifugePositionInstance] = useState(null);
 
-    
+    const [editPositionRow,setEditPositionRow]=useState(false);
+    const [editPositionRowNo,setEditPositionRowNo]=useState(0);
     //const positionCentrifugeInstance = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
 
     
@@ -261,6 +262,80 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
     });
 };
 
+const handdlePositionTrailling=(e,index,data)=>{ 
+  let selectedValue = e.target.value;  
+  processpositiontrailingData(data.positionid,data.positionstoploss,selectedValue,data.positiontarget);
+  //updatePositionByIndex(selectedValue,index)
+  setOrderPosition((prevRowData) => { 
+      const updatedTempOrderPosition = prevRowData.map((position, i) => {
+          if (i === index) {                                      
+              const positionTrailling = selectedValue; 
+            return {
+              ...position,
+              positiontrailling: positionTrailling              
+            };
+          }
+          return position;
+        });
+  
+        return updatedTempOrderPosition;
+      }); 
+}
+
+const handdlePositionTarget=(e,index,data)=>{
+  let selectedValue = e.target.value;  
+  processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,selectedValue);
+  setOrderPosition((prevRowData) => { 
+    const updatedTempOrderPosition = prevRowData.map((position, i) => {
+        if (i === index) {                                      
+            const positionTargetValue = selectedValue; 
+          return {
+            ...position,
+            positiontarget: positionTargetValue              
+          };
+        }
+        return position;
+      });
+
+      return updatedTempOrderPosition;
+    });
+}
+
+const handdlePositionStopLoss=(e,index,data)=>{
+  let selectedValue = e.target.value;  
+  processpositiontrailingData(data.positionid,selectedValue,data.positiontrailling,data.positiontarget)
+  setOrderPosition((prevRowData) => { 
+    const updatedTempOrderPosition = prevRowData.map((position, i) => {
+        if (i === index) {                                      
+            const positionStopLoss = selectedValue; 
+          return {
+            ...position,
+            positionstoploss: positionStopLoss              
+          };
+        }
+        return position;
+      });
+
+      return updatedTempOrderPosition;
+    });
+}
+
+const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
+            let requestData={
+              positionid:positionid.toString(),             
+              stopLoss:stoploss.toString()===""?"0":stoploss.toString(),
+              trailingpoint:trailing.toString()===""?"0":trailing.toString(),
+              target:taget.toString()===""?"0":taget.toString(),
+          }    
+          const resultData=await PaperTradingAPI.processpositiontrailingData(requestData);                 
+          if(resultData!=null){                   
+                  
+                  
+          }
+}
+
+
+
       
       const handdleNewQtyChange=(e,index,data)=>{
         let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
@@ -354,9 +429,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:'Pending',
                 firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
@@ -420,9 +495,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
                 ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
@@ -499,9 +574,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:'Pending',
                 firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
@@ -561,9 +636,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
                 ((dataInfo.positionsidetype).toLowerCase()==='buy'?
@@ -633,9 +708,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:'Pending',
                 firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
@@ -696,9 +771,9 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                 lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
                 instrumentToken:dataInfo.instrumentToken,
                 orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-                stoploss:globalStopLoss.toString(),
-                target:globalTarget.toString(),
-                trailling:globalTP.toString(),
+                stoploss:"0",
+                target:"0",
+                trailling:"0",
                 orderexchangetoken:dataInfo.positionexchangetoken,
                 orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
                 ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
@@ -735,11 +810,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
           let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
           const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
           if(resultData!=null){ 
-            if(resultData==="true"){
-              alertify.success("Order added successfully.")
-            }else{
-              alertify.error("Order rejected.")
-            } 
+            alertify.message(resultData)   
           }
         }
     }
@@ -1018,12 +1089,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
             }
             const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
             if(resultData!=null){ 
-              if(resultData==="true"){
-                        alertify.success("All open positions closed successfully.")
-                      }else{
-                        alertify.error("All open positions rejected.")
-                      }     
-              
+              alertify.message(resultData);              
             }else{
               
             }
@@ -1044,10 +1110,10 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
                   }
                   const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
                   if(resultData!=null){  
-                      if(resultData==="true"){
+                      if(resultData.indexOf("successfully")!==-1){
                         alertify.success(message)
                       }else{
-                        alertify.error("Order rejected.")
+                        alertify.message(resultData)   
                       } 
                       setChangeOrderPosition((data)=>data+1)
                   }
@@ -1285,9 +1351,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:dataInfo.instrumentToken,
             orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:dataInfo.positionexchangetoken,
             orderstatus:'Pending',
             firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
@@ -1367,9 +1433,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:currentInstrumentToken,
             orderaction:dataInfo.positionsidetype,
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:currentExchangeToken,
             orderstatus:'Pending',
             firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -1437,9 +1503,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:dataInfo.instrumentToken,
             orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:dataInfo.positionexchangetoken,
             orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
             ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
@@ -1521,9 +1587,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:currentInstrumentToken,
             orderaction:dataInfo.positionsidetype,
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:currentExchangeToken,
             orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
             (dataInfo.positionsidetype.toLowerCase()==='buy'?
@@ -1601,9 +1667,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:dataInfo.instrumentToken,
             orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:dataInfo.positionexchangetoken,
             orderstatus:'Pending',
             firstInInstrumentToken:dataInfo.firstInInstrumentToken.toString(),
@@ -1680,9 +1746,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:currentInstrumentToken,
             orderaction:dataInfo.positionsidetype,
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:currentExchangeToken,
             orderstatus:'Pending',
             firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -1751,9 +1817,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:dataInfo.instrumentToken,
             orderaction:(dataInfo.positionsidetype==='BUY'?'SELL':'BUY'),
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:dataInfo.positionexchangetoken,
             orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
             ((dataInfo.positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
@@ -1837,9 +1903,9 @@ const getLogList=async()=>{
             lotsize:getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate).defaultQty.toString(),
             instrumentToken:currentInstrumentToken,
             orderaction:dataInfo.positionsidetype,
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:currentExchangeToken,
             orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
             (dataInfo.positionsidetype.toLowerCase()==='buy'?
@@ -1869,6 +1935,20 @@ const getLogList=async()=>{
           
           processInsertUpdateOrderBulkMoveInOut(orderArray,message);
   }
+
+
+
+  const handleRowClick=(e,index)=>{     
+    setEditPositionRow(true);
+    setEditPositionRowNo(index);      
+}
+
+const handleKeyDownPosition=(e,index)=>{
+  if (e.key === 'Enter' || e.key === 'Tab') {
+    setEditPositionRow(false);
+    setEditPositionRow("-1");    
+  }  
+}
 
   
 
@@ -2069,10 +2149,9 @@ const getLogList=async()=>{
                                                                        
                                                                         <td className='text-right'>
                                                                             {
-                                                                            parseFloat(dataInfo.positionavgprice)<0?Constant.CurrencyFormat(dataInfo.positionavgprice):
-                                                                            Constant.CurrencyFormat(dataInfo.positionavgprice)}
-                                                                           
-
+                                                                              parseFloat(dataInfo.positionavgprice)<0?Constant.CurrencyFormat(dataInfo.positionavgprice):
+                                                                              Constant.CurrencyFormat(dataInfo.positionavgprice)
+                                                                            }    
                                                                         </td>
                                                                         <td className='text-center'>
                                                                             {Constant.CurrencyFormat(dataInfo.ltp)}
@@ -2091,16 +2170,72 @@ const getLogList=async()=>{
  
 
                                                                         </td>
-                                                                        <td className='text-right'>
-                                                                                {(parseFloat(dataInfo.positiontrailling)>0? dataInfo.positiontrailling:'---')}
+                                                                        <td className='text-right' onClick={(e)=>handleRowClick(e,index)}>
+                                                                                {
+                                                                                   editPositionRow===true && editPositionRowNo===index?
+                                                                                   ( <Input
+                                                                                     className="form-control-alternative"
+                                                                                     id="input-position-trailling"
+                                                                                     placeholder="Trailling"
+                                                                                     type="number"   
+                                                                                     min="1"           
+                                                                                     onKeyDown={(e)=>handleKeyDownPosition(e,index)}
+                                                                                     value={dataInfo.positiontrailling}                                                                                
+                                                                                     onChange={(e)=>handdlePositionTrailling(e,index,dataInfo)}
+                                                                                     onKeyPress={(e) => {
+                                                                                      // Prevents non-numeric characters from being entered
+                                                                                      if (isNaN(Number(e.key))) {
+                                                                                          e.preventDefault();
+                                                                                      }
+                                                                                  }}
+                                                                                     />):
+                                                                                (parseFloat(dataInfo.positiontrailling)>0? dataInfo.positiontrailling:'---')}
                                                                             
                                                                         </td>
-                                                                        <td className='text-right'>
-                                                                             {(parseFloat(dataInfo.positiontarget)>0? dataInfo.positiontarget:'---')}
+                                                                        <td className='text-right' onClick={(e)=>handleRowClick(e,index)}>
+                                                                          
+                                                                             {
+                                                                             editPositionRow===true && editPositionRowNo===index?
+                                                                             ( <Input
+                                                                               className="form-control-alternative"
+                                                                               id="input-position-target"
+                                                                               placeholder="Target"
+                                                                               type="number"   
+                                                                               min="1"   
+                                                                               onKeyDown={(e)=>handleKeyDownPosition(e,index)}                                                                        
+                                                                               value={dataInfo.positiontarget}                                                                                
+                                                                               onChange={(e)=>handdlePositionTarget(e,index,dataInfo)}
+                                                                               onKeyPress={(e) => {
+                                                                                // Prevents non-numeric characters from being entered
+                                                                                if (isNaN(Number(e.key))) {
+                                                                                    e.preventDefault();
+                                                                                }
+                                                                            }}
+                                                                               />):
+                                                                             (parseFloat(dataInfo.positiontarget)>0? dataInfo.positiontarget:'---')}
                                                                            
                                                                         </td>
-                                                                        <td className='text-right'>
-                                                                            {(parseFloat(dataInfo.positionstoploss)>0? dataInfo.positionstoploss:'---')}
+                                                                        <td className='text-right' onClick={(e)=>handleRowClick(e,index)}>
+                                                                            {
+                                                                            editPositionRow===true && editPositionRowNo===index?
+                                                                            ( <Input
+                                                                              className="form-control-alternative"
+                                                                              id="input-position-stoploss"
+                                                                              placeholder="StopLoss"
+                                                                              type="number"   
+                                                                              min="1"     
+                                                                              onKeyDown={(e)=>handleKeyDownPosition(e,index)}                                                                      
+                                                                              value={dataInfo.positionstoploss}                                                                                
+                                                                              onChange={(e)=>handdlePositionStopLoss(e,index,dataInfo)}
+                                                                              onKeyPress={(e) => {
+                                                                                // Prevents non-numeric characters from being entered
+                                                                                if (isNaN(Number(e.key))) {
+                                                                                    e.preventDefault();
+                                                                                }
+                                                                            }}
+                                                                              />):
+                                                                            (parseFloat(dataInfo.positionstoploss)>0? dataInfo.positionstoploss:'---')
+                                                                            }
                                                                             
                                                                         </td>
 

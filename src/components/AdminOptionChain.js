@@ -391,9 +391,9 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             lotsize:(defaultQty===undefined?chaindata.lotSize:defaultQty.toString()),
             instrumentToken:chaindata.instrumentToken,
             orderaction:side.toUpperCase(),
-            stoploss:globalStopLoss.toString(),
-            target:globalTarget.toString(),
-            trailling:globalTP.toString(),
+            stoploss:"0",
+            target:"0",
+            trailling:"0",
             orderexchangetoken:chaindata.exchangeToken,
             orderstatus:'Pending',
             firstInInstrumentToken:(globleOptionChainType==='opt'?
@@ -529,9 +529,9 @@ const AdminOptionChain = ({filterOptionChainList}) => {
           lotsize:(defaultQty===undefined?chaindata.lotSize:defaultQty.toString()),
           instrumentToken:chaindata.instrumentToken,
           orderaction:side.toUpperCase(),
-          stoploss:globalStopLoss.toString(),
-          target:globalTarget.toString(),
-          trailling:globalTP.toString(),
+          stoploss:"0",
+          target:"0",
+          trailling:"0",
           orderexchangetoken:chaindata.exchangeToken,
           orderstatus:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?'Completed':
           (side.toLowerCase()==='buy'?
@@ -640,11 +640,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
         let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:data}
         const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
         if(resultData!=null){           
-          if(resultData==="true"){
-            alertify.success("Order added successfully.")
-          }else{
-            alertify.error("Order rejected.")
-          } 
+          alertify.message(resultData);
         }
       }
   }
@@ -989,9 +985,9 @@ const AdminOptionChain = ({filterOptionChainList}) => {
         lotsize:getSetting(bucketSymbol,bucketExpiry)?.defaultQty.toString(),
         instrumentToken:instrumentToken,
         orderaction:bucketSide,
-        stoploss:globalStopLoss.toString(),
-        target:globalTarget.toString(),
-        trailling:globalTP.toString(),
+        stoploss:"0",
+        target:"0",
+        trailling:"0",
         orderexchangetoken:exchangeToken.toString(),
         orderstatus:'Pending',
         firstInInstrumentToken:basketFirstInInstrumentToken,
@@ -1046,9 +1042,9 @@ const AdminOptionChain = ({filterOptionChainList}) => {
         lotsize:getSetting(bucketSymbol,bucketExpiry)?.defaultQty.toString(),
         instrumentToken:instrumentToken,
         orderaction:bucketSide,
-        stoploss:globalStopLoss.toString(),
-        target:globalTarget.toString(),
-        trailling:globalTP.toString(),
+        stoploss:"0",
+        target:"0",
+        trailling:"0",
         orderexchangetoken:exchangeToken.toString(),
         orderstatus:(bucketOrderType==='MKT'?'Completed':         
         (bucketSide.toLowerCase()==='buy'?
@@ -1100,17 +1096,14 @@ const AdminOptionChain = ({filterOptionChainList}) => {
       }
       const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
       if(resultData!=null){
+        alertify.message(resultData);
         setDiableBasketExecute(false);
         let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;
         CookiesConfig.removeLocalStorageItem(basketName);
         setBucketList([]);
         setBusketMargin(Constant.CurrencyFormat(parseFloat(0)))
         setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(0)));
-        if(resultData==="true"){
-          alertify.success("Basket Orders added successfully.")
-        }else{
-          alertify.error("Basket Orders are Rejected.")
-        }          
+         
           
       }else{
         setDiableBasketExecute(false);
@@ -1394,9 +1387,17 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                                                                         name="defaultQty"  
                                                                                         type="number"
                                                                                         min="1"        
+                                                                                        step="1" 
+                                                                                        inputMode="numeric"
                                                                                         value={data.bucketSliceQty}  
                                                                                         onKeyDown={(e)=>handleKeyDown(e,index)}
                                                                                         onChange={(e) =>handdleTextBoxEvent(e,index,"bucketSliceQty")} 
+                                                                                        onKeyPress={(e) => {
+                                                                                          // Prevents non-numeric characters from being entered
+                                                                                          if (isNaN(Number(e.key))) {
+                                                                                              e.preventDefault();
+                                                                                          }
+                                                                                      }}
                                                                                     />
                                                                                   : <label>
                                                                                     {data.bucketSliceQty}

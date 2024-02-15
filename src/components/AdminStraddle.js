@@ -283,9 +283,9 @@ const AdminStraddle = ({filterOptionChainList}) => {
       lotsize:defaultQty.toString(),
       instrumentToken:data.instrumentToken,
       orderaction:side.toUpperCase(),
-      stoploss:globalStopLoss.toString(),
-      target:globalTarget.toString(),
-      trailling:globalTP.toString(),
+      stoploss:"0",
+      target:"0",
+      trailling:"0",
       orderexchangetoken:data.exchangeToken,
       orderstatus:'Pending',
       firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -355,9 +355,9 @@ const AdminStraddle = ({filterOptionChainList}) => {
         lotsize:defaultQty.toString(),
         instrumentToken:data.instrumentToken,
         orderaction:side.toUpperCase(),
-        stoploss:globalStopLoss.toString(),
-        target:globalTarget.toString(),
-        trailling:globalTP.toString(),
+        stoploss:"0",
+        target:"0",
+        trailling:"0",
         orderexchangetoken:data.exchangeToken,
         orderstatus:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?'Completed':
         (side.toLowerCase()==='buy'?
@@ -436,9 +436,9 @@ const AdminStraddle = ({filterOptionChainList}) => {
       lotsize:defaultQty.toString(),
       instrumentToken:pedata.instrumentToken,
       orderaction:side.toUpperCase(),
-      stoploss:globalStopLoss.toString(),
-      target:globalTarget.toString(),
-      trailling:globalTP.toString(),
+      stoploss:"0",
+      target:"0",
+      trailling:"0",
       orderexchangetoken:pedata.exchangeToken,
       orderstatus:'Pending',
       firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -508,9 +508,9 @@ const AdminStraddle = ({filterOptionChainList}) => {
       lotsize:defaultQty.toString(),
       instrumentToken:pedata.instrumentToken,
       orderaction:side.toUpperCase(),
-      stoploss:globalStopLoss.toString(),
-      target:globalTarget.toString(),
-      trailling:globalTP.toString(),
+      stoploss:"0",
+      target:"0",
+      trailling:"0",
       orderexchangetoken:pedata.exchangeToken,
       orderstatus:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?'Completed':
       (side.toLowerCase()==='buy'?
@@ -592,9 +592,9 @@ const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{
     lotsize:defaultQty.toString(),
     instrumentToken:data.instrumentToken,
     orderaction:side.toUpperCase(),
-    stoploss:globalStopLoss.toString(),
-    target:globalTarget.toString(),
-    trailling:globalTP.toString(),
+    stoploss:"0",
+    target:"0",
+    trailling:"0",
     orderexchangetoken:data.exchangeToken,
     orderstatus:'Pending',
     firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -661,9 +661,9 @@ const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{
     lotsize:defaultQty.toString(),
     instrumentToken:pedata.instrumentToken,
     orderaction:side.toUpperCase(),
-    stoploss:globalStopLoss.toString(),
-    target:globalTarget.toString(),
-    trailling:globalTP.toString(),
+    stoploss:"0",
+    target:"0",
+    trailling:"0",
     orderexchangetoken:pedata.exchangeToken,
     orderstatus:'Pending',
       firstInInstrumentToken:newFirstInInstrumentToken.toString(),
@@ -752,9 +752,9 @@ const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{
     lotsize:defaultQty.toString(),
     instrumentToken:data.instrumentToken,
     orderaction:side.toUpperCase(),
-    stoploss:globalStopLoss.toString(),
-    target:globalTarget.toString(),
-    trailling:globalTP.toString(),
+    stoploss:"0",
+    target:"0",
+    trailling:"0",
     orderexchangetoken:data.exchangeToken,
     orderstatus:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?'Completed':
     (side.toLowerCase()==='buy'?
@@ -826,9 +826,9 @@ const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{
     lotsize:defaultQty.toString(),
     instrumentToken:pedata.instrumentToken,
     orderaction:side.toUpperCase(),
-    stoploss:globalStopLoss.toString(),
-    target:globalTarget.toString(),
-    trailling:globalTP.toString(),
+    stoploss:"0",
+    target:"0",
+    trailling:"0",
     orderexchangetoken:pedata.exchangeToken,
     orderstatus:((defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'?'Completed':
       (side.toLowerCase()==='buy'?
@@ -881,11 +881,7 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
         let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
         const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
         if(resultData!=null){           
-          if(resultData==="true"){
-            alertify.success("Order added successfully.")
-          }else{
-            alertify.error("Order rejected.")
-          } 
+          alertify.message(resultData);
         }
       }
   }else{
@@ -908,11 +904,7 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
     }
     const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
     if(resultData!=null){     
-      if(resultData==="true"){
-        alertify.success("Order added successfully.")
-      }else{
-        alertify.error("Order rejected.")
-      } 
+      alertify.message(resultData);
     }else{
       
     }
