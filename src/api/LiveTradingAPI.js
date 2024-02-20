@@ -9,6 +9,7 @@ export const LiveTradingAPI = {
                     url: `${BASE_URL}LiveTrading/processInsertUpdateOrder`,  
                     headers: {        
                       "Content-Type": "application/json",
+                      "token":localStorage.getItem("token")
                     },    
                     data:requestData,
                   };
@@ -33,6 +34,7 @@ export const LiveTradingAPI = {
                     url: `${BASE_URL}LiveTrading/processInsertUpdateOrderBulk`,  
                     headers: {        
                       "Content-Type": "application/json",
+                      "token":localStorage.getItem("token")
                     },    
                     data:requestData,
                   };
@@ -58,6 +60,7 @@ export const LiveTradingAPI = {
                       url: `${BASE_URL}LiveTrading/processAllPendingOrderForClient`,  
                       headers: {        
                         "Content-Type": "application/json",
+                        "token":localStorage.getItem("token")
                       },    
                       data:requestData,
                     };

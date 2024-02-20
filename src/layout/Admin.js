@@ -83,21 +83,20 @@ const getBrockerAccountList=async(fnotraderUserid,fnotraderSecret)=>{
           if(code===200){  
             let brokersList=data.brokers.sort((a, b) => (a.isDefault === b.isDefault) ? 0 : a.isDefault ? -1 : 1);    
             updateGlobleBrokerClientList(brokersList);  
-            processBrokerServerData(data.brokers); 
+            //getJWTToken(); 
           }
     } 
 }
 
-const processBrokerServerData=async(brokers)=>{   
-  let zerodhaBroker=brokers.find((data)=>data.type===('ZERODHA').toLowerCase())
-  const resultData = await ZerodaAPI.setBrokerCredentials(brokers);
-    if(resultData!=null){    
-          const {code,data}=resultData;
-          if(code===200){             
-             
-          }
-    } 
-}
+// const getJWTToken=async()=>{ 
+//   const resultData = await ZerodaAPI.getJWTToken();
+//     if(resultData!=null){    
+//           const {code,data}=resultData;
+//           if(code===200){    
+//              //localStorage.setItem("token",resultData) 
+//           }
+//     } 
+// }
 
     const getRoutes = () => {
         return adminRoutes.map((prop, key) => {      

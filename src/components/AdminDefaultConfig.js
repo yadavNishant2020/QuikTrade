@@ -383,7 +383,13 @@ const AdminDefaultConfig = () => {
                                                                 name="defaultSliceLot"
                                                                 onChange={handleChange}
                                                                 type="number"
-                                                                min="1"        
+                                                                min="1"  
+                                                                onKeyPress={(e) => {
+                                                                  // Prevents non-numeric characters from being entered
+                                                                  if (isNaN(Number(e.key))) {
+                                                                      e.preventDefault();
+                                                                  }
+                                                                }}      
                                                             />
                                                             </fieldset>
                                                       
@@ -480,6 +486,12 @@ const AdminDefaultConfig = () => {
                                                                 type="number"
                                                                 min="1"        
                                                                 onChange={handleChange}
+                                                                onKeyPress={(e) => {
+                                                                  // Prevents non-numeric characters from being entered
+                                                                  if (isNaN(Number(e.key))) {
+                                                                      e.preventDefault();
+                                                                  }
+                                                                }}
                                                             />
                                                             </fieldset>
                                                 </FormGroup>

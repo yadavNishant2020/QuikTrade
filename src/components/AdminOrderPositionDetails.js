@@ -103,7 +103,7 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
             if (previousData !== undefined) {
               
               const updatedOrderPosition = previousData.map((position) => {
-                const matchingOption = optionChainDataForPosition.find((item) => item.instrumentToken === position.instrumentToken.toString());
+                const matchingOption = optionChainDataForPosition?.find((item) => item.instrumentToken === position.instrumentToken.toString());
                 if (matchingOption) {
                   return {
                     ...position,
@@ -190,14 +190,18 @@ const AdminOrderPositionDetails = ({filterOrderPositionList}) => {
 
      useEffect(() => {      
         if(orderPosition!=undefined){   
-            if(orderPosition.length>0){             
-                const filteredPositions = orderPosition.filter((position) => {          // Customize this condition based on how you want to filter the data
-                return (                     
-                    position.positioninstrumentname.toLowerCase().includes(searchValue.toLowerCase()) ||            
-                    position.strikeprice.toLowerCase().includes(searchValue.toLowerCase())                     
-                );
-                });    
-                setFilterOrderPosition(filteredPositions);
+            if(orderPosition.length>0){  
+                if(searchValue.length>0){           
+                    const filteredPositions = orderPosition.filter((position) => {          // Customize this condition based on how you want to filter the data
+                    return (                     
+                        position?.positioninstrumentname?.toLowerCase().includes(searchValue.toLowerCase()) ||            
+                        position?.strikeprice?.toLowerCase().includes(searchValue.toLowerCase())                     
+                    );
+                    });    
+                    setFilterOrderPosition(filteredPositions);
+                }else{
+                  setFilterOrderPosition(orderPosition);
+                }
             }else{
                 setFilterOrderPosition([]);
             }
@@ -263,8 +267,7 @@ const handdleMoveInOutQtyChange = (e, index,data) => {
 };
 
 const handdlePositionTrailling=(e,index,data)=>{ 
-  let selectedValue = e.target.value;  
-  processpositiontrailingData(data.positionid,data.positionstoploss,selectedValue,data.positiontarget);
+  let selectedValue = e.target.value;    
   //updatePositionByIndex(selectedValue,index)
   setOrderPosition((prevRowData) => { 
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
@@ -283,8 +286,7 @@ const handdlePositionTrailling=(e,index,data)=>{
 }
 
 const handdlePositionTarget=(e,index,data)=>{
-  let selectedValue = e.target.value;  
-  processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,selectedValue);
+  let selectedValue = e.target.value; 
   setOrderPosition((prevRowData) => { 
     const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {                                      
@@ -302,8 +304,7 @@ const handdlePositionTarget=(e,index,data)=>{
 }
 
 const handdlePositionStopLoss=(e,index,data)=>{
-  let selectedValue = e.target.value;  
-  processpositiontrailingData(data.positionid,selectedValue,data.positiontrailling,data.positiontarget)
+  let selectedValue = e.target.value;    
   setOrderPosition((prevRowData) => { 
     const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {                                      
@@ -1014,9 +1015,9 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
             lotsize: getSetting(positioninstrumentname, positionexpirydate).defaultQty.toString(),
             instrumentToken: instrumentToken,
             orderaction: (positionsidetype === 'BUY' ? 'SELL' : 'BUY'),
-            stoploss: globalStopLoss.toString(),
-            target: globalTarget.toString(),
-            trailling: globalTP.toString(),
+            stoploss: "0",
+            target: "0",
+            trailling: "0",
             orderexchangetoken: positionexchangetoken,
             orderstatus:((positiontype===undefined?'MKT': positiontype)==='MKT'?'Completed':
             ((positionsidetype==='BUY'?'SELL':'BUY').toLowerCase()==='buy'?
@@ -1149,14 +1150,14 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
 
 
      useEffect(() => {  
-      if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0){
+      if(globleSelectedTradingType.length>0 && globleSelectedClientInfo.length>0 && globleBrokerName.length>0){
         getAllOpenPositionList();
         getOrderCompletedList();
         getOrderClosedList();
         getLogList();
         gettrailingvalues();
       }
-     },[globleSelectedTradingType,globleSelectedClientInfo])
+     },[globleSelectedTradingType,globleSelectedClientInfo,globleBrokerName])
 
 
       useEffect(() => {   
@@ -1176,6 +1177,16 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
           getLogList();
           gettrailingvalues();
         });
+
+        connectionData.on('ReceiveDataForPosition', (receivedData) => {        
+          getPositionStoplossList();           
+        });
+
+        connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
+          gettrailingvalues();           
+        });
+        
+
     
         return () => {
           connectionData.stop();
@@ -1187,7 +1198,7 @@ const gettrailingvalues=async()=>{
         let requestData={
             clientid:sessionStorage.getItem("clienttoken"),
             tradermode:sessionStorage.getItem("tradingtype")  ,
-            brockername:globleBrokerName
+            brockername:sessionStorage.getItem("brokername")  
         }
          const resultData=await PaperTradingAPI.gettrailingvalues(requestData);    
          debugger;       
@@ -1303,6 +1314,35 @@ const getLogList=async()=>{
    const resultData=await PaperTradingAPI.getLogList(requestData);        
   if(resultData!=null){   
           updateGlobleLogList(resultData);                           
+  }
+}
+
+const getPositionStoplossList=async()=>{         
+  let requestData={
+      clientid:sessionStorage.getItem("clienttoken"),
+      tradermode:sessionStorage.getItem("tradingtype")  
+  }
+   const resultData=await PaperTradingAPI.getPositionStoplossList(requestData);        
+  if(resultData!=null){   
+    setOrderPosition((previousData) => {
+      if (previousData !== undefined) {
+        
+        const updatedOrderPosition = previousData.map((position) => {
+          const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
+          if (matchingOption) {
+            return {
+              ...position,
+              positionstoploss: matchingOption.positionstoploss
+                        
+            };
+          }  
+        });     
+        return updatedOrderPosition;
+      }
+
+      // If previousData is undefined, return it unchanged
+      return previousData;
+    });                          
   }
 }
 
@@ -1943,10 +1983,11 @@ const getLogList=async()=>{
     setEditPositionRowNo(index);      
 }
 
-const handleKeyDownPosition=(e,index)=>{
+const handleKeyDownPosition=(e,index,data)=>{
   if (e.key === 'Enter' || e.key === 'Tab') {
     setEditPositionRow(false);
     setEditPositionRow("-1");    
+    processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget);
   }  
 }
 
@@ -1989,7 +2030,7 @@ const handleKeyDownPosition=(e,index)=>{
                                                             {!slEdit?
                                                                     <label className="float-right">
                                                                          {
-                                                                                    (parseFloat(globalStopLoss)>0? Constant.CurrencyFormat(globalStopLoss.toString()):'---')
+                                                                                    (parseFloat(globalStopLoss)!=0? Constant.CurrencyFormat(globalStopLoss.toString()):'---')
                                                                         }
                                                                     </label>:
                                                                                 <Input
@@ -2017,7 +2058,7 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                     <label className="float-right"
                                                                                       
                                                                                     >
-                                                                                              {(parseFloat(globalTarget)>0? Constant.CurrencyFormat(globalTarget.toString()):'---')}
+                                                                                              {(parseFloat(globalTarget)!==0? Constant.CurrencyFormat(globalTarget.toString()):'---')}
                                                                                         
                                                                                         </label> :
                                                                                         <Input
@@ -2179,15 +2220,15 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                      placeholder="Trailling"
                                                                                      type="number"   
                                                                                      min="1"           
-                                                                                     onKeyDown={(e)=>handleKeyDownPosition(e,index)}
+                                                                                     onKeyDown={(e)=>handleKeyDownPosition(e,index,dataInfo)}
                                                                                      value={dataInfo.positiontrailling}                                                                                
-                                                                                     onChange={(e)=>handdlePositionTrailling(e,index,dataInfo)}
-                                                                                     onKeyPress={(e) => {
+                                                                                     onChange={(e)=>handdlePositionTrailling(e,index,dataInfo)}                                                                                     
+                                                                                    onKeyPress={(e) => {
                                                                                       // Prevents non-numeric characters from being entered
                                                                                       if (isNaN(Number(e.key))) {
                                                                                           e.preventDefault();
                                                                                       }
-                                                                                  }}
+                                                                                    }}
                                                                                      />):
                                                                                 (parseFloat(dataInfo.positiontrailling)>0? dataInfo.positiontrailling:'---')}
                                                                             
@@ -2202,17 +2243,13 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                placeholder="Target"
                                                                                type="number"   
                                                                                min="1"   
-                                                                               onKeyDown={(e)=>handleKeyDownPosition(e,index)}                                                                        
+                                                                               onKeyDown={(e)=>handleKeyDownPosition(e,index,dataInfo)}                                                                        
                                                                                value={dataInfo.positiontarget}                                                                                
                                                                                onChange={(e)=>handdlePositionTarget(e,index,dataInfo)}
-                                                                               onKeyPress={(e) => {
-                                                                                // Prevents non-numeric characters from being entered
-                                                                                if (isNaN(Number(e.key))) {
-                                                                                    e.preventDefault();
-                                                                                }
-                                                                            }}
+                                                                               
+                                                                             
                                                                                />):
-                                                                             (parseFloat(dataInfo.positiontarget)>0? dataInfo.positiontarget:'---')}
+                                                                             (parseFloat(dataInfo.positiontarget)!==0? dataInfo.positiontarget:'---')}
                                                                            
                                                                         </td>
                                                                         <td className='text-right' onClick={(e)=>handleRowClick(e,index)}>
@@ -2224,17 +2261,12 @@ const handleKeyDownPosition=(e,index)=>{
                                                                               placeholder="StopLoss"
                                                                               type="number"   
                                                                               min="1"     
-                                                                              onKeyDown={(e)=>handleKeyDownPosition(e,index)}                                                                      
+                                                                              onKeyDown={(e)=>handleKeyDownPosition(e,index,dataInfo)}                                                                      
                                                                               value={dataInfo.positionstoploss}                                                                                
                                                                               onChange={(e)=>handdlePositionStopLoss(e,index,dataInfo)}
-                                                                              onKeyPress={(e) => {
-                                                                                // Prevents non-numeric characters from being entered
-                                                                                if (isNaN(Number(e.key))) {
-                                                                                    e.preventDefault();
-                                                                                }
-                                                                            }}
+                                                                              
                                                                               />):
-                                                                            (parseFloat(dataInfo.positionstoploss)>0? dataInfo.positionstoploss:'---')
+                                                                            (parseFloat(dataInfo.positionstoploss)!==0? dataInfo.positionstoploss:'---')
                                                                             }
                                                                             
                                                                         </td>
@@ -2267,6 +2299,12 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                     min="1"                                                                           
                                                                                     value={dataInfo.moveinoutqty}                                                                                
                                                                                     onChange={(e)=>handdleMoveInOutQtyChange(e,index,dataInfo)}
+                                                                                    onKeyPress={(e) => {
+                                                                                      // Prevents non-numeric characters from being entered
+                                                                                      if (isNaN(Number(e.key))) {
+                                                                                          e.preventDefault();
+                                                                                      }
+                                                                                    }}
                                                                                     />
                                                                                 </fieldset>
                                                                           }
@@ -2303,7 +2341,12 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                 min="1"        
                                                                                 style={{width:"100%"}}
                                                                                 value={dataInfo.newqty}
-                                                                                
+                                                                                onKeyPress={(e) => {
+                                                                                  // Prevents non-numeric characters from being entered
+                                                                                  if (isNaN(Number(e.key))) {
+                                                                                      e.preventDefault();
+                                                                                  }
+                                                                                }}
                                                                                 onChange={(e)=>handdleNewQtyChange(e,index,dataInfo)}
                                                                                 />
                                                                                 </fieldset>
@@ -2328,7 +2371,13 @@ const handleKeyDownPosition=(e,index)=>{
                                                                                 type="number"
                                                                                 min="1"
                                                                                 style={{width:"100%"}}
-                                                                                value={dataInfo.exitqty}                                                                                
+                                                                                value={dataInfo.exitqty}                 
+                                                                                onKeyPress={(e) => {
+                                                                                  // Prevents non-numeric characters from being entered
+                                                                                  if (isNaN(Number(e.key))) {
+                                                                                      e.preventDefault();
+                                                                                  }
+                                                                                }}                                                               
                                                                                 onChange={(e)=>handdleExitQtyChange(e,index,dataInfo)}
                                                                                 />
                                                                                 </fieldset>

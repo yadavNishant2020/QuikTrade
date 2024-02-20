@@ -81,6 +81,7 @@ const AdminHeader = () => {
               debugger;
               let indexClient=globleBrokerClientList.findIndex((dataClient)=>dataClient.userName===brokerName[0].value);
               updateGlobleBrokerName(brokerName[0].value);
+              sessionStorage.setItem("brokername",brokerName[0].value);
           }
           sessionStorage.setItem("apiSecret",globleBrokerClientList[0].apiKey+":"+globleBrokerClientList[0].apiToken);
           if (brokerName.length > 0) {
@@ -322,7 +323,8 @@ const calculateFuture=()=>
 {
   
    let dsSpotTokenList=JSON.parse(CookiesConfig.getCookie("symbolSpotTokenList"));     
-   let infoFutureData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="future");     
+   let infoFutureData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="future");  
+      
    const {instrumentToken,lastDayClosinglp}=infoFutureData;  
    let infoFutureIndexData=indexData.find((data)=>data.token===parseInt(instrumentToken) && data.tokenType==="future"); 
    if(infoFutureIndexData!=null){

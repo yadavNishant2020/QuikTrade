@@ -1023,7 +1023,12 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                                                                                         type="number"
                                                                                         min="1"        
                                                                                         onChange={(e) =>handdleTextBoxEvent(e,index,"celot")} 
-                                                                                                                                              
+                                                                                        onKeyPress={(e) => {
+                                                                                          // Prevents non-numeric characters from being entered
+                                                                                          if (isNaN(Number(e.key))) {
+                                                                                              e.preventDefault();
+                                                                                          }
+                                                                                        }}                                              
                                                                                     />
                                                                                  
                                                                                 </fieldset>
@@ -1059,7 +1064,12 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                                                                                                                 type="number"
                                                                                                                 min="1"        
                                                                                                                 onChange={(e) =>handdleTextBoxEvent(e,index,"pelot")} 
-                                                                                                                                                                    
+                                                                                                                onKeyPress={(e) => {
+                                                                                                                  // Prevents non-numeric characters from being entered
+                                                                                                                  if (isNaN(Number(e.key))) {
+                                                                                                                      e.preventDefault();
+                                                                                                                  }
+                                                                                                                }}                                                 
                                                                                                             />
                                                                                                         
                                                                                                     </fieldset>
@@ -1094,7 +1104,12 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                                                                                                                 type="number"
                                                                                                                 min="1"        
                                                                                                                 onChange={(e) =>handdleTextBoxEvent(e,index,"totallot")} 
-                                                                                                                                                                    
+                                                                                                                onKeyPress={(e) => {
+                                                                                                                  // Prevents non-numeric characters from being entered
+                                                                                                                  if (isNaN(Number(e.key))) {
+                                                                                                                      e.preventDefault();
+                                                                                                                  }
+                                                                                                                }}                                                
                                                                                                             />
                                                                                                         
                                                                                                     </fieldset>

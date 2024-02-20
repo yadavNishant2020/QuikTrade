@@ -9,6 +9,7 @@ export const ZerodaAPI = {
                 url: `${BROKER_URL}get_option_chain_instruments?name=${instrumentName}&expiry=${expiryDate}`,  
                 headers: {        
                   "Content-Type": "application/json",
+                  
                 },    
               };
               const response = await axios(axiosConfig);    
@@ -33,6 +34,7 @@ export const ZerodaAPI = {
               url: `${BASE_URL}zeroda/getsymbolexpiry`,  
               headers: {        
                 "Content-Type": "application/json",
+                "token":localStorage.getItem("token")
               },    
             };
             const response = await axios(axiosConfig);    
@@ -57,6 +59,7 @@ export const ZerodaAPI = {
                 url: `${BROKER_URL}instruments?name=${instrumentName}&exchange=`+instrumentExchange,  
                 headers: {        
                   "Content-Type": "application/json",
+                  
                 },    
               };
               const response = await axios(axiosConfig); 
@@ -80,7 +83,8 @@ export const ZerodaAPI = {
                 method: "GET",
                 url: `${BROKER_URL}ticks?tokens=${channelToken}`,  
                 headers: {        
-                  "Content-Type": "application/json",
+                  "Content-Type": "application/json"
+                 
                 },    
               };
               const response = await axios(axiosConfig);    
@@ -105,6 +109,7 @@ export const ZerodaAPI = {
                         url: `${BASE_URL}zeroda/getOptionChainList`,  
                         headers: {        
                           "Content-Type": "application/json",
+                          "token":localStorage.getItem("token")
                         },    
                       };
                       const response = await axios(axiosConfig);    
@@ -198,6 +203,7 @@ export const ZerodaAPI = {
                       url: `${BASE_URL}zeroda/getMarginBasket`,  
                       headers: {        
                         "Content-Type": "application/json",
+                        "token":localStorage.getItem("token")
                       },    
                       data:requestData
                     };
@@ -214,7 +220,31 @@ export const ZerodaAPI = {
                 console.log('Error Details:'+(error.response || error.request || error.message));
                 return null;
             }
-        }
+        },
+        getJWTToken: async (requestData) => { 
+          try {  
+                  var axiosConfig = {
+                    method: "GET",
+                    url: `${BASE_URL}JwtInDotnetCore/getJWTToken`,  
+                    headers: {        
+                      "Content-Type": "application/json",
+                    } 
+                     
+                  };
+                  const response = await axios(axiosConfig);    
+                  console.log(response);
+                  const {status,data}=response;
+                  if(status===200){
+                      return data;
+                  }else{
+                      return null;
+                  }
+          } catch (error) {
+              console.log(error);
+              console.log('Error Details:'+(error.response || error.request || error.message));
+              return null;
+          }
+      }
          //getMarginBasket: async () => { 
         //   try {  
 
