@@ -870,7 +870,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
           setBucketList((prevRowData) => {            
             const updatedRowData = [...prevRowData]; // Create a copy of the array
             // Toggle between BUY and SELL
-            debugger;
+           
             let filterData=filterOptionChainList.find((data)=>data.instrumentToken===updatedRowData[index].instrumentToken);
             let newltpPrice=updatedRowData[index].bucketOrderType.toLowerCase()==='lmt'?
             parseFloat(defaultLMTPer)>0?
@@ -882,7 +882,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
 
             updatedRowData[index].bucketSide =
               refValue.toLowerCase() === "buy" ? "SELL" : "BUY"; 
-            updatedRowData[index].bucketStickePrice =  newltpPrice   
+            updatedRowData[index].bucketStickePrice =  newltpPrice;
+            processBasketMargin(updatedRowData);
             return updatedRowData;
           });
           
@@ -895,6 +896,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
               refValue.toLowerCase() === "ce" ? "PE" : "CE"; 
               let updateAddInfo=sortedCurrentOptionChain.find((infoData)=>infoData.strikePrice===bucketStrike && infoData.instrumentType=== "ce" ? "PE" : "CE")
               updatedRowData[index]["instrumentToken"] =updateAddInfo.instrumentToken;
+              processBasketMargin(updatedRowData)
               return updatedRowData;
           });
         }else   if(refType==="bucketProduct"){
@@ -902,7 +904,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
             const updatedRowData = [...prevRowData]; // Create a copy of the array
             // Toggle between BUY and SELL
             updatedRowData[index].bucketProduct =
-              refValue.toLowerCase() === "mis" ? "NRML" : "MIS";      
+              refValue.toLowerCase() === "mis" ? "NRML" : "MIS";  
+              processBasketMargin(updatedRowData);    
             return updatedRowData;
           });
         }else   if(refType==="bucketOrderType"){
@@ -921,7 +924,8 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                         parseFloat(parseFloat(updatedRowData[index].bucketltp)+(parseFloat(updatedRowData[index].bucketltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)   
                         : parseFloat(parseFloat(updatedRowData[index].bucketltp)-(parseFloat(updatedRowData[index].bucketltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)
                 : updatedRowData[index].bucketStickePrice.toString()):updatedRowData[index].bucketStickePrice.toString();   
-            return updatedRowData;
+                processBasketMargin(updatedRowData)
+                return updatedRowData;
           });
         }
         processBasketMargin(bucketList);
