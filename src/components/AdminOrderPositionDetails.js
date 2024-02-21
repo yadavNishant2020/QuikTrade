@@ -321,12 +321,13 @@ const handdlePositionStopLoss=(e,index,data)=>{
     });
 }
 
-const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
+const processpositiontrailingData= async(positionid,stoploss,trailing,taget,ltp)=>{
             let requestData={
               positionid:positionid.toString(),             
               stopLoss:stoploss.toString()===""?"0":stoploss.toString(),
               trailingpoint:trailing.toString()===""?"0":trailing.toString(),
               target:taget.toString()===""?"0":taget.toString(),
+              starttrailing:ltp
           }    
           const resultData=await PaperTradingAPI.processpositiontrailingData(requestData);                 
           if(resultData!=null){                   
@@ -846,6 +847,7 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
                 stopLoss:globalStopLoss.toString(),
                 trailingpoint:globalTP.toString(),
                 target:globalTarget.toString(),
+                currentmtm:mltUnrealized.toString(),
             }    
             const resultData=await PaperTradingAPI.processtrailingvalues(requestData);                 
             if(resultData!=null){                   
@@ -929,9 +931,9 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget)=>{
                 lotsize: getSetting(positioninstrumentname, positionexpirydate).defaultQty.toString(),
                 instrumentToken: instrumentToken,
                 orderaction: (positionsidetype === 'BUY' ? 'SELL' : 'BUY'),
-                stoploss: globalStopLoss.toString(),
-                target: globalTarget.toString(),
-                trailling: globalTP.toString(),
+                stoploss: "0",
+                target:"0",
+                trailling: "0",
                 orderexchangetoken: positionexchangetoken,
                 orderstatus:'Pending',
                 firstInInstrumentToken:firstInInstrumentToken.toString(),
@@ -1987,7 +1989,7 @@ const handleKeyDownPosition=(e,index,data)=>{
   if (e.key === 'Enter' || e.key === 'Tab') {
     setEditPositionRow(false);
     setEditPositionRow("-1");    
-    processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget);
+    processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget,data.ltp);
   }  
 }
 
