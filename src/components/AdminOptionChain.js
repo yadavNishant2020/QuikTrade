@@ -928,7 +928,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                 return updatedRowData;
           });
         }
-        processBasketMargin(bucketList);
+        //processBasketMargin(bucketList);
   }
   const handleBasketExecuteOrder=(e)=>{  
       setEditBucketRow(false);
@@ -1138,11 +1138,9 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                 Quantity: bucketLotTotalQty,
                 Price: (bucketOrderType==='MKT'?0:bucketStickePrice),
                 TriggerPrice: 0
-            }));  
-            debugger;
+            }));
             const dataBasketRequest={basketMarginList:processBasket,logintoken:sessionStorage.getItem("apiSecret")};
-            let data=await ZerodaAPI.getMarginBasket(dataBasketRequest);
-            debugger;
+            let data=await ZerodaAPI.getMarginBasket(dataBasketRequest);           
             setBusketMargin(Constant.CurrencyFormat(parseFloat(data.final.total)))
             setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(data.initial.total)))
             setBucketList((previousData) => {

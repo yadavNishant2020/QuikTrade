@@ -282,6 +282,7 @@ const TreadingDashboard = () => {
       if(baseTable?.length>0){
           baseTable.map(async  (cName) => {
                const result =await ZerodaAPI.callApiToGetPreviosDayDataForChannel(cName.instrumentToken);
+               if(result!=null){
                const{code,data}=result;
                let infodata=data[cName.instrumentToken];
                setFilterOptionChainList((previousData) => { 
@@ -302,6 +303,7 @@ const TreadingDashboard = () => {
                     // setBaseTable(dataInfo);
                   }
                 });
+              }
      
              })
 

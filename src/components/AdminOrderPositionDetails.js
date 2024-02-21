@@ -1167,7 +1167,10 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget,ltp)
             .withUrl(BASE_SIGNALR_HUB)
             .withAutomaticReconnect()
             .build(); // Adjust the URL based on your server configuration           
-        
+            const pingInterval = setInterval(() => {
+              connectionData.invoke("Ping").catch(err => console.error("Ping failed: ", err));
+            }, 5000); // Send ping every 5 seconds
+
         connectionData.start().then(() => {
             console.log('Connected to SignalR Hub');
         }).catch((err) => console.log(err));
@@ -1191,6 +1194,7 @@ const processpositiontrailingData= async(positionid,stoploss,trailing,taget,ltp)
 
     
         return () => {
+          clearInterval(pingInterval);
           connectionData.stop();
         };
     }, []);

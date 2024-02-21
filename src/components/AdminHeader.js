@@ -300,43 +300,62 @@ const callApiToGetPreviosDayData=async ()=>{
 
  
 useEffect(()=>{      
-  if(indexData?.length>0 && symbolSelect){    
-    let dsSpotTokenList=JSON.parse(CookiesConfig.getCookie("symbolSpotTokenList"));     
-    let infoData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="spot");     
-    const {instrumentToken,lastDayClosinglp}=infoData;
-    let infoIndexData=indexData.find((data)=>data.token===parseInt(instrumentToken) && data.tokenType==="spot"); 
-    if(infoIndexData!=null){       
-          const {lp}=infoIndexData;
-          const dayOpen=infoIndexData?.do;            
-          setCurrentStockIndex(lp);
-          updateGlobleCurrentStockIndex(lp);
-          const dataStockLTP=parseFloat(lp)-parseFloat(lastDayClosinglp);
-          setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2))
-          const changePer=((parseFloat(lp) - parseFloat(lastDayClosinglp)) / parseFloat(lastDayClosinglp)) * 100 
-          setCurrentStockLTPPercent((parseFloat(changePer).toFixed(2)<0 ?-1:1)*parseFloat(changePer).toFixed(2))
-      } 
-      calculateFuture();
+  const fetchData = async () => {
+    if(indexData?.length>0 && symbolSelect){    
+      let dsSpotTokenList=JSON.parse(CookiesConfig.getCookie("symbolSpotTokenList"));     
+      let infoData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="spot");     
+      const {instrumentToken}=infoData;
+      const lastDayClosinglp=await getlastDayClosinglp(instrumentToken);     
+      let infoIndexData=indexData.find((data)=>data.token===parseInt(instrumentToken) && data.tokenType==="spot"); 
+      if(infoIndexData!=null){       
+            const {lp}=infoIndexData;
+            const dayOpen=infoIndexData?.do;            
+            setCurrentStockIndex(lp);
+            updateGlobleCurrentStockIndex(lp);
+            const dataStockLTP=parseFloat(lp)-parseFloat(lastDayClosinglp);
+            setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2))
+            const changePer=((parseFloat(lp) - parseFloat(lastDayClosinglp)) / parseFloat(lastDayClosinglp)) * 100 
+            setCurrentStockLTPPercent((parseFloat(changePer).toFixed(2)<0 ?-1:1)*parseFloat(changePer).toFixed(2))
+        } 
+        calculateFuture();
+    }    
   }
+  fetchData();
 },[indexData,symbolSelect])
+
+
+const getlastDayClosinglp=async(instrumentToken)=>{
+  const result =await ZerodaAPI.callApiToGetPreviosDayDataForChannel(instrumentToken);
+  if(result!=null){
+      const{code,data}=result;
+      const previousvalue=data[instrumentToken].prev.p;
+      return previousvalue;
+  }else
+  {
+    return 0;
+  }
+}
 
 const calculateFuture=()=>
 {
-  
-   let dsSpotTokenList=JSON.parse(CookiesConfig.getCookie("symbolSpotTokenList"));     
-   let infoFutureData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="future");  
-      
-   const {instrumentToken,lastDayClosinglp}=infoFutureData;  
-   let infoFutureIndexData=indexData.find((data)=>data.token===parseInt(instrumentToken) && data.tokenType==="future"); 
-   if(infoFutureIndexData!=null){
-    const {lp}=infoFutureIndexData;    
-    const dayOpen=infoFutureIndexData?.do;    
-    setCurrentStockIndexFuture(lp);
-    updateGlobleCurrentStockIndexFuture(lp);
-    const dataStockLTP=parseFloat(lp)-parseFloat(lastDayClosinglp);
-    setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2))
-    const changePer=((parseFloat(lp) - parseFloat(lastDayClosinglp)) / parseFloat(lastDayClosinglp)) * 100 
-    setCurrentStockLTPPercentFuture((parseFloat(changePer).toFixed(2)<0 ?-1:1)*parseFloat(changePer).toFixed(2))
-   }
+  const fetchFuturData = async () => {
+        let dsSpotTokenList=JSON.parse(CookiesConfig.getCookie("symbolSpotTokenList"));     
+        let infoFutureData=dsSpotTokenList.find((data)=>data.underlying===symbolSelect.value && data.tokenType==="future");  
+        const {instrumentToken}=infoFutureData; 
+        const lastDayClosinglp=await getlastDayClosinglp(instrumentToken);  
+        let infoFutureIndexData=indexData.find((data)=>data.token===parseInt(instrumentToken) && data.tokenType==="future"); 
+        if(infoFutureIndexData!=null){
+          const {lp}=infoFutureIndexData;    
+          const dayOpen=infoFutureIndexData?.do;    
+          setCurrentStockIndexFuture(lp);
+          updateGlobleCurrentStockIndexFuture(lp);
+          const dataStockLTP=parseFloat(lp)-parseFloat(lastDayClosinglp);
+          setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2))
+          const changePer=((parseFloat(lp) - parseFloat(lastDayClosinglp)) / parseFloat(lastDayClosinglp)) * 100 
+          setCurrentStockLTPPercentFuture((parseFloat(changePer).toFixed(2)<0 ?-1:1)*parseFloat(changePer).toFixed(2))
+        }
+  }
+  fetchFuturData();
 }
 
 
