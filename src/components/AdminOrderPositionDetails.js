@@ -1718,7 +1718,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
 
     return () => {
-      clearInterval(pingInterval);
+//      clearInterval(pingInterval);
       connectionData.stop();
     };
   }, []);
