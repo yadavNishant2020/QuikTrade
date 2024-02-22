@@ -3219,7 +3219,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   setSLEdit(true);
                 }}
               >
-                <legend align="left">SL</legend>
+                <legend align="right">StopLoss</legend>
                 {!slEdit ? (
                   <label className="float-right">
                     {parseFloat(globalStopLoss) != 0
@@ -3250,7 +3250,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   setTragetEdit(true);
                 }}
               >
-                <legend align="left">Target</legend>
+                <legend align="right">Target</legend>
 
                 {!tragetEdit ? (
                   <label className="float-right">
@@ -3282,7 +3282,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   setTpEdit(true);
                 }}
               >
-                <legend align="left">TP</legend>
+                <legend align="right">Trail SL By</legend>
                 {!tpEdit ? (
                   <label className="float-right">
                     {parseFloat(globalTP)  !== 0
