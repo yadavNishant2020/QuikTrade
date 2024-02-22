@@ -1698,9 +1698,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         console.log("Connected to SignalR Hub");
       })
       .catch((err) => console.log(err));
-      const pingInterval = setInterval(() => {
-        connectionData.invoke("Ping").catch(err => console.error("Ping failed: ", err));
-      }, 5000); // Send ping every 5 seconds
+      // const pingInterval = setInterval(() => {
+      //   connectionData.invoke("Ping").catch(err => console.error("Ping failed: ", err));
+      // }, 5000); // Send ping every 5 seconds
     connectionData.on("ReceiveData", (receivedData) => {
       getAllOpenPositionList();
       getOrderCompletedList();
