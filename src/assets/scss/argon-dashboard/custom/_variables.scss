@@ -54,7 +54,7 @@ $gray-700: #525f7f !default;   // Line p color
 $gray-800: #32325d !default;   // Line heading color
 $gray-900: #212529 !default;
 $black:    #000 !default;
-
+$customColor:    #4f5054 !default;
 $grays: () !default;
 $grays: map-merge((
   "100": $gray-100,
@@ -456,12 +456,12 @@ $table-border-width:          $border-width !default;
 $table-border-color:          $gray-200 !default;
 
 $table-head-bg:               $gray-100 !default;
-$table-head-color:            $gray-600 !default;
+$table-head-color:            $customColor !default;
 $table-head-spacer-y:         .75rem !default;
 
 $table-head-font-size:        .65rem !default;
-$table-head-font-weight:      $font-weight-bold !default;
-$table-head-text-transform:   uppercase !default;
+$table-head-font-weight:      $font-weight-normal !default;
+$table-head-text-transform:   capitalize !default;
 $table-head-letter-spacing:   1px !default;
 
 $table-body-font-size:        .8125rem !default;

@@ -456,12 +456,12 @@ $table-border-width:          $border-width !default;
 $table-border-color:          $gray-200 !default;
 
 $table-head-bg:               $gray-100 !default;
-$table-head-color:            $gray-600 !default;
+$table-head-color:            $black !default;
 $table-head-spacer-y:         .75rem !default;
 
 $table-head-font-size:        .65rem !default;
-$table-head-font-weight:      $font-weight-bold !default;
-$table-head-text-transform:   uppercase !default;
+$table-head-font-weight:      $font-weight-normal !default;
+$table-head-text-transform:   capitalize !default;
 $table-head-letter-spacing:   1px !default;
 
 $table-body-font-size:        .8125rem !default;
@@ -970,8 +970,8 @@ $datepicker-cell-border-radius: 50% !default;
 $datepicker-cell-width: 36px !default;
 $datepicker-cell-height: 36px !default;
 
-$datepicker-disabled-cell-color: $gray-300 !default;
-$datepicker-disabled-old-new-color: $gray-500 !default;
+$datepicker-disabled-cell-color: $black!default;
+$datepicker-disabled-old-new-color: $black !default;
 
 $datepicker-header-cell-border-radius: $border-radius !default;
 

@@ -1,5 +1,5 @@
 
-import {React,useEffect,useState} from 'react'
+import {React,useEffect,useState, useLayoutEffect, useRef} from 'react'
 import AdminStockIndex from "../components/AdminStockIndex.js";
 import AdminDefaultConfig from "../components/AdminDefaultConfig.js";
 import AdminOptionChain from "../components/AdminOptionChain.js";
@@ -29,6 +29,8 @@ import { Container, Row, Col,   Button,
    import { PaperTradingAPI } from '../api/PaperTradingAPI.js';
 
 const TreadingDashboard = () => {
+    const divRef = useRef(null);
+
     const [configOpenSlider,setConfigOpenSlider]=useState(false);    
     const [ruleOpenSlider,setRuleOpenSlider]=useState(false);
     const [sideMenuTroggle,setSideMenuTroggle]=useState(false);
@@ -44,7 +46,8 @@ const TreadingDashboard = () => {
     const [channelStatus,setChannelStatus]=useState(0);
     const [channelProcessStatus,setChannelProcessStatus]=useState(0);
     const [filterOrderPositionList,setOrderPositionList]=useState([]);
-     
+    const [height, setHeight] = useState(0)
+
 
     const centrifugeInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
     const { globleSymbol,
@@ -67,9 +70,22 @@ const TreadingDashboard = () => {
     
     useEffect(()=>{ 
       getOptionChainList(); 
+
     },[]);
  
+    useLayoutEffect(() => {
+      const handleResize = () => {
+        setHeight(divRef?.current?.children[0]?.clientHeight);
+        console.log("divRef", divRef?.current?.children[0]?.clientHeight)
 
+      };
+      handleResize();
+      window.addEventListener('resize', handleResize);
+  
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      }
+    }, []);
 
     useEffect(()=>{ 
       if(globleSelectedClientInfo.length>0 && globleSelectedTradingType.length>0){
@@ -282,7 +298,6 @@ const TreadingDashboard = () => {
       if(baseTable?.length>0){
           baseTable.map(async  (cName) => {
                const result =await ZerodaAPI.callApiToGetPreviosDayDataForChannel(cName.instrumentToken);
-               if(result!=null){
                const{code,data}=result;
                let infodata=data[cName.instrumentToken];
                setFilterOptionChainList((previousData) => { 
@@ -303,7 +318,6 @@ const TreadingDashboard = () => {
                     // setBaseTable(dataInfo);
                   }
                 });
-              }
      
              })
 
@@ -496,11 +510,11 @@ const getRandomFloat = (min, max) => {
     return (
        <>    
          <Container fluid style={{}}>
-          <div style={{"width":"100%"}}>
+          <div style={{"width":"100%", height:"100%"}}>
          
-                    <div className={sideMenuTroggle?'full-open mainpanel':'full-close mainpanel'}>
-                                <Row className='dashboard mt-1 optionchaindashboard'>                                
-                                    <Col xl="12" className='firstDiv'>                                      
+                    <div className={sideMenuTroggle?'full-open mainpanel':'full-close mainpanel'} ref={divRef}>
+                                <Row className='dashboard mt-1 optionchaindashboard'  id="_optionchaindashboard_id">                                
+                                    <Col xl="12" className='firstDiv' >                                      
                                                 <Tabs style={{backgroundColor:"#FFFFFF"}}>
                                                     <TabList>
                                                     <Tab>Basket</Tab>
@@ -511,13 +525,13 @@ const getRandomFloat = (min, max) => {
                                                     </TabList>
 
                                                     <TabPanel>
-                                                        <AdminOptionChain filterOptionChainList={filterOptionChainList}/>
+                                                        <AdminOptionChain filterOptionChainList={filterOptionChainList} height={height}/>
                                                     </TabPanel>
                                                     <TabPanel>
-                                                        <AdminStraddle  filterOptionChainList={filterOptionChainList} /> 
+                                                        <AdminStraddle  filterOptionChainList={filterOptionChainList} height={height} /> 
                                                     </TabPanel>
                                                     <TabPanel>                                        
-                                                        <AdminStrangle filterOptionChainList={filterOptionChainList}/>                                         
+                                                        <AdminStrangle filterOptionChainList={filterOptionChainList} height={height}/>                                         
                                                     </TabPanel>
                                                    
                                                     <TabPanel>
@@ -533,7 +547,7 @@ const getRandomFloat = (min, max) => {
                                     <Row  className="dashboard mt-1 positiondashboardlist">
                                             <Col xl="12">
                                           
-                                                            <AdminOrderPositionDetails filterOrderPositionList={filterOrderPositionList}/>
+                                                            <AdminOrderPositionDetails filterOrderPositionList={filterOrderPositionList} height={height}/>
                                                         
                                             </Col>
                                     </Row>

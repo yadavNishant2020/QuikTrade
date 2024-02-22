@@ -27,7 +27,7 @@ import { Container, Row, Col,   Button,
    import { Constant } from "../Config/Constant";
    
 
-const AdminOptionChain = ({filterOptionChainList}) => {
+const AdminOptionChain = ({filterOptionChainList, height}) => {
   const optionsInfo = [
     {
         label: "Option",
@@ -928,7 +928,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                 return updatedRowData;
           });
         }
-        //processBasketMargin(bucketList);
+        processBasketMargin(bucketList);
   }
   const handleBasketExecuteOrder=(e)=>{  
       setEditBucketRow(false);
@@ -1138,9 +1138,11 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                 Quantity: bucketLotTotalQty,
                 Price: (bucketOrderType==='MKT'?0:bucketStickePrice),
                 TriggerPrice: 0
-            }));
+            }));  
+            debugger;
             const dataBasketRequest={basketMarginList:processBasket,logintoken:sessionStorage.getItem("apiSecret")};
-            let data=await ZerodaAPI.getMarginBasket(dataBasketRequest);           
+            let data=await ZerodaAPI.getMarginBasket(dataBasketRequest);
+            debugger;
             setBusketMargin(Constant.CurrencyFormat(parseFloat(data.final.total)))
             setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(data.initial.total)))
             setBucketList((previousData) => {
@@ -1199,7 +1201,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                             </Col>
                                             <Col xl="4" xs="3" className='py-2' style={{textAlign:"right"}}>
                                             <label  className="form-control-label">
-                                                       Quick Buy/Sell            
+                                                    <span className='quik'>Quik</span><span className='trade'>Trade</span>           
                                                                   </label>
                                             </Col>
                                             <Col xl="3" xs="3" className='py-1'>
@@ -1253,13 +1255,13 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                       {globleOptionChainType==='opt'?
                                       <Row className='optionChain mt-1'>
                                         <Col xl="12">
-                                          <div className="table-container" ref={tableRef}>
+                                          <div className="table-container" ref={tableRef} style={{height:height}}>
                                                   <Table className="align-items-center">
                                                                       <thead className="thead-light">
                                                                                   <tr className="text-center">
-                                                                                  <th scope="col" style={{width:"40%"}} className='bg bg-primary text-white' colSpan={2}>CALL ( LTP )</th>
+                                                                                  <th scope="col" style={{width:"40%"}} className='bg bg-success text-white' colSpan={2}>CALL LTP </th>
                                                                                   <th scope="col" style={{width:"20%"}}>Strike</th>   
-                                                                                  <th scope="col" style={{width:"40%"}} className='bg bg-info text-white' colSpan={2}>PUT  ( LTP )</th>   
+                                                                                  <th scope="col" style={{width:"40%"}} className='bg bg-danger text-white' colSpan={2}>PUT LTP </th>   
                                                                                   </tr>
                                                                                 
                                                                       </thead>
@@ -1333,7 +1335,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                   <Col xl="9" className='busketList' style={{backgroundColor:"#FFFFFF"}}>
                                                   <Row>
                                                     <Col xl="12" className='busketView'>
-                                                        <div className="table-container">
+                                                        <div className="table-container" style={{height:height}}>
                                                             <Table className="align-items-center" >
                                                                     <thead class="thead-light">
                                                                                 <tr className="text-center">                                                                            
@@ -1344,7 +1346,7 @@ const AdminOptionChain = ({filterOptionChainList}) => {
                                                                                 <th scope="col" style={{width: "8%"}}>Type</th>  
                                                                                 <th scope="col" style={{width: "8%"}}>Product</th> 
                                                                                 <th scope="col" style={{width: "8%"}}>Order Type</th>
-                                                                                <th scope="col" style={{width: "9%"}}>LOT</th>                                                                            
+                                                                                <th scope="col" style={{width: "9%"}}>Lot</th>                                                                            
                                                                                 <th scope="col" style={{width: "9%"}}>Price</th>  
                                                                                 <th scope="col" style={{width: "9%"}}>StopLoss</th> 
                                                                                 <th scope="col" style={{width: "9%"}}>Target</th>  

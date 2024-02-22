@@ -81,8 +81,8 @@ const AdminClosedOrder = () => {
                                                                             <tr className="text-center">
                                                                                 <th scope="col">Product</th>
                                                                                 <th scope="col">Instrument</th> 
-                                                                                <th scope="col" >LOT</th>                                                                                  
-                                                                                <th scope="col" >PNL</th>                        
+                                                                                <th scope="col" >Lot</th>                                                                                  
+                                                                                <th scope="col" className="text-right">PNL</th>                        
                                                                             </tr>
 
                                                                 </thead>
@@ -91,7 +91,7 @@ const AdminClosedOrder = () => {
                                                                         globleClosedList?.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>
-                                                                                <span className={ data.closepositionproductname.toLowerCase()==='mis'?'text-product-mis text-bold buy-light':'text-product-nmrd text-bold sell-light'}>
+                                                                                <span className={ data.closepositionproductname.toLowerCase()==='mis'?'btn text-product-mis text-bold buy-light':'btn text-product-nmrd text-bold sell-light'}>
                                                                         {data.closepositionproductname}
                                                                                     </span>
                                                                                 </td>

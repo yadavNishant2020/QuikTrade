@@ -4,7 +4,7 @@ import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 const AdminFooter = () => {
     return (
         <footer className="footer">
-          <Row className="align-items-center justify-content-xl-between">
+          {/* <Row className="align-items-center justify-content-xl-between">
             <Col xl="12">
               <div className="copyright text-center text-xl-left text-muted">
                 © {new Date().getFullYear()}{" - "} {new Date().getFullYear()+1}
@@ -20,7 +20,7 @@ const AdminFooter = () => {
             </Col>
     
            
-          </Row>
+          </Row> */}
         </footer>
       );
 }

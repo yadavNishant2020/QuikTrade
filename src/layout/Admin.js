@@ -36,19 +36,23 @@ const Admin = (props) => {
                 window.open("https://www.fnotrader.com/trading/broker-accounts", '_self');
               });
       }else{
-           if(CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase()==="false"){
-              alertify.alert(
-                'Information',
-                'You don`t have an active subscription to this application. Please re-login.',
-                () => {
-                  window.open("https://www.fnotrader.com/trading/broker-accounts", '_self');
-                });               
-            }
-            else{
-                  let fnotraderUserid = CookiesConfig.getCookie("Fnotrader-Userid");
-                  let fnotraderSecret=CookiesConfig.getCookie("Fnotrader-Secret")
-                  loginCheckForFNOTraderData(fnotraderUserid,fnotraderSecret);
-            }
+          //  if(CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase()==="false"){
+          //     alertify.alert(
+          //       'Information',
+          //       'You don`t have an active subscription to this application. Please re-login.',
+          //       () => {
+          //         window.open("https://www.fnotrader.com/trading/broker-accounts", '_self');
+          //       });               
+          //   }
+          //   else{
+          //         let fnotraderUserid = CookiesConfig.getCookie("Fnotrader-Userid");
+          //         let fnotraderSecret=CookiesConfig.getCookie("Fnotrader-Secret")
+          //         loginCheckForFNOTraderData(fnotraderUserid,fnotraderSecret);
+          //   }
+
+          let fnotraderUserid = CookiesConfig.getCookie("Fnotrader-Userid");
+          let fnotraderSecret=CookiesConfig.getCookie("Fnotrader-Secret")
+          loginCheckForFNOTraderData(fnotraderUserid,fnotraderSecret);
       }
    },[]);
 

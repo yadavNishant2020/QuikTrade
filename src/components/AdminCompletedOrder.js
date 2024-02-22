@@ -41,12 +41,12 @@ const AdminCompletedOrder = () => {
         <label className="form-control-label mr-1"  htmlFor="input-username" >
                                                                     Total Orders : 
                                                                     </label>
-                                                                     <span className='font-11px text-bold'>{globleOrderList?.length}
+                                                                     <span className='text-bold'>{globleOrderList?.length}
                                                                     </span>
                                                                     <label className="form-control-label ml-1 mr-1"  htmlFor="input-username" >
                                                                     Completed : 
                                                                     </label>
-                                                                    <span className='font-11px text-bold text-success'>{globleOrderList.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length}
+                                                                    <span className='text-bold text-success'>{globleOrderList.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length}
                                                                     </span>
         </Col>
 </Row>
@@ -64,8 +64,8 @@ const AdminCompletedOrder = () => {
                                                                                         <th scope="col">Product</th>                                                                                      
                                                                                                                                                                             
                                                                                         <th scope="col" >Type</th>       
-                                                                                        <th scope="col" style={{width:"10%"}} >LOT</th>  
-                                                                                        <th scope="col" >Price</th>  
+                                                                                        <th scope="col" className="text-center" style={{width:"10%"}} >Lot</th>  
+                                                                                        <th scope="col" className="text-right">Price</th>  
                                                                                         <th scope="col" >Status</th> 
                                                                                                                         
                                                                                     </tr>
@@ -79,7 +79,7 @@ const AdminCompletedOrder = () => {
                                                                                 <td className='text-center'>{data.ordertimestamp}</td>
                                                                                 <td className='text-center'>{data.orderreferanceid}</td>
                                                                                 <td className='text-center'>
-                                                                                <span className={ data.orderaction.toLowerCase()==='buy'?'text-success text-bold buy-light':'text-danger text-bold sell-light'}>
+                                                                                <span className={ data.orderaction.toLowerCase()==='buy'?'btn text-success text-bold buy-light':'btn text-danger text-bold sell-light'}>
                                                                                     {data.orderaction}
                                                                                     </span>
                                                                                 </td>
@@ -96,7 +96,7 @@ const AdminCompletedOrder = () => {
                                                                                 </td>
 
                                                                                 <td className='text-center'> 
-                                                                                <span className={ data.productname.toLowerCase()==='mis'?'text-product-mis text-bold buy-light':'text-product-nmrd text-bold sell-light'}>
+                                                                                <span className={ data.productname.toLowerCase()==='mis'?'btn text-product-mis text-bold buy-light':'btn text-product-nmrd text-bold sell-light'}>
                                                                         {data.productname}
                                                                                     </span>
                                                                                 </td>

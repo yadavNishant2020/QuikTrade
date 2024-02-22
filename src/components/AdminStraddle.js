@@ -20,7 +20,7 @@ import { Container, Row, Col,   Button,
    import { CookiesConfig } from "../Config/CookiesConfig.js";
    import { PaperTradingAPI } from "../api/PaperTradingAPI"; 
    import { Constant } from "../Config/Constant";
-const AdminStraddle = ({filterOptionChainList}) => {
+const AdminStraddle = ({filterOptionChainList, height}) => {
     const tableRef = useRef(null);
     const [strikePrices,setStrikePrices]=useState(0)
     const [straddleData,setStraddleData]=useState([]);
@@ -918,13 +918,13 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                           <CardBody>
                           <Row>
                                             <Col className='Straddle' xl="12">
-                                            <div className="table-container" ref={tableRef}>
+                                            <div className="table-container" ref={tableRef} style={{height:height+41}}>
                                             <Table className="align-items-center" >
                                                   <thead className="thead-light">
                                                                                 <tr class="text-center">
-                                                                                    <th colSpan={5} className='bg bg-primary text-white'>CALL</th>
-                                                                                    <th colSpan={5} className='bg bg-info text-white'>PUT</th>
-                                                                                    <th colSpan={5} className='bg bg-success text-white'>COMBINE</th>
+                                                                                    <th colSpan={5} className='bg bg-success text-white'>CALL</th>
+                                                                                    <th colSpan={5} className='bg bg-danger  text-white'>PUT</th>
+                                                                                    <th colSpan={5} className='bg bg-info text-white'>COMBINED</th>
                                                                                 </tr>
                                                                                             <tr class="text-center">
                                                                                             
@@ -932,17 +932,17 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                                                                                     <th scope="col" style={{width:"5%"}}>Strike</th>   
                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th> 
                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th>                                                                               
-                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th>   
+                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th>   
                                                                                     <th scope="col" style={{width:"10%"}}>Action</th>  
                                                                                     <th scope="col" style={{width:"5%"}}>Strike</th>
                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th> 
                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th>  
-                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th> 
+                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th> 
                                                                                     <th scope="col" style={{width:"10%"}}>Action</th>  
                                                                                     <th scope="col" style={{width:"5%"}}>Strike</th>
                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th>   
                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th>                                                                              
-                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th> 
+                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th> 
                                                                                     <th scope="col" style={{width:"10%"}}>Action</th>  
                                                                                     </tr>
                                                    </thead>

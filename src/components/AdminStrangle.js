@@ -20,7 +20,7 @@ import { Container, Row, Col,   Button,
    import { PaperTradingAPI } from "../api/PaperTradingAPI";
    import { LiveTradingAPI } from "../api/LiveTradingAPI"; 
    import { Constant } from "../Config/Constant";
-const AdminStrangle = ({filterOptionChainList}) => {
+const AdminStrangle = ({filterOptionChainList, height }) => {
     const [strikePrices,setStrikePrices]=useState(0);
     const [strangleList,setStrangleList]=useState([]);
     const [tempStraddleData,setTempStraddleData]=useState([]);
@@ -967,28 +967,28 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                           <CardBody>
                           <Row>
                                             <Col xl="12" className='strangle'>
-                                            <div className="table-container">
+                                            <div className="table-container" style={{height:height+41}}>
                                                     <Table className="align-items-center">
                                                                         <thead className="thead-light">
                                                                                     <tr class="text-center">
-                                                                                        <th colSpan={5} className='bg bg-primary text-white' scope="col">CALL</th>
-                                                                                        <th  className='bg bg-info text-white' colSpan={5}  scope="col">PUT</th>
-                                                                                        <th  className='bg bg-success text-white' colSpan={5}  scope="col">COMBINE</th>
+                                                                                        <th colSpan={5} className='bg bg-success text-white call-light' scope="col">CALL</th>
+                                                                                        <th  className='bg bg-danger  text-white put-light' colSpan={5}  scope="col">PUT</th>
+                                                                                        <th  className='bg bg-info text-white combined-light' colSpan={5}  scope="col">COMBINED</th>
                                                                                     </tr>
                                                                                     <tr class="text-center">
                                                                                                     <th scope="col" style={{width:"5%"}}>Strike</th>  
                                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th>
                                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th> 
-                                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th> 
+                                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th> 
                                                                                                     <th scope="col" style={{width:"10%"}}>Action</th>     
                                                                                                     <th scope="col" style={{width:"5%"}}>Strike</th>   
                                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th>
                                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th>   
-                                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th> 
+                                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th> 
                                                                                                     <th scope="col" style={{width:"10%"}}>Action</th>                                                                             
                                                                                                     <th scope="col" style={{width:"5%"}}>LTP</th>
                                                                                                     <th scope="col" style={{width:"5%"}}>ATP</th>   
-                                                                                                    <th scope="col" style={{width:"5%"}}>LOT</th> 
+                                                                                                    <th scope="col" style={{width:"5%"}}>Lot</th> 
                                                                                                     <th scope="col" style={{width:"10%"}}>Action</th> 
                                                                                     </tr>
                                                                         </thead>
