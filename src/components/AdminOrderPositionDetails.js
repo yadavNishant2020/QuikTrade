@@ -1753,7 +1753,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
-      brockername: globleBrokerName,
+      brockername:sessionStorage.getItem("brokername")  ,
     };
     const resultData = await PaperTradingAPI.gettrailingvalues(requestData);
     debugger;
