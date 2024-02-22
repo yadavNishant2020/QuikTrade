@@ -153,15 +153,15 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                     && data.basketClient===globleSelectedClientInfo)
                   if(filterbasket.length>0){
                     setBucketList(filterbasket);
-                    processBasketMargin(filterbasket);   
+                   // processBasketMargin(filterbasket);   
                   }else{
                     setBucketList([]);
-                    processBasketMargin([]);   
+                    //processBasketMargin([]);   
                   }
                           
             }else{
               setBucketList([]);
-              processBasketMargin([]);   
+              //processBasketMargin([]);   
             }
       }
     },[globleSelectedClientInfo,globleSelectedTradingType]); 
@@ -170,7 +170,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         if(bucketList!==null){
          if(bucketList?.length>0){          
             bucketList.map((data)=>{              
-                let dataLTP=filterOptionChainList.find((dataList)=>dataList.instrumentToken===data.instrumentToken);
+                let dataLTP=filterOptionChainList.find((dataList)=>dataList.instrumentToken===data?.instrumentToken);
                 if(dataLTP!=null){
                   data.bucketStickePrice= (data.bucketOrderType==='MKT'?dataLTP.ltp:data.bucketStickePrice);
                   data.bucketltp=dataLTP.ltp
@@ -363,7 +363,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
             CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
             setEditBucketRow(false);
             setEditBucketRowNo('-1');
-            processBasketMargin(sortdata);
+           // processBasketMargin(sortdata);
           }else{
               alertify.error("You have unsaved changes in the basket list. Please save those changes first.")
           }
@@ -500,7 +500,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
           CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
           setEditBucketRow(false);
           setEditBucketRowNo('-1');
-          processBasketMargin(sortdata);
+         // processBasketMargin(sortdata);
         }else{
             alertify.error("You have unsaved changes in the basket list. Please save those changes first.")
         }
@@ -579,7 +579,16 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
 
       const columnToRemove = 'bucketSrNo';
       // Create a new array without the specified column
-      const newBasketList = updatedList.map(({ [columnToRemove]: _, ...rest }) => rest);
+      if(updatedList!=undefined){
+        const newBasketList = updatedList.map(item => {
+          if (item && columnToRemove && Object.prototype.hasOwnProperty.call(item, columnToRemove)) {
+              const { [columnToRemove]: _, ...rest } = item;
+              return rest;
+          }
+          return item;
+      });
+      
+      
       // Group the items by bucketSide
       let sortedDataTemp = []
       
@@ -605,13 +614,13 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       
       
       const groupedByBucketSide = sortedDataTemp.reduce((acc, item) => {
-        const key = item.bucketSide;
+        const key = item && item.bucketSide !== undefined ? item.bucketSide : "undefined"; // Check if item is defined and has bucketSide property
         if (!acc[key]) {
-          acc[key] = [];
+            acc[key] = [];
         }
         acc[key].push(item);
         return acc;
-      }, {});
+    }, {});
       
      // Sort each group by bucketSide
      for (const key in groupedByBucketSide) {
@@ -628,6 +637,9 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         }
       );
       return sortdata;
+      }else{
+        return [];
+      }
   }
 
   const processInsertUpdateOrder=async (data)=>{
@@ -703,7 +715,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                      alertify.success("Select item copy from Busket.")
                       showSuccess=true;
                     }                 
-                    processBasketMargin(sortdata);
+                    //processBasketMargin(sortdata);
                     return sortdata;
            }) 
         },
@@ -736,7 +748,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                       alertify.success("Select item deleted from Busket.");
                       showSuccess=true;
                     }    
-                    processBasketMargin(newUpdatedList);               
+                    //processBasketMargin(newUpdatedList);               
                     return newUpdatedList;
            })    
            
@@ -829,7 +841,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
           }
          
         }     
-        processBasketMargin(prevRowData)        
+       // processBasketMargin(prevRowData)        
         return prevRowData;
       });
       
@@ -883,7 +895,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
             updatedRowData[index].bucketSide =
               refValue.toLowerCase() === "buy" ? "SELL" : "BUY"; 
             updatedRowData[index].bucketStickePrice =  newltpPrice;
-            processBasketMargin(updatedRowData);
+            //processBasketMargin(updatedRowData);
             return updatedRowData;
           });
           
@@ -896,7 +908,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               refValue.toLowerCase() === "ce" ? "PE" : "CE"; 
               let updateAddInfo=sortedCurrentOptionChain.find((infoData)=>infoData.strikePrice===bucketStrike && infoData.instrumentType=== "ce" ? "PE" : "CE")
               updatedRowData[index]["instrumentToken"] =updateAddInfo.instrumentToken;
-              processBasketMargin(updatedRowData)
+            //  processBasketMargin(updatedRowData)
               return updatedRowData;
           });
         }else   if(refType==="bucketProduct"){
@@ -905,7 +917,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
             // Toggle between BUY and SELL
             updatedRowData[index].bucketProduct =
               refValue.toLowerCase() === "mis" ? "NRML" : "MIS";  
-              processBasketMargin(updatedRowData);    
+           //   processBasketMargin(updatedRowData);    
             return updatedRowData;
           });
         }else   if(refType==="bucketOrderType"){
@@ -924,11 +936,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                         parseFloat(parseFloat(updatedRowData[index].bucketltp)+(parseFloat(updatedRowData[index].bucketltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)   
                         : parseFloat(parseFloat(updatedRowData[index].bucketltp)-(parseFloat(updatedRowData[index].bucketltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)
                 : updatedRowData[index].bucketStickePrice.toString()):updatedRowData[index].bucketStickePrice.toString();   
-                processBasketMargin(updatedRowData)
+           //     processBasketMargin(updatedRowData)
                 return updatedRowData;
           });
         }
-        processBasketMargin(bucketList);
+        
   }
   const handleBasketExecuteOrder=(e)=>{  
       setEditBucketRow(false);
@@ -1116,11 +1128,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       }
     }
   }
-  const processBasketMargin=async(newBasketList)=>{
+  const processBasketMargin=async()=>{
     debugger;
-    if(newBasketList!=null){
-          if(newBasketList.length>0){      
-      const processBasket = newBasketList.map(({                   
+    if(bucketList!=null){
+          if(bucketList.length>0){      
+      const processBasket = bucketList.map(({                   
         bucketSide,
         basketexchange,
         baskettradingSymbol,
@@ -1138,19 +1150,18 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                 Quantity: bucketLotTotalQty,
                 Price: (bucketOrderType==='MKT'?0:bucketStickePrice),
                 TriggerPrice: 0
-            }));  
-            debugger;
+            }));            
             const dataBasketRequest={basketMarginList:processBasket,logintoken:sessionStorage.getItem("apiSecret")};
             let data=await ZerodaAPI.getMarginBasket(dataBasketRequest);
             debugger;
             setBusketMargin(Constant.CurrencyFormat(parseFloat(data.final.total)))
             setRequiredBusketMargin(Constant.CurrencyFormat(parseFloat(data.initial.total)))
             setBucketList((previousData) => {
-              if (previousData !== null) {
+              if (previousData !== null && previousData!==undefined) {
                 const updatedOrderPosition = previousData.map((position,index) => {
                   debugger;
                   const matchingOption = data.orders.find((item) => {
-                    return item.tradingsymbol === position.baskettradingSymbol.toString() && 
+                    return item.tradingsymbol === position?.baskettradingSymbol.toString() && 
                            item.exchange === position.basketexchange &&
                            data.orders.indexOf(item) === index;
                   });
@@ -1356,26 +1367,27 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       </thead>
                                                                       <tbody>{
                                                                      
-                                                                        (bucketList!==undefined && bucketList.length>0?(
+                                                                        (bucketList!==undefined && bucketList!==null && bucketList.length>0?(
                                                                          
                                                                           bucketList?.map((data,index)=>
+                                                                            data!=undefined?
                                                                                 (<tr key={index}>
                                                                                 
                                                                                 <td style={{width: "8%"}} className='text-center cursor-row' onClick={()=>handdleRowChange(data.bucketSide,index,"side")}> 
-                                                                                      <span className={ data.bucketSide.toLowerCase()==='buy'?'text-success text-bold buy-light':'text-danger text-bold sell-light'}>
+                                                                                      <span className={ data?.bucketSide?.toLowerCase()==='buy'?'text-success text-bold buy-light':'text-danger text-bold sell-light'}>
                                                                                         { data.bucketSide}
                                                                                       </span>
                                                                                  </td>
-                                                                                <td className='text-left'>{data.bucketSymbol}</td>
+                                                                                <td className='text-left'>{data?.bucketSymbol}</td>
                                                                                 <td className='text-center'>{
-                                                                                 data.bucketStrike==="0"?'---':data.bucketStrike
+                                                                                 data.bucketStrike==="0"?'---':data?.bucketStrike
                                                                                  }</td>
                                                                                 <td className='text-center'>{
-                                                                                  Constant.ConvertShortDate(data.bucketExpiry)
+                                                                                  Constant.ConvertShortDate(data?.bucketExpiry)
                                                                                
                                                                                 }</td>
-                                                                                <td className='text-center cursor-row' onClick={()=>(data.bucketType!=='FUT')?handdleRowChange(data.bucketType,index,"bucketType"):null}>
-                                                                                    {data.bucketType}   
+                                                                                <td className='text-center cursor-row' onClick={()=>(data?.bucketType!=='FUT')?handdleRowChange(data.bucketType,index,"bucketType"):null}>
+                                                                                    {data?.bucketType}   
                                                                                 </td>
                                                                                 <td className='text-center cursor-row'  onClick={()=>handdleRowChange(data.bucketProduct,index,"bucketProduct")}>
                                                                                     
@@ -1502,8 +1514,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                                     :""
                                                                                 }                
                                                                                 </td>
-                                                                                </tr>)
-                                                                                  
+                                                                                </tr>):''                                                                                  
                                                                           )):'')
                                                                       }
                                                                       </tbody>
@@ -1554,6 +1565,17 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                       >
                                                        Clear
                                                       </Button>
+
+                                                      <Button                                                         
+                                                         className='font-10px btn-info'                                                     
+                                                         href="#pablo"
+                                                         onClick={processBasketMargin}
+                                                         size="sm"
+                                                       >
+                                                        Calculate Margin
+                                                       </Button>
+
+
                                                       </Col>
                                                    
                                               </Row>

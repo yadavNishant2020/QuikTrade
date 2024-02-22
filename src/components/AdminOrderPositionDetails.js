@@ -334,13 +334,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdlePositionStopLoss = (e, index, data) => {
-    let selectedValue = e.target.value;
-    processpositiontrailingData(
-      data.positionid,
-      selectedValue,
-      data.positiontrailling,
-      data.positiontarget
-    );
+    let selectedValue = e.target.value;  
     setOrderPosition((prevRowData) => {
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {
@@ -361,13 +355,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     positionid,
     stoploss,
     trailing,
-    taget
+    taget,
+    ltp
   ) => {
     let requestData = {
       positionid: positionid.toString(),
       stopLoss: stoploss.toString() === "" ? "0" : stoploss.toString(),
       trailingpoint: trailing.toString() === "" ? "0" : trailing.toString(),
       target: taget.toString() === "" ? "0" : taget.toString(),
+      starttrailing:ltp.toString()
     };
     const resultData = await PaperTradingAPI.processpositiontrailingData(
       requestData
@@ -1188,6 +1184,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       stopLoss: globalStopLoss.toString(),
       trailingpoint: globalTP.toString(),
       target: globalTarget.toString(),
+      currentmtm:mltUnrealized.toString(),
     };
     const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
     if (resultData != null) {
@@ -3138,10 +3135,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     setEditPositionRowNo(index);
   };
 
-  const handleKeyDownPosition = (e, index) => {
+  const handleKeyDownPosition = (e, index,data) => {
     if (e.key === "Enter" || e.key === "Tab") {
       setEditPositionRow(false);
       setEditPositionRow("-1");
+      processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget,data.ltp);
     }
   };
 
@@ -3185,7 +3183,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <legend align="left">SL</legend>
                 {!slEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalStopLoss) > 0
+                    {parseFloat(globalStopLoss) != 0
                       ? Constant.CurrencyFormat(globalStopLoss.toString())
                       : "---"}
                   </label>
@@ -3217,7 +3215,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
                 {!tragetEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTarget) > 0
+                    {parseFloat(globalTarget)  !== 0
                       ? Constant.CurrencyFormat(globalTarget.toString())
                       : "---"}
                   </label>
@@ -3248,7 +3246,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <legend align="left">TP</legend>
                 {!tpEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTP) > 0
+                    {parseFloat(globalTP)  !== 0
                       ? Constant.CurrencyFormat(globalTP.toString())
                       : "---"}
                   </label>
@@ -3444,20 +3442,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 type="number"
                                 min="1"
                                 onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index)
+                                  handleKeyDownPosition(e, index,dataInfo)
                                 }
                                 value={dataInfo.positiontrailling}
                                 onChange={(e) =>
                                   handdlePositionTrailling(e, index, dataInfo)
                                 }
-                                onKeyPress={(e) => {
-                                  // Prevents non-numeric characters from being entered
-                                  if (isNaN(Number(e.key))) {
-                                    e.preventDefault();
-                                  }
-                                }}
+                                 
                               />
-                            ) : parseFloat(dataInfo.positiontrailling) > 0 ? (
+                            ) : parseFloat(dataInfo.positiontrailling) !== 0 ? (
                               dataInfo.positiontrailling
                             ) : (
                               "---"
@@ -3476,20 +3469,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 type="number"
                                 min="1"
                                 onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index)
+                                  handleKeyDownPosition(e, index,dataInfo)
                                 }
                                 value={dataInfo.positiontarget}
                                 onChange={(e) =>
                                   handdlePositionTarget(e, index, dataInfo)
                                 }
-                                onKeyPress={(e) => {
-                                  // Prevents non-numeric characters from being entered
-                                  if (isNaN(Number(e.key))) {
-                                    e.preventDefault();
-                                  }
-                                }}
+                                
                               />
-                            ) : parseFloat(dataInfo.positiontarget) > 0 ? (
+                            ) : parseFloat(dataInfo.positiontarget) !== 0 ? (
                               dataInfo.positiontarget
                             ) : (
                               "---"
@@ -3508,20 +3496,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 type="number"
                                 min="1"
                                 onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index)
+                                  handleKeyDownPosition(e, index,dataInfo)
                                 }
                                 value={dataInfo.positionstoploss}
                                 onChange={(e) =>
                                   handdlePositionStopLoss(e, index, dataInfo)
                                 }
-                                onKeyPress={(e) => {
-                                  // Prevents non-numeric characters from being entered
-                                  if (isNaN(Number(e.key))) {
-                                    e.preventDefault();
-                                  }
-                                }}
+                                
                               />
-                            ) : parseFloat(dataInfo.positionstoploss) > 0 ? (
+                            ) : parseFloat(dataInfo.positionstoploss) !== 0? (
                               dataInfo.positionstoploss
                             ) : (
                               "---"

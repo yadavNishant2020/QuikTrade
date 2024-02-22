@@ -1,10 +1,14 @@
 export const Constant = {
     ConvertShortDate : (datestring) => {
+        if (datestring) {
         const dateObject = new Date(datestring);
         const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(dateObject);
         const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObject);
         const formattedDate = `${day} ${month}`;
         return formattedDate;
+        }else{
+            return false;
+        }
     },CurrencyFormat:(num)=>{          
         if(num!=undefined)
             if(num !=null){
