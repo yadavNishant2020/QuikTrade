@@ -1698,7 +1698,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         console.log("Connected to SignalR Hub");
       })
       .catch((err) => console.log(err));
-
+      const pingInterval = setInterval(() => {
+        connectionData.invoke("Ping").catch(err => console.error("Ping failed: ", err));
+      }, 5000); // Send ping every 5 seconds
     connectionData.on("ReceiveData", (receivedData) => {
       getAllOpenPositionList();
       getOrderCompletedList();
@@ -1707,10 +1709,45 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       gettrailingvalues();
     });
 
+    connectionData.on('ReceiveDataForPosition', (receivedData) => {        
+      getPositionStoplossList();           
+    });
+
+    connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
+      gettrailingvalues();           
+    });
+
     return () => {
+      clearInterval(pingInterval);
       connectionData.stop();
     };
   }, []);
+
+  const getPositionStoplossList=async()=>{         
+    let requestData={
+        clientid:sessionStorage.getItem("clienttoken"),
+        tradermode:sessionStorage.getItem("tradingtype")  
+    }
+     const resultData=await PaperTradingAPI.getPositionStoplossList(requestData);        
+    if(resultData!=null){   
+      setOrderPosition((previousData) => {
+        if (previousData !== undefined) {
+  
+          const updatedOrderPosition = previousData.map((position) => {
+            const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
+            if (matchingOption) {
+              return {
+                ...position,
+                positionstoploss: matchingOption.positionstoploss
+  
+              };
+            }  
+          });     
+          return updatedOrderPosition;
+        }    
+      });                          
+    }
+  }
 
   const gettrailingvalues = async () => {
     let requestData = {
@@ -1819,8 +1856,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         return data;
       });
       updateGlobleOrderPosition(dataResult);
-      updateGlobleClosedList(resultData.closedresponseitem);
-      updateGlobleLogList(resultData.logitem);
+     
     }
   };
 
@@ -1836,12 +1872,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const getOrderClosedList = async () => {
+    debugger;
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
     };
     const resultData = await PaperTradingAPI.getOrderClosedList(requestData);
     if (resultData != null) {
+      console.log("Nitin")
+      console.log(resultData)
       updateGlobleClosedList(resultData);
     }
   };

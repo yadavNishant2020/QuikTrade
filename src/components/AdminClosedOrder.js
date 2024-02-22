@@ -16,24 +16,24 @@ import { Container, Row, Col,   Button,
    import { PaperTradingAPI } from "../api/PaperTradingAPI";  
    import { Constant } from "../Config/Constant";
 const AdminClosedOrder = () => {
-    const {  
-        globleOrderList,
-        globleSelectedClientInfo,
-        updateGlobleOrderList,
-        updateGlobleOrderPosition,
-        globleSelectedTradingType,
-        updateGlobleClosedList,
+    const {           
         globleClosedList,
+        globleSelectedClientInfo,        
+        globleSelectedTradingType,
+        updateGlobleClosedList,        
         globlemltRealized,
         updateGloblemltRealized
       } = useContext(PostContext); 
-
+      const [closePositionList,setClosePositionList]=useState([]);
       useEffect(()=>{    
         let totalRMTM=0;                 
         if(globleClosedList?.length >0){              
             totalRMTM = globleClosedList.reduce((accumulator, data) => {
                     return accumulator + (parseFloat(data?.closepositionpnl) || 0);
                 }, 0);
+                setClosePositionList(globleClosedList);
+      }else{
+        setClosePositionList([]);
       }
       updateGloblemltRealized(totalRMTM);
   },[globleClosedList])
@@ -86,9 +86,9 @@ const AdminClosedOrder = () => {
                                                                             </tr>
 
                                                                 </thead>
-                                                                <tbody>
-                                                                { globleClosedList !== undefined && globleClosedList !== null && globleClosedList.length > 0 && (
-                                                                        globleClosedList?.map((data)=>
+                                                                <tbody>                                                                   
+                                                                { closePositionList !== undefined && closePositionList !== null && closePositionList.length > 0 && (
+                                                                        closePositionList?.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>
                                                                                 <span className={ data.closepositionproductname.toLowerCase()==='mis'?'btn text-product-mis text-bold buy-light':'btn text-product-nmrd text-bold sell-light'}>
@@ -132,8 +132,6 @@ const AdminClosedOrder = () => {
                                                                     )
                                                                   )
                                                                 }
-                                                                            
-                                                                
                                                                 </tbody>
                                                                 </Table>
                                                                 </div>
