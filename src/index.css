@@ -45,7 +45,8 @@ hr {
 
 input.form-control {
   height: 25px !important;
-  font-size: 9px !important;
+  font-size: .750rem !important;
+  font-weight: bold;
 }
 
 
