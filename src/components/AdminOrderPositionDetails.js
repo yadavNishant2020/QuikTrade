@@ -243,11 +243,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [globleOrderPosition]);
 
   const calculateUnrealisedPnl = (position, infodata) => {
-    return position.positionsidetype.toLowerCase() === "buy"
-      ? (parseFloat(infodata.ltp) - parseFloat(position.buyavg)) *
-          (parseFloat(position.buyqty) - parseFloat(position.sellqty))
-      : (parseFloat(position.sellavg) - parseFloat(infodata.ltp)) *
-          (parseFloat(position.sellqty) - parseFloat(position.buyqty));
+    return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty)
+    // if (globleSelectedTradingType.toLowerCase() === "paper") {
+    //     return position.positionsidetype.toLowerCase() === "buy"
+    //       ? (parseFloat(infodata.ltp) - parseFloat(position.buyavg)) *
+    //           (parseFloat(position.buyqty) - parseFloat(position.sellqty))
+    //       : (parseFloat(position.sellavg) - parseFloat(infodata.ltp)) *
+    //           (parseFloat(position.sellqty) - parseFloat(position.buyqty));
+    // }else{
+    //   return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty)
+    // }
   };
 
   const handdleMoveInOutQtyChange = (e, index, data) => {
@@ -1196,6 +1201,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       "Information",
       "Do you want to exit all open position ?",
       () => {
+        debugger;
         if (globleSelectedTradingType.toLowerCase() === "paper") {
           processExitAllPositionPaper();
         } else {
@@ -1560,6 +1566,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const getSetting = (instrumentname, expiryDate) => {
+    debugger;
     const dataSetting = globalConfigPostionData.find(
       (data) =>
         data.instrumentname === instrumentname && data.expirydate === expiryDate
@@ -1815,7 +1822,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           data.ltp = matchingOption.ltp;
           data.unrealisedpnl = calculateUnrealisedPnl(data, matchingOption);
         } else {
-          data.unrealisedpnl = calculateUnrealisedPnl(data, data);
+          //data.unrealisedpnl = calculateUnrealisedPnl(data, data);
         }
         const matchingOptionFirstInStrick = filterOrderPositionList.find(
           (dataOrder) =>
@@ -2201,7 +2208,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     processInsertUpdateOrderBulkMoveInOut(orderArray, message);
   };
   const handdleFirstPositionPaper = (dataInfo, positionmovetype) => {
-    debugger;
+    
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
