@@ -45,8 +45,8 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
     const [sortedCurrentOptionChain,setsortedCurrentOptionChain]=useState([]);
     const [switchState,setSwitchState]=useState(false)
     const [bucketList,setBucketList]=useState([])
-    const [busketMargin,setBusketMargin]=useState(151020.35)
-    const [requiredBusketMargin,setRequiredBusketMargin]=useState(151016.35)  
+    const [busketMargin,setBusketMargin]=useState(0)
+    const [requiredBusketMargin,setRequiredBusketMargin]=useState(0)  
     const [scrollHeight, setScrollHeight] = useState(160); 
     const [quickBuySell,setQuickBuySell]=useState(false);
     const [editBucketRow,setEditBucketRow]=useState(false);
