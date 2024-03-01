@@ -103,7 +103,8 @@ const TreadingDashboard = () => {
 
     const getallconfigforpositionData=async (requestData)=>{     
       debugger;   
-      const resultData=await PaperTradingAPI.getallconfigforposition(requestData);        
+      const resultData=await PaperTradingAPI.getallconfigforposition(requestData);   
+      debugger;        
       if(resultData!=null){
               console.log(resultData);
               updateGlobleConfigPostionData(resultData);

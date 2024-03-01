@@ -434,14 +434,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleReverseOrderExist = (dataInfo) => {
+    const logmessege="Reverse Position "+dataInfo.tradingSymbol+" from "+dataInfo.positionsidetype.toUpperCase()+" to "+(dataInfo.positionsidetype.toLowerCase()==='buy'?'SELL':'BUY');
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      ProcessReverseOrderExistPaper(dataInfo);
+      ProcessReverseOrderExistPaper(dataInfo,logmessege);
     } else {
-      ProcessReverseOrderExistLive(dataInfo);
+      ProcessReverseOrderExistLive(dataInfo,logmessege);
     }
   };
 
-  const ProcessReverseOrderExistLive = (dataInfo) => {
+  const ProcessReverseOrderExistLive = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -539,9 +540,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
-  const ProcessReverseOrderExistPaper = (dataInfo) => {
+  const ProcessReverseOrderExistPaper = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -660,15 +661,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
-
   const handdleAddExistQty = (dataInfo, processType) => {
+    const logmessege="Added "+dataInfo.newqty.toString()+"qty to "+dataInfo.tradingSymbol;   
     if (processType === "add") {
       if (globleSelectedTradingType.toLowerCase() === "paper") {
-        processAddOrderPaper(dataInfo);
+        processAddOrderPaper(dataInfo,logmessege);
       } else {
-        processAddOrderLive(dataInfo);
+        processAddOrderLive(dataInfo,logmessege);
       }
     }
 
@@ -676,7 +677,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     //     processExistOrder(dataInfo);
     // }
   };
-  const processAddOrderLive = (dataInfo) => {
+  const processAddOrderLive = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -775,9 +776,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
-  const processAddOrderPaper = (dataInfo) => {
+  const processAddOrderPaper = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -894,18 +895,17 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
-
   const handdleOrderExist = (dataInfo) => {
+    const logmessege="EXIT Position "+dataInfo.exitqty.toString()+"qty to "+dataInfo.tradingSymbol;   
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      processExitOrderPaper(dataInfo);
+      processExitOrderPaper(dataInfo,logmessege);
     } else {
-      processExitOrderLive(dataInfo);
+      processExitOrderLive(dataInfo,logmessege);
     }
   };
-
-  const processExitOrderLive = (dataInfo) => {
+  const processExitOrderLive = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1007,10 +1007,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
 
-  const processExitOrderPaper = (dataInfo) => {
+  const processExitOrderPaper = (dataInfo,logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1133,13 +1133,17 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data);
+    processInsertUpdateOrder(data,logmessege);
   };
 
-  const processInsertUpdateOrder = async (requestOrderList) => {
+  const processInsertUpdateOrder = async (requestOrderList,logmessege) => {
+    const objData={
+      orderitems:requestOrderList,
+      logmessage:logmessege
+    }
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       const resultData = await PaperTradingAPI.processInsertUpdateOrderPaper(
-        requestOrderList
+        objData
       );
       if (resultData != null) {
         alertify.success("Order added successfully.");
@@ -1149,6 +1153,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let requestData = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestOrderList,
+        logmessage:logmessege
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderLive(
         requestData
@@ -1201,11 +1206,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       "Information",
       "Do you want to exit all open position ?",
       () => {
-        debugger;
+        const msgtext="EXIT ALL Positions";
         if (globleSelectedTradingType.toLowerCase() === "paper") {
-          processExitAllPositionPaper();
+          processExitAllPositionPaper(msgtext);
         } else {
-          processExitAllPositionLive();
+          processExitAllPositionLive(msgtext);
         }
       },
       () => {}
@@ -1223,7 +1228,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     );
   };
 
-  const processExitAllPositionLive = () => {
+  const processExitAllPositionLive = (logmessage) => {
     debugger;
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -1369,10 +1374,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
   };
 
-  const processExitAllPositionPaper = () => {
+  const processExitAllPositionPaper = (logmessage) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1562,11 +1567,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
   };
 
-  const getSetting = (instrumentname, expiryDate) => {
-    debugger;
+  const getSetting = (instrumentname, expiryDate) => {    
     const dataSetting = globalConfigPostionData.find(
       (data) =>
         data.instrumentname === instrumentname && data.expirydate === expiryDate
@@ -1597,10 +1601,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     return Math.round(Number(orderprice) * 20) / 20;
   };
 
-  const processExitAllPositionInBulk = async (requestData) => {
+  const processExitAllPositionInBulk = async (requestData,logmessage) => {
+    
     if (globleSelectedTradingType.toLowerCase() === "paper") {
+      const objReq={
+        orderitems: requestData,
+        logmessage:logmessage
+      }
       const resultData =
-        await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);
+        await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objReq);
       if (resultData != null) {
         alertify.success("All open order closed successfully.");
         setChangeOrderPosition((data) => data + 1);
@@ -1625,8 +1634,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     message
   ) => {
     if (globleSelectedTradingType.toLowerCase() === "paper") {
+      const objRequest={
+        orderitems:requestData,
+        logmessage:message
+      }
       const resultData =
-        await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);
+        await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objRequest);
       if (resultData != null) {
         alertify.success(message);
         setChangeOrderPosition((data) => data + 1);
@@ -1635,6 +1648,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let dataInfo = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestData,
+        logmessage:message
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderBulkLive(
         dataInfo
@@ -1655,6 +1669,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let requestData = {
         clientid: globleSelectedClientInfo,
         tradermode: globleSelectedTradingType,
+        brokerName: globleBrokerName,
+        logmessage:"EXIT ALL Pending Orders."
       };
       const resultData = await PaperTradingAPI.processAllPendingOrderForClient(
         requestData
@@ -1668,6 +1684,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         clientid: globleSelectedClientInfo,
         tradermode: globleSelectedTradingType,
         logintoken: sessionStorage.getItem("apiSecret"),
+        brokerName: globleBrokerName,
+        logmessage:"EXIT ALL Pending Orders."
       };
       const resultData = await LiveTradingAPI.processAllPendingOrderForClient(
         requestData
@@ -1715,13 +1733,18 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getLogList();
       gettrailingvalues();
     });
+    
+    connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
+      getLogList();           
+    });
+
 
     connectionData.on('ReceiveDataForPosition', (receivedData) => {        
       getPositionStoplossList();           
     });
 
     connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
-      gettrailingvalues();           
+      gettrailingvaluesfromtrailing();           
     });
 
     return () => {
@@ -1755,6 +1778,27 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       });                          
     }
   }
+
+  const gettrailingvaluesfromtrailing = async () => {
+    let requestData = {
+      clientid: sessionStorage.getItem("clienttoken"),
+      tradermode: sessionStorage.getItem("tradingtype"),
+      brockername:sessionStorage.getItem("brokername")  ,
+    };
+    const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);
+    debugger;
+    if (resultData != null) {
+      if (resultData.length > 0) {
+        updateGlobalStopLoss(resultData[0].stopLoss);
+        updateGlobalTP(resultData[0].trailingpoint);
+        updateGlobalTarget(resultData[0].target);
+      } else {
+        updateGlobalStopLoss(0);
+        updateGlobalTP(0);
+        updateGlobalTarget(0);
+      }
+    }
+  };
 
   const gettrailingvalues = async () => {
     let requestData = {
@@ -1885,8 +1929,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       tradermode: sessionStorage.getItem("tradingtype"),
     };
     const resultData = await PaperTradingAPI.getOrderClosedList(requestData);
-    if (resultData != null) {
-      console.log("Nitin")
+    if (resultData != null) {       
       console.log(resultData)
       updateGlobleClosedList(resultData);
     }

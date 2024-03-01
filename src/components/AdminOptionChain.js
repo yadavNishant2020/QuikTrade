@@ -94,6 +94,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
 
     ]
       const handleChange=()=>{
+        CookiesConfig.setCookie("switchState",!switchState);
         setSwitchState((switchState)=>!switchState); 
       }
 
@@ -139,6 +140,16 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       useEffect(()=>{             
           setOptionChainData([]);
           updatGlobleOptionChainType('opt');
+          debugger;
+          let switchState=false;
+          if(CookiesConfig.getCookie("switchState")===null){
+            CookiesConfig.setCookie("switchState",false);
+          }else if(CookiesConfig.getCookie("switchState").toString().toLowerCase()==="true"){
+            switchState=true;
+          }else{
+            switchState=false;
+          }
+          setSwitchState(switchState); 
           
       },[]); 
       
@@ -644,13 +655,21 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
 
   const processInsertUpdateOrder=async (data)=>{
       if(globleSelectedTradingType.toLowerCase()==="paper"){
-          let requestData=data
+        const requestData={
+          orderitems: data,
+          logmessage:""
+        }
+           
           const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestData);        
           if(resultData!=null){           
             alertify.success("Order added successfully.")
           }
       }else{
-        let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:data}
+        let requestData={
+          logintoken:sessionStorage.getItem("apiSecret"),
+          orderitems:data,
+          logmessage:""
+        }
         const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
         if(resultData!=null){           
           alertify.message(resultData);
@@ -1095,7 +1114,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
   }
   const processInsertUpdateOrderBulk=async(requestNewBucketList)=>{    
     if(globleSelectedTradingType.toLowerCase()==="paper"){
-      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestNewBucketList);
+      const objReq={
+        orderitems: requestNewBucketList,
+        logmessage:"Basket order is executed."
+      }
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objReq);
       if(resultData!=null){
         setDiableBasketExecute(false);
         let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;
@@ -1110,7 +1133,8 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
     }else{
       let dataInfo={
         logintoken:sessionStorage.getItem("apiSecret"),
-        orderitems :requestNewBucketList
+        orderitems :requestNewBucketList,
+        logmessage:"Basket order is executed."
       }
       const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
       if(resultData!=null){

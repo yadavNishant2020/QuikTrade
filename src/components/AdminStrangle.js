@@ -924,13 +924,21 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
   
 const processInsertUpdateOrder=async(requestOrderList)=>{  
   if(globleSelectedTradingType.toLowerCase()==="paper"){ 
-      const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestOrderList);   
+    let requestData={       
+      orderitems:requestOrderList,
+      logmessage:""
+    }
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestData);   
       if(resultData!=null){      
         alertify.success("Order added successfully.")
       }else{    
       }
     }else{
-      let requestData={logintoken:sessionStorage.getItem("apiSecret"),orderitems:requestOrderList}
+      let requestData={
+        logintoken:sessionStorage.getItem("apiSecret"),
+        orderitems:requestOrderList,
+        logmessage:""
+      }
       const resultData=await LiveTradingAPI.processInsertUpdateOrderLive(requestData);        
       if(resultData!=null){           
         alertify.message(resultData);
@@ -941,7 +949,11 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
 
 const processInsertUpdateOrderBulk=async(requestOrderList)=>{
   if(globleSelectedTradingType.toLowerCase()==="paper"){
-      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestOrderList);
+    let requestData={       
+      orderitems:requestOrderList,
+      logmessage:""
+    }
+      const resultData=await PaperTradingAPI.processInsertUpdateOrderBulkPaper(requestData);
       if(resultData!=null){      
         alertify.success("Order added successfully.")
       }else{
@@ -950,7 +962,8 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
 }else{
         let dataInfo={
           logintoken:sessionStorage.getItem("apiSecret"),
-          orderitems :requestOrderList
+          orderitems :requestOrderList,
+          logmessage:""
         }
         const resultData=await LiveTradingAPI.processInsertUpdateOrderBulkLive(dataInfo);
         if(resultData!=null){     
