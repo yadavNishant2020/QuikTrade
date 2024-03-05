@@ -76,7 +76,7 @@ const TreadingDashboard = () => {
     useLayoutEffect(() => {
       const handleResize = () => {
         setHeight(divRef?.current?.children[0]?.clientHeight);
-        console.log("divRef", divRef?.current?.children[0]?.clientHeight)
+        
 
       };
       handleResize();
@@ -106,7 +106,7 @@ const TreadingDashboard = () => {
       const resultData=await PaperTradingAPI.getallconfigforposition(requestData);   
       debugger;        
       if(resultData!=null){
-              console.log(resultData);
+              //console.log(resultData);
               updateGlobleConfigPostionData(resultData);
       }
   }
@@ -290,7 +290,7 @@ const TreadingDashboard = () => {
     
         // Cleanup on component unmount
         return () => {
-         // console.log('Cleaning up Centrifuge');
+         console.log('Cleaning up Centrifuge');
          centrifugeInstanceNew.disconnect();
         }; 
     }
@@ -472,7 +472,7 @@ const TreadingDashboard = () => {
 
   // Cleanup on component unmount
   return () => {
-   // console.log('Cleaning up Centrifuge');
+    console.log('Cleaning up Centrifuge');
    centrifugePositionInstanceNew.disconnect();
   }; 
 }

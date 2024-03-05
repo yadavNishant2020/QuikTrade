@@ -17,7 +17,7 @@ const options = [
  ];
  
  const onChange = (newValue) => {
-     console.log(newValue);
+     //console.log(newValue);
  };
  
  const initialSelectedIndex = options.findIndex(({value}) => value === "bar");

@@ -102,91 +102,30 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   useEffect(() => {
     if (optionChainDataForPosition.length > 0) {
-      setOrderPosition((previousData) => {
-        if (previousData !== undefined) {
-          const updatedOrderPosition = previousData.map((position) => {
-            const matchingOption = optionChainDataForPosition?.find(
-              (item) =>
-                item.instrumentToken === position.instrumentToken.toString()
-            );
-            if (matchingOption) {
-              return {
-                ...position,
-                ltp: matchingOption.ltp,
-                unrealisedpnl: calculateUnrealisedPnl(position, matchingOption),
-              };
-            } else {
-              return {
-                ...position,
-                ltp: 0,
-                unrealisedpnl: 0,
-              };
+        // Update orderPosition based on optionChainDataForPosition
+        setOrderPosition((previousData) => {
+            if (previousData !== undefined && previousData !== null) {
+                const updatedOrderPosition = previousData.map((position,index) => {
+                    const matchingOption = optionChainDataForPosition?.find(
+                        (item) => item?.instrumentToken === position?.instrumentToken?.toString()
+                    );
+                    if (matchingOption) {
+                        return {
+                            ...position,
+                            ltp: matchingOption.ltp,
+                            unrealisedpnl: calculateUnrealisedPnl(position, matchingOption),
+                            // Add other updates here if needed
+                        };
+                    } else {
+                        return position;
+                    }
+                });
+                return updatedOrderPosition;
             }
-          });
-
-          // Update other properties outside the map function
-          updatedOrderPosition.forEach((position, index) => {
-            const data = position;
-            let defaultSaveedQty = getSetting(
-              data.positioninstrumentname,
-              data.positionexpirydate
-            )?.defaultQty;
-            position.moveinouttotalqty =
-              parseInt(data.moveinoutqty) * parseInt(defaultSaveedQty);
-            position.newaddtotalqty =
-              parseInt(data.newqty) * parseInt(defaultSaveedQty);
-            position.exittotalqty =
-              parseInt(data.exitqty) * parseInt(defaultSaveedQty);
-            const matchingOptionFirstInStrick = optionChainDataForPosition.find(
-              (dataOrder) =>
-                dataOrder.instrumentToken === data.firstInInstrumentToken
-            );
-            if (matchingOptionFirstInStrick != null) {
-              position.firstInltp = matchingOptionFirstInStrick.ltp;
-            } else {
-              position.firstInltp = parseFloat(0).toFixed(2);
-            }
-            const matchingOptionSecondInStrick =
-              optionChainDataForPosition.find(
-                (dataOrder) =>
-                  dataOrder.instrumentToken === data.secondInInstrumentToken
-              );
-            if (matchingOptionSecondInStrick != null) {
-              position.secondInltp = matchingOptionSecondInStrick.ltp;
-            } else {
-              position.secondInltp = parseFloat(0).toFixed(2);
-            }
-
-            const matchingOptionFirstOutStrick = filterOrderPositionList.find(
-              (dataOrder) =>
-                dataOrder.instrumentToken === data.firstOutInstrumentToken
-            );
-            if (matchingOptionFirstOutStrick != null) {
-              position.firstOutltp = matchingOptionFirstOutStrick.ltp;
-            } else {
-              position.firstOutltp = parseFloat(0).toFixed(2);
-            }
-            const matchingOptionSecondOutStrick = filterOrderPositionList.find(
-              (dataOrder) =>
-                dataOrder.instrumentToken === data.secondOutInstrumentToken
-            );
-            if (matchingOptionSecondOutStrick != null) {
-              position.secondOutltp = matchingOptionSecondOutStrick.ltp;
-            } else {
-              position.secondOutltp = parseFloat(0).toFixed(2);
-            }
-
-            // Add similar logic for other properties here
-          });
-
-          return updatedOrderPosition;
-        }
-
-        // If previousData is undefined, return it unchanged
-        return previousData;
-      });
+            return previousData;
+        });
     }
-  }, [optionChainDataForPosition, globlePositionChange]);
+}, [optionChainDataForPosition, globlePositionChange]);
 
   useEffect(() => {
     if (globleSelectedClientInfo?.length > 0) {
@@ -243,16 +182,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [globleOrderPosition]);
 
   const calculateUnrealisedPnl = (position, infodata) => {
-    return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty)
-    // if (globleSelectedTradingType.toLowerCase() === "paper") {
-    //     return position.positionsidetype.toLowerCase() === "buy"
-    //       ? (parseFloat(infodata.ltp) - parseFloat(position.buyavg)) *
-    //           (parseFloat(position.buyqty) - parseFloat(position.sellqty))
-    //       : (parseFloat(position.sellavg) - parseFloat(infodata.ltp)) *
-    //           (parseFloat(position.sellqty) - parseFloat(position.buyqty));
-    // }else{
-    //   return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty)
-    // }
+    return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty);
+     
   };
 
   const handdleMoveInOutQtyChange = (e, index, data) => {
@@ -1761,19 +1692,23 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
      const resultData=await PaperTradingAPI.getPositionStoplossList(requestData);        
     if(resultData!=null){   
       setOrderPosition((previousData) => {
-        if (previousData !== undefined) {
-  
-          const updatedOrderPosition = previousData.map((position) => {
-            const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
-            if (matchingOption) {
-              return {
-                ...position,
-                positionstoploss: matchingOption.positionstoploss
-  
-              };
-            }  
-          });     
-          return updatedOrderPosition;
+            if (previousData !== undefined) {  
+                if(previousData!=null){
+                const updatedOrderPosition = previousData.map((position) => {
+                  const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
+                  if (matchingOption) {
+                    return {
+                      ...position,
+                      positionstoploss: matchingOption.positionstoploss        
+                    };
+                  }else{
+                    return {
+                      ...position
+                    }
+                  }  
+                });     
+                return updatedOrderPosition;
+            }
         }    
       });                          
     }
@@ -1930,7 +1865,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     };
     const resultData = await PaperTradingAPI.getOrderClosedList(requestData);
     if (resultData != null) {       
-      console.log(resultData)
+     
       updateGlobleClosedList(resultData);
     }
   };
@@ -3434,396 +3369,400 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                     {filterOrderPosition !== undefined &&
                       filterOrderPosition !== null &&
                       filterOrderPosition.length > 0 &&
-                      filterOrderPosition?.map((dataInfo, index) => (
-                        <tr key={index}>
-                          <td className="text-center">
-                            <span
-                              className={
-                                dataInfo.positionsidetype.toLowerCase() ===
-                                "buy"
-                                  ? "btn text-success text-bold buy-light"
-                                  : "btn text-danger text-bold sell-light"
-                              }
-                            >
-                              {dataInfo.positionsidetype}
-                            </span>
-                          </td>
-                          <td className="text-left">
-                            {dataInfo.strikeprice === "0" ? (
-                              dataInfo.positioninstrumentname
-                            ) : (
-                              <>
-                                <strong>
-                                  {" "}
-                                  {dataInfo.positioninstrumentname}{" "}
-                                </strong>{" "}
-                                {Constant.ConvertShortDate(
-                                  dataInfo.positionexpirydate
-                                )}{" "}
-                                {dataInfo.strikeprice}{" "}
-                                {dataInfo.positionordertype}
-                              </>
-                            )}
-                          </td>
-                          <td className="text-center">
-                            <span
-                              className={
-                                dataInfo.positionproductname.toLowerCase() ===
-                                "mis"
-                                  ? "btn text-product-mis text-bold buy-light"
-                                  : "btn text-product-nmrd text-bold sell-light"
-                              }
-                            >
-                              {dataInfo.positionproductname}
-                            </span>
-                          </td>
-                          <td className="text-center">
-                            {/* {dataInfo.positionnetqty} */}
+                      filterOrderPosition?.map((dataInfo, index) => {
+                        if (dataInfo) {
+                          return (
+                              <tr key={index}>
+                                <td className="text-center">
+                                  <span
+                                    className={
+                                      dataInfo.positionsidetype.toLowerCase() ===
+                                      "buy"
+                                        ? "btn text-success text-bold buy-light"
+                                        : "btn text-danger text-bold sell-light"
+                                    }
+                                  >
+                                    {dataInfo.positionsidetype}
+                                  </span>
+                                </td>
+                                <td className="text-left">
+                                  {dataInfo.strikeprice === "0" ? (
+                                    dataInfo.positioninstrumentname
+                                  ) : (
+                                    <>
+                                      <strong>
+                                        {" "}
+                                        {dataInfo.positioninstrumentname}{" "}
+                                      </strong>{" "}
+                                      {Constant.ConvertShortDate(
+                                        dataInfo.positionexpirydate
+                                      )}{" "}
+                                      {dataInfo.strikeprice}{" "}
+                                      {dataInfo.positionordertype}
+                                    </>
+                                  )}
+                                </td>
+                                <td className="text-center">
+                                  <span
+                                    className={
+                                      dataInfo.positionproductname.toLowerCase() ===
+                                      "mis"
+                                        ? "btn text-product-mis text-bold buy-light"
+                                        : "btn text-product-nmrd text-bold sell-light"
+                                    }
+                                  >
+                                    {dataInfo.positionproductname}
+                                  </span>
+                                </td>
+                                <td className="text-center">
+                                  {/* {dataInfo.positionnetqty} */}
 
-                            <fieldset className="border">
-                              <legend align="right">
-                                {parseInt(dataInfo.positionnetqty) < 0
-                                  ? -1 * dataInfo.positionnetqty
-                                  : dataInfo.positionnetqty}
-                              </legend>
-                              {dataInfo.positionnetlot}
-                            </fieldset>
-                          </td>
+                                  <fieldset className="border">
+                                    <legend align="right">
+                                      {parseInt(dataInfo.positionnetqty) < 0
+                                        ? -1 * dataInfo.positionnetqty
+                                        : dataInfo.positionnetqty}
+                                    </legend>
+                                    {dataInfo.positionnetlot}
+                                  </fieldset>
+                                </td>
 
-                          <td className="text-right">
-                            {parseFloat(dataInfo.positionavgprice) < 0
-                              ? Constant.CurrencyFormat(
-                                  dataInfo.positionavgprice
-                                )
-                              : Constant.CurrencyFormat(
-                                  dataInfo.positionavgprice
-                                )}
-                          </td>
-                          <td className="text-right">
-                            {Constant.CurrencyFormat(dataInfo.ltp)}
-                          </td>
-                          <td
-                            className={
-                              parseFloat(dataInfo?.unrealisedpnl) > 0
-                                ? "text-success text-right"
-                                : parseFloat(dataInfo?.unrealisedpnl) < 0
-                                ? "text-danger text-right"
-                                : "text-data-secondary text-right"
-                            }
-                          >
-                            {parseFloat(dataInfo.unrealisedpnl) < 0
-                              ? Constant.CurrencyFormat(dataInfo.unrealisedpnl)
-                              : parseFloat(dataInfo.unrealisedpnl) > 0
-                              ? "+" +
-                                Constant.CurrencyFormat(dataInfo.unrealisedpnl)
-                              : Constant.CurrencyFormat(dataInfo.unrealisedpnl)}
-                          </td>
-                          <td
-                            className="text-right"
-                            onClick={(e) => handleRowClick(e, index)}
-                          >
-                            {editPositionRow === true &&
-                            editPositionRowNo === index ? (
-                              <Input
-                                className="form-control-alternative"
-                                id="input-position-trailling"
-                                placeholder="Trailling"
-                                type="number"
-                                min="1"
-                                onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index,dataInfo)
-                                }
-                                value={dataInfo.positiontrailling}
-                                onChange={(e) =>
-                                  handdlePositionTrailling(e, index, dataInfo)
-                                }
-                                 
-                              />
-                            ) : parseFloat(dataInfo.positiontrailling) !== 0 ? (
-                              dataInfo.positiontrailling
-                            ) : (
-                              "---"
-                            )}
-                          </td>
-                          <td
-                            className="text-right"
-                            onClick={(e) => handleRowClick(e, index)}
-                          >
-                            {editPositionRow === true &&
-                            editPositionRowNo === index ? (
-                              <Input
-                                className="form-control-alternative"
-                                id="input-position-target"
-                                placeholder="Target"
-                                type="number"
-                                min="1"
-                                onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index,dataInfo)
-                                }
-                                value={dataInfo.positiontarget}
-                                onChange={(e) =>
-                                  handdlePositionTarget(e, index, dataInfo)
-                                }
-                                
-                              />
-                            ) : parseFloat(dataInfo.positiontarget) !== 0 ? (
-                              dataInfo.positiontarget
-                            ) : (
-                              "---"
-                            )}
-                          </td>
-                          <td
-                            className="text-right"
-                            onClick={(e) => handleRowClick(e, index)}
-                          >
-                            {editPositionRow === true &&
-                            editPositionRowNo === index ? (
-                              <Input
-                                className="form-control-alternative"
-                                id="input-position-stoploss"
-                                placeholder="StopLoss"
-                                type="number"
-                                min="1"
-                                onKeyDown={(e) =>
-                                  handleKeyDownPosition(e, index,dataInfo)
-                                }
-                                value={dataInfo.positionstoploss}
-                                onChange={(e) =>
-                                  handdlePositionStopLoss(e, index, dataInfo)
-                                }
-                                
-                              />
-                            ) : parseFloat(dataInfo.positionstoploss) !== 0? (
-                              dataInfo.positionstoploss
-                            ) : (
-                              "---"
-                            )}
-                          </td>
+                                <td className="text-right">
+                                  {parseFloat(dataInfo.positionavgprice) < 0
+                                    ? Constant.CurrencyFormat(
+                                        dataInfo.positionavgprice
+                                      )
+                                    : Constant.CurrencyFormat(
+                                        dataInfo.positionavgprice
+                                      )}
+                                </td>
+                                <td className="text-right">
+                                  {Constant.CurrencyFormat(dataInfo.ltp)}
+                                </td>
+                                <td
+                                  className={
+                                    parseFloat(dataInfo?.unrealisedpnl) > 0
+                                      ? "text-success text-right"
+                                      : parseFloat(dataInfo?.unrealisedpnl) < 0
+                                      ? "text-danger text-right"
+                                      : "text-data-secondary text-right"
+                                  }
+                                >
+                                  {parseFloat(dataInfo.unrealisedpnl) < 0
+                                    ? Constant.CurrencyFormat(dataInfo.unrealisedpnl)
+                                    : parseFloat(dataInfo.unrealisedpnl) > 0
+                                    ? "+" +
+                                      Constant.CurrencyFormat(dataInfo.unrealisedpnl)
+                                    : Constant.CurrencyFormat(dataInfo.unrealisedpnl)}
+                                </td>
+                                <td
+                                  className="text-right"
+                                  onClick={(e) => handleRowClick(e, index)}
+                                >
+                                  {editPositionRow === true &&
+                                  editPositionRowNo === index ? (
+                                    <Input
+                                      className="form-control-alternative"
+                                      id="input-position-trailling"
+                                      placeholder="Trailling"
+                                      type="number"
+                                      min="1"
+                                      onKeyDown={(e) =>
+                                        handleKeyDownPosition(e, index,dataInfo)
+                                      }
+                                      value={dataInfo.positiontrailling}
+                                      onChange={(e) =>
+                                        handdlePositionTrailling(e, index, dataInfo)
+                                      }
+                                      
+                                    />
+                                  ) : parseFloat(dataInfo.positiontrailling) !== 0 ? (
+                                    dataInfo.positiontrailling
+                                  ) : (
+                                    "---"
+                                  )}
+                                </td>
+                                <td
+                                  className="text-right"
+                                  onClick={(e) => handleRowClick(e, index)}
+                                >
+                                  {editPositionRow === true &&
+                                  editPositionRowNo === index ? (
+                                    <Input
+                                      className="form-control-alternative"
+                                      id="input-position-target"
+                                      placeholder="Target"
+                                      type="number"
+                                      min="1"
+                                      onKeyDown={(e) =>
+                                        handleKeyDownPosition(e, index,dataInfo)
+                                      }
+                                      value={dataInfo.positiontarget}
+                                      onChange={(e) =>
+                                        handdlePositionTarget(e, index, dataInfo)
+                                      }
+                                      
+                                    />
+                                  ) : parseFloat(dataInfo.positiontarget) !== 0 ? (
+                                    dataInfo.positiontarget
+                                  ) : (
+                                    "---"
+                                  )}
+                                </td>
+                                <td
+                                  className="text-right"
+                                  onClick={(e) => handleRowClick(e, index)}
+                                >
+                                  {editPositionRow === true &&
+                                  editPositionRowNo === index ? (
+                                    <Input
+                                      className="form-control-alternative"
+                                      id="input-position-stoploss"
+                                      placeholder="StopLoss"
+                                      type="number"
+                                      min="1"
+                                      onKeyDown={(e) =>
+                                        handleKeyDownPosition(e, index,dataInfo)
+                                      }
+                                      value={dataInfo.positionstoploss}
+                                      onChange={(e) =>
+                                        handdlePositionStopLoss(e, index, dataInfo)
+                                      }
+                                      
+                                    />
+                                  ) : parseFloat(dataInfo.positionstoploss) !== 0? (
+                                    dataInfo.positionstoploss
+                                  ) : (
+                                    "---"
+                                  )}
+                                </td>
 
-                          <td className="text-center" style={{ width: "4%" }}>
-                            {dataInfo.positionordertype.toLowerCase() ===
-                            "fut" ? (
-                              ""
-                            ) : (
-                              <div
-                                className="moveinout"
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <button
-                                  className="btn btn-danger text-black  movein-light mr-1"
-                                  disabled={
-                                    parseFloat(dataInfo.secondInltp) > 0 &&
-                                    dataInfo.moveinoutqty > 0
-                                      ? false
-                                      : true
-                                  }
-                                  onClick={(e) =>
-                                    handdleSecondPosition(dataInfo, "in")
-                                  }
+                                <td className="text-center" style={{ width: "4%" }}>
+                                  {dataInfo.positionordertype.toLowerCase() ===
+                                  "fut" ? (
+                                    ""
+                                  ) : (
+                                    <div
+                                      className="moveinout"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <button
+                                        className="btn btn-danger text-black  movein-light mr-1"
+                                        disabled={
+                                          parseFloat(dataInfo.secondInltp) > 0 &&
+                                          dataInfo.moveinoutqty > 0
+                                            ? false
+                                            : true
+                                        }
+                                        onClick={(e) =>
+                                          handdleSecondPosition(dataInfo, "in")
+                                        }
+                                      >
+                                        <b> {dataInfo.secondInStrike} </b>(
+                                        {dataInfo.secondInltp})
+                                      </button>
+                                      <button
+                                        className="btn btn-danger text-black  movein-light mr-1"
+                                        disabled={
+                                          parseFloat(dataInfo.firstInltp) > 0 &&
+                                          dataInfo.moveinoutqty > 0
+                                            ? false
+                                            : true
+                                        }
+                                        onClick={(e) =>
+                                          handdleFirstPosition(dataInfo, "in")
+                                        }
+                                      >
+                                        <b> {dataInfo.firstInStrike}</b> (
+                                        {dataInfo.firstInltp})
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="text-center" style={{ width: "5%" }}>
+                                  {dataInfo.positionordertype.toLowerCase() ===
+                                  "fut" ? (
+                                    "---"
+                                  ) : (
+                                    <fieldset className="border">
+                                      <legend align="right">
+                                        {dataInfo.moveinouttotalqty}
+                                      </legend>
+                                      <Input
+                                        style={{padding:"0.74rem !important"}}
+                                        className="form-control-alternative"
+                                        id="input-postal-code"
+                                        placeholder="Qty"
+                                        type="number"
+                                        min="1"
+                                        value={dataInfo.moveinoutqty}
+                                        onChange={(e) =>
+                                          handdleMoveInOutQtyChange(
+                                            e,
+                                            index,
+                                            dataInfo
+                                          )
+                                        }
+                                      />
+                                    </fieldset>
+                                  )}
+                                </td>
+                                <td
+                                  className="text-center moveinout"
+                                  style={{ width: "4%" }}
                                 >
-                                  <b> {dataInfo.secondInStrike} </b>(
-                                  {dataInfo.secondInltp})
-                                </button>
-                                <button
-                                  className="btn btn-danger text-black  movein-light mr-1"
-                                  disabled={
-                                    parseFloat(dataInfo.firstInltp) > 0 &&
-                                    dataInfo.moveinoutqty > 0
-                                      ? false
-                                      : true
-                                  }
-                                  onClick={(e) =>
-                                    handdleFirstPosition(dataInfo, "in")
-                                  }
-                                >
-                                  <b> {dataInfo.firstInStrike}</b> (
-                                  {dataInfo.firstInltp})
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                          <td className="text-center" style={{ width: "5%" }}>
-                            {dataInfo.positionordertype.toLowerCase() ===
-                            "fut" ? (
-                              "---"
-                            ) : (
-                              <fieldset className="border">
-                                <legend align="right">
-                                  {dataInfo.moveinouttotalqty}
-                                </legend>
-                                <Input
-                                   style={{padding:"0.74rem !important"}}
-                                  className="form-control-alternative"
-                                  id="input-postal-code"
-                                  placeholder="Qty"
-                                  type="number"
-                                  min="1"
-                                  value={dataInfo.moveinoutqty}
-                                  onChange={(e) =>
-                                    handdleMoveInOutQtyChange(
-                                      e,
-                                      index,
-                                      dataInfo
-                                    )
-                                  }
-                                />
-                              </fieldset>
-                            )}
-                          </td>
-                          <td
-                            className="text-center moveinout"
-                            style={{ width: "4%" }}
-                          >
-                            {dataInfo.positionordertype.toLowerCase() ===
-                            "fut" ? (
-                              ""
-                            ) : (
-                              <div
-                                className="moveinout"
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <button
-                                  className="btn btn-success moveout-light text-black  mr-1"
-                                  disabled={
-                                    parseFloat(dataInfo.firstOutltp) > 0 &&
-                                    dataInfo.moveinoutqty > 0
-                                      ? false
-                                      : true
-                                  }
-                                  onClick={(e) =>
-                                    handdleFirstPosition(dataInfo, "out")
-                                  }
-                                >
-                                  <b> {dataInfo.firstOutStrike}</b> (
-                                  {dataInfo.firstOutltp})
-                                </button>
-                                <button
-                                  className="btn btn-success moveout-light text-black     ml-1"
-                                  disabled={
-                                    parseFloat(dataInfo.secondOutltp) > 0 &&
-                                    dataInfo.moveinoutqty > 0
-                                      ? false
-                                      : true
-                                  }
-                                  onClick={(e) =>
-                                    handdleSecondPosition(dataInfo, "out")
-                                  }
-                                >
-                                  <b> {dataInfo.secondOutStrike}</b> (
-                                  {dataInfo.secondOutltp})
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                          <td className="text-center">
-                            <div className="form-group addexistnewqty">
-                              <button
-                                className={`btn hide btn-danger text-danger text-bold sell-light mr-0 ${
-                                  parseFloat(dataInfo.ltp) < 0 ||
-                                  dataInfo.ltp === undefined
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handdleAddExistQty(dataInfo, "exit")
-                                }
-                                disabled={
-                                  parseFloat(dataInfo.ltp) < 0 ||
-                                  dataInfo.ltp === undefined
-                                    ? true
-                                    : false
-                                }
-                              >
-                                <i className="fas fa-close"></i>
-                              </button>
-                              <fieldset className="border">
-                                <legend align="right">
-                                  {dataInfo.newaddtotalqty}
-                                </legend>
-                                <Input
-                                 style={{width: "100%", padding:"0.74rem !important"}}
-                                  className="form-control-alternative"
-                                  id="input-postal-code"
-                                  placeholder="Qty"
-                                  type="number"
-                                  min="1"
-                                  value={dataInfo.newqty}
-                                  onChange={(e) =>
-                                    handdleNewQtyChange(e, index, dataInfo)
-                                  }
-                                />
-                              </fieldset>
-                              <button
-                                className={`btn btn-success buy-light text-success text-bold ml-1 ${
-                                  !parseFloat(dataInfo.ltp) ||
-                                  !parseInt(dataInfo.newqty)
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handdleAddExistQty(dataInfo, "add")
-                                }
-                                disabled={
-                                  !parseFloat(dataInfo.ltp) ||
-                                  !parseInt(dataInfo.newqty)
-                                }
-                              >
-                                ADD
-                              </button>
-                            </div>
-                          </td>
-                          <td className="text-center">
-                            <div className="form-group">
-                              <fieldset className="border">
-                                <legend align="right">
-                                  {dataInfo.exittotalqty}
-                                </legend>
-                                <Input
-                                  style={{width: "100%", padding:"0.74rem !important"}}
-                                  className="form-control-alternative"
-                                  id="input-postal-code"
-                                  placeholder="Qty"
-                                  type="number"
-                                  min="1"
-                                  value={dataInfo.exitqty}
-                                  onChange={(e) =>
-                                    handdleExitQtyChange(e, index, dataInfo)
-                                  }
-                                />
-                              </fieldset>
-                              <button
-                                className={`btn btn-danger text-danger text-bold sell-light ml-1 ${
-                                  !parseFloat(dataInfo.ltp) ||
-                                  !parseInt(dataInfo.exitqty)
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                disabled={
-                                  !parseFloat(dataInfo.ltp) ||
-                                  !parseInt(dataInfo.exitqty)
-                                }
-                                onClick={() => handdleOrderExist(dataInfo)}
-                              >
-                                EXIT
-                              </button>
-                            </div>
-                          </td>
-                          <td className="text-center">
-                            <button
-                              className="btn btn-warning ml-1"
-                              onClick={() => handdleReverseOrderExist(dataInfo)}
-                            >
-                              REVERSE
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                                  {dataInfo.positionordertype.toLowerCase() ===
+                                  "fut" ? (
+                                    ""
+                                  ) : (
+                                    <div
+                                      className="moveinout"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <button
+                                        className="btn btn-success moveout-light text-black  mr-1"
+                                        disabled={
+                                          parseFloat(dataInfo.firstOutltp) > 0 &&
+                                          dataInfo.moveinoutqty > 0
+                                            ? false
+                                            : true
+                                        }
+                                        onClick={(e) =>
+                                          handdleFirstPosition(dataInfo, "out")
+                                        }
+                                      >
+                                        <b> {dataInfo.firstOutStrike}</b> (
+                                        {dataInfo.firstOutltp})
+                                      </button>
+                                      <button
+                                        className="btn btn-success moveout-light text-black     ml-1"
+                                        disabled={
+                                          parseFloat(dataInfo.secondOutltp) > 0 &&
+                                          dataInfo.moveinoutqty > 0
+                                            ? false
+                                            : true
+                                        }
+                                        onClick={(e) =>
+                                          handdleSecondPosition(dataInfo, "out")
+                                        }
+                                      >
+                                        <b> {dataInfo.secondOutStrike}</b> (
+                                        {dataInfo.secondOutltp})
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="text-center">
+                                  <div className="form-group addexistnewqty">
+                                    <button
+                                      className={`btn hide btn-danger text-danger text-bold sell-light mr-0 ${
+                                        parseFloat(dataInfo.ltp) < 0 ||
+                                        dataInfo.ltp === undefined
+                                          ? "disabled"
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handdleAddExistQty(dataInfo, "exit")
+                                      }
+                                      disabled={
+                                        parseFloat(dataInfo.ltp) < 0 ||
+                                        dataInfo.ltp === undefined
+                                          ? true
+                                          : false
+                                      }
+                                    >
+                                      <i className="fas fa-close"></i>
+                                    </button>
+                                    <fieldset className="border">
+                                      <legend align="right">
+                                        {dataInfo.newaddtotalqty}
+                                      </legend>
+                                      <Input
+                                      style={{width: "100%", padding:"0.74rem !important"}}
+                                        className="form-control-alternative"
+                                        id="input-postal-code"
+                                        placeholder="Qty"
+                                        type="number"
+                                        min="1"
+                                        value={dataInfo.newqty}
+                                        onChange={(e) =>
+                                          handdleNewQtyChange(e, index, dataInfo)
+                                        }
+                                      />
+                                    </fieldset>
+                                    <button
+                                      className={`btn btn-success buy-light text-success text-bold ml-1 ${
+                                        !parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.newqty)
+                                          ? "disabled"
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handdleAddExistQty(dataInfo, "add")
+                                      }
+                                      disabled={
+                                        !parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.newqty)
+                                      }
+                                    >
+                                      ADD
+                                    </button>
+                                  </div>
+                                </td>
+                                <td className="text-center">
+                                  <div className="form-group">
+                                    <fieldset className="border">
+                                      <legend align="right">
+                                        {dataInfo.exittotalqty}
+                                      </legend>
+                                      <Input
+                                        style={{width: "100%", padding:"0.74rem !important"}}
+                                        className="form-control-alternative"
+                                        id="input-postal-code"
+                                        placeholder="Qty"
+                                        type="number"
+                                        min="1"
+                                        value={dataInfo.exitqty}
+                                        onChange={(e) =>
+                                          handdleExitQtyChange(e, index, dataInfo)
+                                        }
+                                      />
+                                    </fieldset>
+                                    <button
+                                      className={`btn btn-danger text-danger text-bold sell-light ml-1 ${
+                                        !parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.exitqty)
+                                          ? "disabled"
+                                          : ""
+                                      }`}
+                                      disabled={
+                                        !parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.exitqty)
+                                      }
+                                      onClick={() => handdleOrderExist(dataInfo)}
+                                    >
+                                      EXIT
+                                    </button>
+                                  </div>
+                                </td>
+                                <td className="text-center">
+                                  <button
+                                    className="btn btn-warning ml-1"
+                                    onClick={() => handdleReverseOrderExist(dataInfo)}
+                                  >
+                                    REVERSE
+                                  </button>
+                                </td>
+                              </tr>
+                          );
+                        }
+                    })}
                   </tbody>
                 </Table>
               </div>

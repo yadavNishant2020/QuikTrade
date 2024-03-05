@@ -1043,7 +1043,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         exchange:basketexchange,
         brokerName:basketBrokerName
         }));  
-      console.log(newBucketList);      
+           
     setDiableBasketExecute(true);
     processInsertUpdateOrderBulk(newBucketList);  
   }
@@ -1103,7 +1103,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         exchange:basketexchange,
         brokerName:basketBrokerName
         }));  
-      console.log(newBucketList);      
+         
     setDiableBasketExecute(true);
     processInsertUpdateOrderBulk(newBucketList);  
   }

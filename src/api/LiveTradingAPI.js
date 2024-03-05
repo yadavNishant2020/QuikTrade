@@ -14,7 +14,7 @@ export const LiveTradingAPI = {
                     data:requestData,
                   };
                   const response = await axios(axiosConfig);    
-                  console.log(response);
+                  
                   const {status,data}=response;
                   if(status===200){
                       return data;
@@ -39,7 +39,7 @@ export const LiveTradingAPI = {
                     data:requestData,
                   };
                   const response = await axios(axiosConfig);    
-                  console.log(response);
+                  
                   const {status,data}=response;
                   if(status===200){
                       return data;
@@ -65,7 +65,7 @@ export const LiveTradingAPI = {
                       data:requestData,
                     };
                     const response = await axios(axiosConfig);    
-                    console.log(response);
+                    
                     const {status,data}=response;
                     if(status===200){
                         return data;

@@ -40,7 +40,7 @@ const WebSocketComponent = () => {
     }
     const inputText = message.data["dl"].toString();
     const text = safeTagsReplace(inputText) + ' <span class="muted">from ' + clientID + '</span>';
-    console.log(text);
+    //console.log(text);
 }
 
   return (

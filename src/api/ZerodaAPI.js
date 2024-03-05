@@ -13,7 +13,7 @@ export const ZerodaAPI = {
                 },    
               };
               const response = await axios(axiosConfig);    
-              console.log(response);
+              
               const {status,data}=response;
               if(status===200){
                   return data;
@@ -88,7 +88,7 @@ export const ZerodaAPI = {
                 },    
               };
               const response = await axios(axiosConfig);    
-              console.log(response);
+              
               const {status,data}=response;
               if(status===200){
                   return data;
@@ -113,7 +113,7 @@ export const ZerodaAPI = {
                         },    
                       };
                       const response = await axios(axiosConfig);    
-                      console.log(response);
+                      
                       const {status,data}=response;
                       if(status===200){
                           return data;
@@ -136,7 +136,7 @@ export const ZerodaAPI = {
                   },    
                 };
                 const response = await axios(axiosConfig);    
-                console.log(response);
+                
                 const {status,data}=response;
                 if(status===200){
                     return data;
@@ -208,7 +208,7 @@ export const ZerodaAPI = {
                       data:requestData
                     };
                     const response = await axios(axiosConfig);    
-                    console.log(response);
+                    
                     const {status,data}=response;
                     if(status===200){
                         return data;
@@ -231,8 +231,7 @@ export const ZerodaAPI = {
                     } 
                      
                   };
-                  const response = await axios(axiosConfig);    
-                  console.log(response);
+                  const response = await axios(axiosConfig);  
                   const {status,data}=response;
                   if(status===200){
                       return data;
@@ -245,62 +244,7 @@ export const ZerodaAPI = {
               return null;
           }
       }
-         //getMarginBasket: async () => { 
-        //   try {  
-
-        //           debugger;
-        //           const requestData1 = [
-        //             {
-        //               "exchange": "NFO",
-        //               "tradingsymbol": "NIFTY23JUL20600CE",
-        //               "transaction_type": "SELL",
-        //               "variety": "regular",
-        //               "product": "NRML",
-        //               "order_type": "MARKET",
-        //               "quantity": 75,
-        //               "price": 0,
-        //               "trigger_price": 0
-        //             },
-        //             {
-        //               "exchange": "NFO",
-        //               "tradingsymbol": "NIFTY23JUL20700CE",
-        //               "transaction_type": "BUY",
-        //               "variety": "regular",
-        //               "product": "NRML",
-        //               "order_type": "MARKET",
-        //               "quantity": 75,
-        //               "price": 0,
-        //               "trigger_price": 0
-        //             }
-        //           ];
-        //             var axiosConfig = {
-        //               method: "POST",
-        //               url: `https://api.kite.trade/margins/basket?consider_positions=true`,  
-        //               headers: {     
-        //                 "Content-Type": "application/json",                       
-        //                 "X-Kite-Version":"3",
-        //                 "Access-Control-Allow-Origin": "*",
-        //                 "Accept":"application/json",
-        //                 "Authorization":"token ainakdgszw42n2bz:AW7H06eKCbIBe3Bn9qFGh7YS0dXJUEVR" 
-        //               },  
-        //               data:JSON.stringify(requestData1),  
-        //             };
-        //             const response = await axios(axiosConfig); 
-        //             const {status,data}=response;
-        //             if(status===200){
-        //                 return data;
-        //             }else{
-        //                 return null;
-        //             }
-        //   } catch (error) {
-        //         console.log(error);
-        //         console.log('Error Details:'+(error.response || error.request || error.message));
-        //         return null;
-        //   },
-
-            
-        
-         // }
+          
 
 }
 export default ZerodaAPI;

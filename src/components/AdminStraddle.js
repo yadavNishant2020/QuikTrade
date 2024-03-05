@@ -391,7 +391,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
   }
   
   const handdleOrderInformationForPELive=(e,data,pedata,side)=>{      
-    console.log(data);
+  
     var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
     const{  defaultProductName,   defaultSliceQty, 
@@ -461,7 +461,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
   }
 
   const handdleOrderInformationForPEPaper=(e,data,pedata,side)=>{      
-    console.log(data);
+  
     var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
     const{  defaultProductName,   defaultSliceQty, 

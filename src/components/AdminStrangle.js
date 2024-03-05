@@ -198,7 +198,7 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
       
       useEffect(()=>{  
                 if(strangleList.length>0){
-                        console.log(strangleList)
+                       
                 } 
       },[strangleList])
       const handdleTextBoxEvent = (e, index,refType) => {
@@ -354,8 +354,7 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
         processInsertUpdateOrder(dataRequest);
     }
     const handdleOrderInformationForCEPaper=(e,data,side)=>{  
-      debugger;    
-      console.log(data);
+      
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
       let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
       const{  defaultProductName,   defaultSliceQty, 
@@ -439,7 +438,7 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
   }
   
   const handdleOrderInformationForPELive=(e,data,pedata,side)=>{      
-      console.log(data);
+      //console.log(data);
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
       let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
       const{  defaultProductName,   defaultSliceQty, 
@@ -510,7 +509,7 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
       processInsertUpdateOrder(dataRequest);
   }
   const handdleOrderInformationForPEPaper=(e,data,pedata,side)=>{      
-    console.log(data);
+    //console.log(data);
     var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
     const{  defaultProductName,   defaultSliceQty, 

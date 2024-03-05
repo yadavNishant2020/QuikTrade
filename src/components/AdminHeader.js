@@ -262,7 +262,7 @@ const AdminHeader = () => {
         });
         channel.on("unsubscribe", (data) => {
           setChannelStatus(0);
-          // console.log(`Unsubscribed from channel: ${data.channel}`);
+           
         });
         channel.on("error", (err) => {
           //console.error('Channel error:', err);
@@ -279,7 +279,7 @@ const AdminHeader = () => {
 
     // Cleanup on component unmount
     return () => {
-      // console.log('Cleaning up Centrifuge');
+       
       centrifugeInstance.disconnect();
     };
   };
