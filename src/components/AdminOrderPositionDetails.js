@@ -1739,13 +1739,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     // });
 
 
-    // connectionData.on('ReceiveDataForPosition', (receivedData) => {        
-    //   getPositionStoplossList();           
-    // });
+    connectionData.on('ReceiveDataForPosition', (receivedData) => {        
+      getPositionStoplossList();           
+    });
 
-    // connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
-    //   gettrailingvaluesfromtrailing();           
-    // });
+    connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
+      gettrailingvaluesfromtrailing();           
+    });
 
     return () => {
 //      clearInterval(pingInterval);
