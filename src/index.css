@@ -903,6 +903,12 @@ fieldset.border{
     font-size: 11px !important;
   }
 
+  .fundlist .table-container {
+    height : 70px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  }
+
   thead tr:not(:first-child) th {
     position: static;  
     top: 18px !important;

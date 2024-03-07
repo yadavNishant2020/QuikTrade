@@ -1693,34 +1693,34 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       .start()
       .then(() => {
         console.log("Connected to SignalR Hub");
+        const intervalId = setInterval(() => {
+          connectionData.send('KeepAlive');
+        }, 30000);
+        connectionData.onclose(() => {
+          clearInterval(intervalId);
+        });
       })
       .catch((err) => console.log(err));
-      // const pingInterval = setInterval(() => {
-      //   connectionData.invoke("Ping").catch(err => console.error("Ping failed: ", err));
-      // }, 5000); // Send ping every 5 seconds
+ 
     connectionData.on("ReceiveData", (receivedData) => {
       getAllOpenPositionList();
       getOrderCompletedList();
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
-    });
-    
+    });    
     connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
       getLogList();           
     });
-
-
     connectionData.on('ReceiveDataForPosition', (receivedData) => {           
-      getPositionStoplossList();           
+      getPositionStoplossList();         
+      console.log("getPositionStoplossList")  
     });
-
     connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
       gettrailingvaluesfromtrailing();           
     });
-
-    return () => {
-      //clearInterval(pingInterval);
+    return () => {    
+      console.log("Dis-Connected to SignalR Hub");
       connectionData.stop();
     };
   }, []);
@@ -1734,6 +1734,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     if(resultData!=null){   
       setOrderPosition((previousData) => {
             if (previousData !== undefined) {  
+               debugger;
                 if(previousData!=null){
                 const updatedOrderPosition = previousData.map((position) => {
                   const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());

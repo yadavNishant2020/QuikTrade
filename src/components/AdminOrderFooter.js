@@ -15,6 +15,8 @@ import { Container, Row, Col,   Button,
    import { useContext } from 'react';  
 import AdminLogs from "./AdminLogs.js";
 import AdminClosedOrder from "./AdminClosedOrder.js";
+import AdminFunds from "./AdminFunds.js";
+
 
 const AdminOrderFooter = () => {
     return (
@@ -22,13 +24,17 @@ const AdminOrderFooter = () => {
 <Tabs style={{backgroundColor:"#FFFFFF"}}>
                                                     <TabList>
                                                     <Tab>CLOSED POSITION</Tab>  
-                                                    <Tab>LOGS</Tab>                                                                                                     
+                                                    <Tab>LOGS</Tab> 
+                                                    <Tab>FUNDS</Tab>                                                                                                          
                                                     </TabList>
                                                     <TabPanel>
                                                         <AdminClosedOrder /> 
                                                     </TabPanel>
                                                     <TabPanel>
                                                         <AdminLogs />
+                                                    </TabPanel>
+                                                    <TabPanel>
+                                                        <AdminFunds />
                                                     </TabPanel>
                                                    
 </Tabs>

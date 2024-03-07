@@ -216,7 +216,7 @@ export const PaperTradingAPI = {
   
     },
     getPositionStoplossList: async (requestData) => { 
-      debugger;
+     
     try {  
               var axiosConfig = {
                 method: "POST",
