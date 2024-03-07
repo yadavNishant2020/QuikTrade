@@ -102,30 +102,71 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   useEffect(() => {
     if (optionChainDataForPosition.length > 0) {
-        // Update orderPosition based on optionChainDataForPosition
-        setOrderPosition((previousData) => {
-            if (previousData !== undefined && previousData !== null) {
-                const updatedOrderPosition = previousData.map((position,index) => {
-                    const matchingOption = optionChainDataForPosition?.find(
-                        (item) => item?.instrumentToken === position?.instrumentToken?.toString()
-                    );
-                    if (matchingOption) {
-                        return {
-                            ...position,
-                            ltp: matchingOption.ltp,
-                            unrealisedpnl: calculateUnrealisedPnl(position, matchingOption),
-                            // Add other updates here if needed
-                        };
-                    } else {
-                        return position;
-                    }
-                });
-                return updatedOrderPosition;
+      setOrderPosition((previousData) => {
+        if (previousData !== undefined) {
+          
+          const updatedOrderPosition = previousData.map((position) => {
+            const matchingOption = optionChainDataForPosition.find((item) => item.instrumentToken === position.instrumentToken.toString());
+            if (matchingOption) {
+              return {
+                ...position,
+                ltp: matchingOption.ltp,
+                unrealisedpnl: calculateUnrealisedPnl(position, matchingOption)
+              };
+            } else {
+              return {
+                ...position,
+                ltp: 0,
+                unrealisedpnl: 0
+              };
             }
-            return previousData;
-        });
+          });
+  
+          // Update other properties outside the map function
+          updatedOrderPosition.forEach((position, index) => {                
+            const data = position;
+            let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
+            position.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(defaultSaveedQty);
+            position.newaddtotalqty=parseInt(data.newqty)*parseInt(defaultSaveedQty);
+            position.exittotalqty=parseInt(data.exitqty)*parseInt(defaultSaveedQty);
+
+            const matchingOptionFirstInStrick = optionChainDataForPosition.find((dataOrder) => dataOrder.instrumentToken === data.firstInInstrumentToken);
+            if (matchingOptionFirstInStrick != null) {
+              position.firstInltp = matchingOptionFirstInStrick.ltp;
+            } else {
+              position.firstInltp = parseFloat(0).toFixed(2);
+            }
+            const matchingOptionSecondInStrick=optionChainDataForPosition.find((dataOrder)=>dataOrder.instrumentToken===data.secondInInstrumentToken);
+            if(matchingOptionSecondInStrick!=null){
+                position.secondInltp=matchingOptionSecondInStrick.ltp ;                         
+            } else{
+                position.secondInltp=parseFloat(0).toFixed(2)
+            }
+
+                   const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
+                   if(matchingOptionFirstOutStrick!=null){
+                    position.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
+                } else{
+                    position.firstOutltp=parseFloat(0).toFixed(2)
+                }
+                const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
+                if(matchingOptionSecondOutStrick!=null){
+                    position.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
+                } else{
+                    position.secondOutltp=parseFloat(0).toFixed(2)
+                }           
+
+            // Add similar logic for other properties here
+          });
+  
+          return updatedOrderPosition;
+        }
+  
+        // If previousData is undefined, return it unchanged
+        return previousData;
+      });
     }
-}, [optionChainDataForPosition, globlePositionChange]);
+  }, [optionChainDataForPosition, globlePositionChange]);
 
   useEffect(() => {
     if (globleSelectedClientInfo?.length > 0) {
@@ -1670,7 +1711,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
 
 
-    connectionData.on('ReceiveDataForPosition', (receivedData) => {        
+    connectionData.on('ReceiveDataForPosition', (receivedData) => {           
       getPositionStoplossList();           
     });
 
@@ -1679,7 +1720,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
 
     return () => {
-//      clearInterval(pingInterval);
+      //clearInterval(pingInterval);
       connectionData.stop();
     };
   }, []);
