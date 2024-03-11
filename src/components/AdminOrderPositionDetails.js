@@ -3648,7 +3648,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                         {dataInfo.moveinouttotalqty}
                                       </legend>
                                       <Input
-                                        style={{padding:"0.74rem !important"}}
+                                        style={{padding:"0.74rem !important" ,textAlign:"center"}}
                                         className="form-control-alternative"
                                         id="input-postal-code"
                                         placeholder="Qty"
@@ -3734,8 +3734,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                         {dataInfo.newaddtotalqty}
                                       </legend>
                                       <Input
-                                      style={{width: "100%", padding:"0.74rem !important"}}
+                                      style={{width: "100%", padding:"0.74rem !important",textAlign:"center"}}
                                         className="form-control-alternative"
+                                        
                                         id="input-postal-code"
                                         placeholder="Qty"
                                         type="number"
@@ -3773,7 +3774,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                         {dataInfo.exittotalqty}
                                       </legend>
                                       <Input
-                                        style={{width: "100%", padding:"0.74rem !important"}}
+                                        style={{width: "100%", padding:"0.74rem !important" ,textAlign:"center"}}
                                         className="form-control-alternative"
                                         id="input-postal-code"
                                         placeholder="Qty"

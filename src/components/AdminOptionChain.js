@@ -1058,7 +1058,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         basketSecondInStrike,basketFirstOutStrike,
         basketSecondOutStrike,basketFirstInExchangeToken,
         basketSecondInExchangeToken,basketFirstOutExchangeToken,basketSecondOutExchangeToken,
-        baskettradingSymbol,basketexchange,basketBrokerName
+        baskettradingSymbol,basketexchange,basketBrokerName,bucketSL,bucketTarget
       }) => ({
         strikePrice:bucketStrike,   
         productname:bucketProduct,
@@ -1079,8 +1079,8 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
         lotsize:getSetting(bucketSymbol,bucketExpiry)?.defaultQty.toString(),
         instrumentToken:instrumentToken,
         orderaction:bucketSide,
-        stoploss:"0",
-        target:"0",
+        stoploss:bucketSL.toString(),
+        target:bucketTarget.toString(),
         trailling:"0",
         orderexchangetoken:exchangeToken.toString(),
         orderstatus:(bucketOrderType==='MKT'?'Completed':         

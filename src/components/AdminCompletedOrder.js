@@ -41,12 +41,12 @@ const AdminCompletedOrder = () => {
         <label className="form-control-label mr-1"  htmlFor="input-username" >
                                                                     Total Orders : 
                                                                     </label>
-                                                                     <span className='text-bold'>{globleOrderList?.length}
+                                                                     <span className='text-bold font-14px'>{globleOrderList?.length}
                                                                     </span>
                                                                     <label className="form-control-label ml-1 mr-1"  htmlFor="input-username" >
                                                                     Completed : 
                                                                     </label>
-                                                                    <span className='text-bold text-success'>{globleOrderList.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length}
+                                                                    <span className='text-bold text-success font-14px'>{globleOrderList.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length}
                                                                     </span>
         </Col>
 </Row>
