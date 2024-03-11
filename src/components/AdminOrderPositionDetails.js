@@ -58,6 +58,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const [searchValue, setSearchValue] = useState("");
   const [mtmchange, setMTMChange] = useState(0);
 
+
+   const [isexecuteProcess, setIsExecuteProcess] = useState(false);
+
+
   const [optionChainDataForPosition, setOptionChainDataForPosition] = useState(
     []
   );
@@ -406,6 +410,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleReverseOrderExist = (dataInfo) => {
+    setIsExecuteProcess(true);
     const logmessege="Reverse Position "+dataInfo.tradingSymbol+" from "+dataInfo.positionsidetype.toUpperCase()+" to "+(dataInfo.positionsidetype.toLowerCase()==='buy'?'SELL':'BUY');
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       ProcessReverseOrderExistPaper(dataInfo,logmessege);
@@ -636,7 +641,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     processInsertUpdateOrder(data,logmessege);
   };
   const handdleAddExistQty = (dataInfo, processType) => {
-    const logmessege="Added "+dataInfo.newqty.toString()+"qty to "+dataInfo.tradingSymbol;   
+    setIsExecuteProcess(true);
+    const logmessege="Added "+dataInfo.newqty.toString()+" lot to "+dataInfo.tradingSymbol;   
     if (processType === "add") {
       if (globleSelectedTradingType.toLowerCase() === "paper") {
         processAddOrderPaper(dataInfo,logmessege);
@@ -870,7 +876,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     processInsertUpdateOrder(data,logmessege);
   };
   const handdleOrderExist = (dataInfo) => {
-    const logmessege="EXIT Position "+dataInfo.exitqty.toString()+"qty to "+dataInfo.tradingSymbol;   
+    setIsExecuteProcess(true);
+    const logmessege="EXIT Position "+dataInfo.exitqty.toString()+" lot to "+dataInfo.tradingSymbol;   
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       processExitOrderPaper(dataInfo,logmessege);
     } else {
@@ -1118,8 +1125,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         objData
       );
       if (resultData != null) {
+        //setIsExecuteProcess(false);
         alertify.success("Order added successfully.");
         setChangeOrderPosition((data) => data + 1);
+      }else{
+        setIsExecuteProcess(false);
       }
     } else {
       let requestData = {
@@ -1131,7 +1141,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         requestData
       );
       if (resultData != null) {
+        //setIsExecuteProcess(false);
         alertify.message(resultData);
+      }else{
+        setIsExecuteProcess(false);
       }
     }
   };
@@ -1807,6 +1820,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       requestData
     );
     if (resultData != null) {
+      setIsExecuteProcess(false);
       let tokentoRegister = [];
       resultData.map((data) => {
         let defaultSaveedQty = getSetting(
@@ -3750,7 +3764,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       }
                                       disabled={
                                         !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.newqty)
+                                        !parseInt(dataInfo.newqty)||
+                                        isexecuteProcess
                                       }
                                     >
                                       ADD
@@ -3785,7 +3800,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       }`}
                                       disabled={
                                         !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.exitqty)
+                                        !parseInt(dataInfo.exitqty)||
+                                        isexecuteProcess
                                       }
                                       onClick={() => handdleOrderExist(dataInfo)}
                                     >
@@ -3795,6 +3811,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 </td>
                                 <td className="text-center">
                                   <button
+                                   disabled={                                     
+                                    isexecuteProcess
+                                  }
                                     className="btn btn-warning ml-1"
                                     onClick={() => handdleReverseOrderExist(dataInfo)}
                                   >
