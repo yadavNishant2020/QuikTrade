@@ -1191,6 +1191,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       "Information",
       "Do you want to exit all open position ?",
       () => {
+        setIsExecuteProcess(true);
         const msgtext="EXIT ALL Positions";
         if (globleSelectedTradingType.toLowerCase() === "paper") {
           processExitAllPositionPaper(msgtext);
@@ -1938,6 +1939,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleFirstPosition = (dataInfo, positionmovetype) => {
+    setIsExecuteProcess(true);
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       handdleFirstPositionPaper(dataInfo, positionmovetype);
     } else {
@@ -2576,6 +2578,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleSecondPosition = (dataInfo, positionmovetype) => {
+    setIsExecuteProcess(true);
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       handdleSecondPositionPaper(dataInfo, positionmovetype);
     } else {
@@ -3350,6 +3353,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
             <Col xl="5" xs="12" className="text-center">
               <Button
+               disabled={                 
+                isexecuteProcess
+              }
                 className="font-10px"
                 color="danger"
                 href="#pablo"
@@ -3608,11 +3614,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       <button
                                         className="btn btn-danger text-black  movein-light mr-1"
                                         disabled={
-                                          parseFloat(dataInfo.secondInltp) > 0 &&
-                                          dataInfo.moveinoutqty > 0
-                                            ? false
-                                            : true
-                                        }
+                                          !(parseFloat(dataInfo.secondInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                        }                                         
                                         onClick={(e) =>
                                           handdleSecondPosition(dataInfo, "in")
                                         }
@@ -3623,11 +3626,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       <button
                                         className="btn btn-danger text-black  movein-light mr-1"
                                         disabled={
-                                          parseFloat(dataInfo.firstInltp) > 0 &&
-                                          dataInfo.moveinoutqty > 0
-                                            ? false
-                                            : true
-                                        }
+                                          !(parseFloat(dataInfo.firstInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                        }                                           
                                         onClick={(e) =>
                                           handdleFirstPosition(dataInfo, "in")
                                         }
@@ -3684,10 +3684,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       <button
                                         className="btn btn-success moveout-light text-black  mr-1"
                                         disabled={
-                                          parseFloat(dataInfo.firstOutltp) > 0 &&
-                                          dataInfo.moveinoutqty > 0
-                                            ? false
-                                            : true
+                                          !(parseFloat(dataInfo.firstOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
                                         }
                                         onClick={(e) =>
                                           handdleFirstPosition(dataInfo, "out")
@@ -3699,11 +3696,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       <button
                                         className="btn btn-success moveout-light text-black     ml-1"
                                         disabled={
-                                          parseFloat(dataInfo.secondOutltp) > 0 &&
-                                          dataInfo.moveinoutqty > 0
-                                            ? false
-                                            : true
-                                        }
+                                          !(parseFloat(dataInfo.secondOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                        }                                       
                                         onClick={(e) =>
                                           handdleSecondPosition(dataInfo, "out")
                                         }
