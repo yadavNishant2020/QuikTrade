@@ -18,7 +18,15 @@ const AdminRule = ({optionChainData}) => {
         <>
                 <Card className="shadow">
                           
-                          <CardBody></CardBody>
+                          <CardBody>
+                                    <Row className="align-items-center">
+                                                <div xl="2">
+                                                    
+                                                                                      
+                                                </div>
+                                    </Row>
+
+                          </CardBody>
                 </Card>
         </>
     )

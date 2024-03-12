@@ -8,7 +8,7 @@ import AdminOrderPositionDetails from "../components/AdminOrderPositionDetails.j
 import AdminStraddle from "../components/AdminStraddle.js";
 import AdminStrangle from "../components/AdminStrangle.js";
 import AdminOrderFooter from "../components/AdminOrderFooter.js";
-import AdminRule from "../components/AdminStrangle.js";
+import AdminRule from "../components/AdminRule.js";
 import AdminCompletedOrder from "../components/AdminCompletedOrder.js";
 import { ZerodaAPI } from "../api/ZerodaAPI";
 import Centrifuge from 'centrifuge';
