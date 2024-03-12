@@ -1158,7 +1158,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   const handleKeyDown = (e) => {
     // Check if the pressed key is Enter (key code 13)
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === "Tab") {
       if (e.target.name === "globalTP") {
         setTpEdit(false);
       } else if (e.target.name === "globalTarget") {
@@ -1183,6 +1183,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     };
     const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
     if (resultData != null) {
+      alertify.success("Stoploss Target updated successfully.");
+    }else{
+      alertify.success("Unable to process request now.Please try again.");
+      gettrailingvalues();
+      
     }
   };
 
