@@ -350,6 +350,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       requestData
     );
     if (resultData != null) {
+      alertify.success("Stoploss Target updated successfully.");
+    }else{
+      alertify.success("Unable to process request now.Please try again.");
     }
   };
 
