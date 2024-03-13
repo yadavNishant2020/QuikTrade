@@ -277,7 +277,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
   };
 
-  const handdlePositionTrailling = (e, index, data) => {
+  const handdlePositionTrailling = (e, index, data) => {     
     let selectedValue = e.target.value;
     //updatePositionByIndex(selectedValue,index)
     setOrderPosition((prevRowData) => {
@@ -291,7 +291,6 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         }
         return position;
       });
-
       return updatedTempOrderPosition;
     });
   };
@@ -3274,8 +3273,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <legend align="right">StopLoss</legend>
                 {!slEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalStopLoss) != 0
-                      ? Constant.CurrencyFormat(globalStopLoss.toString())
+                    {parseFloat(globalStopLoss) !== 0 && globalStopLoss !== "" 
+                      ?  parseFloat(globalStopLoss).toFixed(2)
                       : "---"}
                   </label>
                 ) : (
@@ -3306,8 +3305,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
                 {!tragetEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTarget)  !== 0
-                      ? Constant.CurrencyFormat(globalTarget.toString())
+                    {parseFloat(globalTarget)  !== 0 && globalTarget !== "" 
+                      ? parseFloat(globalTarget).toFixed(2)
                       : "---"}
                   </label>
                 ) : (
@@ -3337,8 +3336,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <legend align="right">Trail SL By</legend>
                 {!tpEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTP)  !== 0
-                      ? Constant.CurrencyFormat(globalTP.toString())
+                    {parseFloat(globalTP)  !== 0 && globalTarget !== "" 
+                      ? parseFloat(globalTP).toFixed(2)
                       : "---"}
                   </label>
                 ) : (
@@ -3540,17 +3539,20 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       onKeyDown={(e) =>
                                         handleKeyDownPosition(e, index,dataInfo)
                                       }
-                                      value={dataInfo.positiontrailling}
+                                      value={         
+                                          dataInfo.positiontrailling
+                                      }
                                       onChange={(e) =>
                                         handdlePositionTrailling(e, index, dataInfo)
                                       }
                                       
                                     />
-                                  ) : parseFloat(dataInfo.positiontrailling) !== 0 ? (
-                                    dataInfo.positiontrailling
-                                  ) : (
-                                    "---"
-                                  )}
+                                  ) : parseFloat(dataInfo.positiontrailling) !== 0 && dataInfo.positiontrailling !== "" ? (
+                                        parseFloat(dataInfo.positiontrailling).toFixed(2)
+                                    ) : (
+                                        "---"
+                                    )
+                                }
                                 </td>
                                 <td
                                   className="text-right"
@@ -3567,17 +3569,23 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       onKeyDown={(e) =>
                                         handleKeyDownPosition(e, index,dataInfo)
                                       }
-                                      value={dataInfo.positiontarget}
+                                      value={
+                                       dataInfo.positiontarget
+                                       }
                                       onChange={(e) =>
                                         handdlePositionTarget(e, index, dataInfo)
                                       }
                                       
                                     />
-                                  ) : parseFloat(dataInfo.positiontarget) !== 0 ? (
-                                    dataInfo.positiontarget
-                                  ) : (
-                                    "---"
-                                  )}
+                                  ) :                              
+                                  parseFloat(dataInfo.positiontarget) !== 0 && dataInfo.positiontarget !== "" ? (
+                                        parseFloat(dataInfo.positiontarget).toFixed(2)
+                                    ) : (
+                                        "---"
+                                    )
+                                  
+                                  
+                                  }
                                 </td>
                                 <td
                                   className="text-right"
@@ -3594,17 +3602,21 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       onKeyDown={(e) =>
                                         handleKeyDownPosition(e, index,dataInfo)
                                       }
-                                      value={dataInfo.positionstoploss}
+                                      value={
+                                      dataInfo.positionstoploss
+                                      }
                                       onChange={(e) =>
                                         handdlePositionStopLoss(e, index, dataInfo)
                                       }
                                       
                                     />
-                                  ) : parseFloat(dataInfo.positionstoploss) !== 0? (
-                                    dataInfo.positionstoploss
-                                  ) : (
-                                    "---"
-                                  )}
+                                  ) : 
+                                   parseFloat(dataInfo.positionstoploss) !== 0 && dataInfo.positionstoploss !== "" ? (
+                                        parseFloat(dataInfo.positionstoploss).toFixed(2)
+                                    ) : (
+                                        "---"
+                                    )
+                                   }
                                 </td>
 
                                 <td className="text-center" style={{ width: "4%" }}>

@@ -449,7 +449,7 @@ body, .main-content,.admindefaultconfig {
 table  input.form-control{
   height: 20px !important;
   font-size: .750rem!important;
-  font-weight: bold;
+  font-weight: normal !important;
 }
 
 .text-right{
@@ -693,7 +693,7 @@ fieldset.border{
 .stoplosstarget label
 {
   padding: 0px 0.75rem !important;
-  font-size: 9px;
+  font-size: .750rem !important;
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
 }
