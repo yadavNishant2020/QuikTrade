@@ -1740,6 +1740,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
       gettrailingvaluesfromtrailing();           
     });
+    // connectionData.on('SendServerTime', (receivedData) => {
+    //    console.log(receivedData);        
+    // });
+
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
       connectionData.stop();
@@ -1787,9 +1791,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     debugger;
     if (resultData != null) {
       if (resultData.length > 0) {
-        if(resultData[0].stopLoss!==globalStopLoss){   
-             updateGlobalStopLoss(resultData[0].stopLoss);
-        }
+        updateGlobalStopLoss(resultData[0].stopLoss);
         if(resultData[0].target!==globalTarget){         
           updateGlobalTarget(resultData[0].target);
         }
