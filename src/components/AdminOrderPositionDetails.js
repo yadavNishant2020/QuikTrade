@@ -1789,12 +1789,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     };
     const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);    
     if (resultData != null) {
+      debugger;
       if (resultData.length > 0) {
         updateGlobalStopLoss(resultData[0].stopLoss);
-        if(resultData[0].target!==globalTarget){         
+        if(parseFloat(resultData[0].target)!==parseFloat(globalTarget)){         
           updateGlobalTarget(resultData[0].target);
         }
-        if(resultData[0].trailingpoint!==globalTP){         
+        if(parseFloat(resultData[0].trailingpoint)!==parseFloat(globalTP)){         
           updateGlobalTP(resultData[0].trailingpoint);
         }
       } else {
