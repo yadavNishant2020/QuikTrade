@@ -1788,8 +1788,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     if (resultData != null) {
       if (resultData.length > 0) {
         updateGlobalStopLoss(resultData[0].stopLoss);
-        updateGlobalTP(resultData[0].trailingpoint);
-        updateGlobalTarget(resultData[0].target);
+       
       } else {
         updateGlobalStopLoss(0);
         updateGlobalTP(0);
