@@ -351,7 +351,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     if (resultData != null) {
       alertify.success("Stoploss Target updated successfully.");
     }else{
-      alertify.success("Unable to process request now.Please try again.");
+      alertify.error("Unable to process request now.Please try again.");
     }
   };
 
@@ -1187,7 +1187,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     if (resultData != null) {
       alertify.success("Stoploss Target updated successfully.");
     }else{
-      alertify.success("Unable to process request now.Please try again.");
+      alertify.error("Unable to process request now.Please try again.");
       gettrailingvalues();
       
     }
@@ -1787,8 +1787,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       tradermode: sessionStorage.getItem("tradingtype"),
       brockername:sessionStorage.getItem("brokername")  ,
     };
-    const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);
-    debugger;
+    const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);    
     if (resultData != null) {
       if (resultData.length > 0) {
         updateGlobalStopLoss(resultData[0].stopLoss);
@@ -1798,8 +1797,6 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         if(resultData[0].trailingpoint!==globalTP){         
           updateGlobalTP(resultData[0].trailingpoint);
         }
-
-
       } else {
         updateGlobalStopLoss(0);
         updateGlobalTP(0);
