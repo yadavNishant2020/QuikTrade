@@ -1787,7 +1787,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     debugger;
     if (resultData != null) {
       if (resultData.length > 0) {
-        updateGlobalStopLoss(resultData[0].stopLoss);
+        if(resultData[0].stopLoss!==globalStopLoss){   
+             updateGlobalStopLoss(resultData[0].stopLoss);
+        }
         if(resultData[0].target!==globalTarget){         
           updateGlobalTarget(resultData[0].target);
         }
