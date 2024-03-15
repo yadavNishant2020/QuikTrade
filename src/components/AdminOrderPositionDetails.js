@@ -3247,7 +3247,20 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handleKeyDownPosition = (e, index,data) => {
+    debugger;
     if (e.key === "Enter" || e.key === "Tab") {
+      if(!isValidDecimal(data.positionstoploss) && data.positionstoploss!==""){
+        alertify.error("Stoploss value is invalid.");         
+        return;
+    }
+    if(!isValidDecimal(data.positiontrailling) && data.positiontrailling!==""){
+      alertify.error("Trail SL By value is invalid.");       
+      return;
+    }
+    if(!isValidDecimal(data.positiontarget) && data.positiontarget!==""){
+      alertify.error("Target value is invalid.");       
+      return;
+    }
       setEditPositionRow(false);
       setEditPositionRow("-1");
       processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget,data.ltp);
