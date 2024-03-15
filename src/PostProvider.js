@@ -29,9 +29,8 @@ const PostProvider = ({children}) => {
     const [globleOptionChainList,setGlobleOptionChainList]=useState([]);
     const [globleUniqueChannelData,setGlobleUniqueChannelData]=useState([]);
     const [globleBrokerClientList,setGlobleBrokerClientList]=useState([]);
-    const [globleLogList,setGlobleLogList]=useState([]);
-    
-
+    const [globleLogList,setGlobleLogList]=useState([]);    
+    const [globalServerTime,setServerTime]=useState('');
     const [screenSize, setScreenSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -45,6 +44,11 @@ const PostProvider = ({children}) => {
     const [globleFnotraderUserId,setGlobleFnotraderUserId]=useState('');
     const [globleFnotraderSecret,setGlobleFnotraderSecret]=useState('');
   
+    const updateGlobleServerTime = (newValue) => {
+        setServerTime(newValue);        
+    }
+    
+
     const updateGlobleLogList = (newValue) => {
         setGlobleLogList(newValue);        
     }
@@ -326,6 +330,7 @@ const PostProvider = ({children}) => {
         globleFnotraderUserId,
         globleFnotraderSecret,
         globleLogList,
+        globalServerTime,
         updateGlobleLogList,
         updateGloblemltRealized,
         updateGlobleSymbol,
@@ -359,7 +364,8 @@ const PostProvider = ({children}) => {
         updateGlobleBrokerName,
         updateGlobleBrokerClientList,
         updateGlobleFnotraderUserId,
-        updateGlobleFnotraderSecret
+        updateGlobleFnotraderSecret,
+        updateGlobleServerTime
       };
     return (
         <PostContext.Provider

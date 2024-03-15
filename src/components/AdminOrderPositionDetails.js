@@ -54,6 +54,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     globalConfigPostionData,
     globleBrokerName,
     updateGlobleLogList,
+    updateGlobleServerTime,
   } = useContext(PostContext);
   const [searchValue, setSearchValue] = useState("");
   const [mtmchange, setMTMChange] = useState(0);
@@ -1740,9 +1741,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
       gettrailingvaluesfromtrailing();           
     });
-    // connectionData.on('SendServerTime', (receivedData) => {
-    //    console.log(receivedData);        
-    // });
+    connectionData.on('ReceiveServerTime', (receivedData) => {
+      const receivedTime = new Date(receivedData);      
+      updateGlobleServerTime(receivedTime);        
+    });
 
     return () => {    
       console.log("Dis-Connected to SignalR Hub");

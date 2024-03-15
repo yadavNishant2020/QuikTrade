@@ -38,6 +38,7 @@ const AdminHeader = () => {
     updateGlobleSelectedClientInfo,
     updateGlobleBrokerName,
     globleBrokerClientList,
+    globalServerTime,
   } = useContext(PostContext);
   const [channelName, setChannelName] = useState([]);
   const [indexData, setIndexData] = useState([]);
@@ -220,11 +221,10 @@ const AdminHeader = () => {
     // Set up event listeners for connection state
     centrifugeInstance.on("connect", () => {
       //console.log('Connected to Centrifuge');
-      if (channelStatus === 0) {
+      if (!isMarketHours()) { 
         callApiToGetPreviosDayData();
       }
-      channelName.map((cName) => {
-        debugger;
+      channelName.map((cName) => {      
         const channel = centrifugeInstance.subscribe(cName.instrumentToken);
         channel.on("publish", (data) => {
           if (data.data != null) {
@@ -513,6 +513,21 @@ const AdminHeader = () => {
       }
     }
   };
+
+  const isMarketHours = () => {
+    if(globalServerTime!==""){
+      const receivedTime = new Date(globalServerTime);
+      const marketOpenTime = new Date();
+      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+      const marketCloseTime = new Date();
+      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+      return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+    }else{
+      return true;
+    }
+    
+};
+
 
   const getDefaultConfigFromBroker = async (instrumentName, expiryDate) => {
     const result = await ZerodaAPI.callOptionChain(instrumentName, expiryDate);

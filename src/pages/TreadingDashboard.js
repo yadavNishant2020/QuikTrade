@@ -65,7 +65,8 @@ const TreadingDashboard = () => {
       globleUniqueChannelData,
       globleChangeDefaultSetting,
       updateGlobleConfigPostionData,
-      globleSelectedTradingType
+      globleSelectedTradingType,
+      globalServerTime
    } = useContext(PostContext);
     
     useEffect(()=>{ 
@@ -233,10 +234,9 @@ const TreadingDashboard = () => {
             // Connect to the server
             //let selectedChannel=optionChainList.find((data)=>data.underlying===globleSymbol && data.expiryDate===globleExpityvalue)
             centrifugeInstanceNew.on('connect', () => {
-              if(channelStatus===0){
+              if(!isMarketHours()){                
                 callApiToGetPreviosDayData()
-              }    
-                    
+              }                        
               baseTable.map((cName) => {  
             // Subscribe to the channel (replace 'your-channel' with the actual channel name)
                       if (cName.instrumentToken !== undefined) { 
@@ -294,6 +294,16 @@ const TreadingDashboard = () => {
          centrifugeInstanceNew.disconnect();
         }; 
     }
+
+
+    const isMarketHours = () => {      
+      const receivedTime = new Date(globalServerTime);
+      const marketOpenTime = new Date();
+      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+      const marketCloseTime = new Date();
+      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+      return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+  };
 
     const callApiToGetPreviosDayData=async ()=>{
       if(baseTable?.length>0){
@@ -420,7 +430,7 @@ const TreadingDashboard = () => {
       const centrifugePositionInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');       
       centrifugePositionInstanceNew.on('connect', () => {
         debugger;
-        if(channelProcessStatus===0){
+        if(!isMarketHours()){
           callApiToGetPreviosDayDataForPosition()
         }
 
