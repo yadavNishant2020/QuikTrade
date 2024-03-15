@@ -1152,15 +1152,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     }
   };
 
-  const handleKeyDownNumeric = (e) => {
-    // Allow only digits (0-9) and prevent other characters
-    if (!(e.key === "Backspace" || (e.keyCode >= 48 && e.keyCode <= 57))) {
-      e.preventDefault();
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    // Check if the pressed key is Enter (key code 13)
+  const handleKeyDown = (e) => { 
     if (e.key === "Enter" || e.key === "Tab") {
       if (e.target.name === "globalTP") {
         setTpEdit(false);
@@ -1173,25 +1165,44 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     }
   };
 
-  const processtrailingvalues = async () => {
-    debugger;
-    let requestData = {
-      clientid: globleSelectedClientInfo,
-      tradermode: globleSelectedTradingType,
-      brockername: globleBrokerName,
-      stopLoss: globalStopLoss.toString(),
-      trailingpoint: globalTP.toString(),
-      target: globalTarget.toString(),
-      currentmtm:mltUnrealized.toString(),
-    };
-    const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
-    if (resultData != null) {
-      alertify.success("Stoploss Target updated successfully.");
-    }else{
-      alertify.error("Unable to process request now.Please try again.");
-      gettrailingvalues();
-      
-    }
+  const isValidDecimal = (value) => {
+    return /^-?\d*\.?\d+$/.test(value);
+  };
+
+  const processtrailingvalues = async () => {   
+    
+        if(!isValidDecimal(globalStopLoss) && globalStopLoss!==""){
+            alertify.error("Stoploss value is invalid.");
+            updateGlobalStopLoss("0.00");
+            return;
+        }
+        if(!isValidDecimal(globalTP) && globalTP!==""){
+          alertify.error("Trail SL By value is invalid.");
+          updateGlobalTP("0.00");
+          return;
+        }
+        if(!isValidDecimal(globalTarget) && globalTarget!==""){
+          alertify.error("Target value is invalid.");
+          updateGlobalTarget("0.00");
+          return;
+        }
+        let requestData = {
+          clientid: globleSelectedClientInfo,
+          tradermode: globleSelectedTradingType,
+          brockername: globleBrokerName,
+          stopLoss: globalStopLoss.toString()===""?"0":globalStopLoss.toString(),
+          trailingpoint: globalTP.toString()===""?"0":globalTP.toString(),
+          target: globalTarget.toString()===""?"0":globalTarget.toString(),
+          currentmtm:mltUnrealized.toString(),
+        };
+        const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
+        if (resultData != null) {
+          alertify.success("Stoploss Target updated successfully.");
+        }else{
+          alertify.error("Unable to process request now.Please try again.");
+          gettrailingvalues();      
+        }
+     
   };
 
   const handleExitAllPosition = (e) => {
@@ -3296,9 +3307,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                     min="0"
                     name="globalStopLoss"
                     value={globalStopLoss}
-                    onKeyDown={handleKeyDown}
-                    onChange={(e) => {
-                      updateGlobalStopLoss(e.target.value);
+                    onKeyDown={handleKeyDown}                   
+                    onChange={(e) => {     
+                          updateGlobalStopLoss(e.target.value);
+                       
                     }}
                   />
                 )}
