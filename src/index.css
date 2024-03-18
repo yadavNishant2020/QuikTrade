@@ -19,7 +19,8 @@ code {
 }
 
 .card-header {
-  padding: 0.5rem 1.3rem 0.2rem 1.3rem !important; 
+  padding: 10px 5px 2px !important;
+  text-align: center;
   
 }
 
@@ -56,7 +57,7 @@ input.form-control {
 }
  
 .card-body {    
-    padding: 0.2rem 0.2rem !important;
+    padding: 5px !important;
 }
 
 .btn {
@@ -135,7 +136,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .react-tabs{
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 
 
@@ -333,6 +334,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   float:left;
   height: 100vh !important;
 }
+.full-open.mainpanel{  
+  width: calc(100% - 196px);
+}
 
 body, .main-content,.admindefaultconfig {
   height: 100vh !important;
@@ -342,8 +346,14 @@ body, .main-content,.admindefaultconfig {
   height: 100%;
 }
 
-
-
+.callPut_ltp {
+  height: 230px;
+  overflow: auto;
+}
+.busketView_container{
+  height: 226px !important;
+  overflow: auto;
+}
 
  
 
@@ -374,7 +384,7 @@ body, .main-content,.admindefaultconfig {
 }
 
 .sidepanel{
-  width:17%;
+  width: 150px;
   float:left;
   height: 100vh !important;
   background-color:#dcdcdc40; 
@@ -467,14 +477,14 @@ fieldset.was-validated{
   border: 1px solid hsl(0deg 100% 50%) !important;
 }
 
-.form-control.was-validated{
+/* .form-control.was-validated{
   border-color: #dc3545;
   padding-right: calc(1.5em + 0.75rem);
   background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e);
   background-repeat: no-repeat;
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
+} */
 
 table fieldset label{
    
@@ -536,6 +546,9 @@ thead th{
 .content-table {
   border-collapse: collapse;
   width: 100%;
+}
+.table th{
+  border-top: none !important;
 }
 
 
@@ -829,7 +842,7 @@ fieldset.border{
     height: 33% !important;    
   }  */
   .table td,.table th {
-    font-size: .750rem  !important;
+    font-size: 10px  !important;
     padding: 0.2rem !important;
   }
 
@@ -867,7 +880,7 @@ fieldset.border{
   
  
   .table td,.table th {
-    font-size: .750rem  !important;
+    font-size: 12px  !important;
     padding: 0.2rem !important;
   }
 
@@ -887,7 +900,7 @@ fieldset.border{
   }  
 
   .completeorderlist .table-container {
-    height : 80px;
+    height : 215px;
     overflow-y: auto;
     font-size: 11px !important;
   }  
@@ -981,7 +994,7 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   }  
 
   .table td,.table th {
-    font-size: .750rem  !important;
+    font-size: 12px  !important;
     padding: 0.35rem !important;
   }
 
@@ -1045,18 +1058,33 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 
 
 .css-1ldvbk6-control {
-  font-size: .750rem!important;
+  font-size: 12px!important;
 }
-
- 
+/* .css-1k4kj38-control {
+  font-size: 12px !important;
+} */
+.css-1fdsijx-ValueContainer {
+  height: 100%;
+  padding: 0 8px;
+}
+.busketList_btn_container{
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+ .orderposition .table-container {
+  height: 210px !important;
+  overflow-y: auto;
+ }
 .optionchaindashboard{
-  height: 28% !important;   
-  margin-bottom: 64px;
+  margin-bottom: 5px;
 }
 
 .positiondashboardlist{
-  height: 28% !important;
-  margin-bottom: 52px;
+  margin-bottom: 5px;
+}
+.main-content {
+  margin-top: 50px;
 }
 
 .quik {  
@@ -1076,4 +1104,74 @@ font-size: 14px;
 line-height: 0;
 
 
+}
+.header-body .row{
+  align-items: center;
+}
+.orderposition table{
+  display: block;
+}
+.completeorderlist .table-container {
+  height: 240px;
+}
+.closeorderlist .table-container {
+  height: 240px;
+}
+.logorderlist .table-container {
+  height: 270px;
+}
+.fundlist .table-container {
+  min-height: 230px;
+}
+.completeorderlist tbody{
+  background-color: #fff;
+}
+@media screen and (max-width: 1240px) {
+  .main-content {
+    margin-top: 65px;
+}
+}
+
+@media screen and (max-width: 1199px) {
+  .main-content {
+    margin-top: 130px;
+}
+.optionchaindashboard, .positiondashboardlist, .orderdashboardlist {
+  flex-direction: row;
+}
+.busketList .busketList_btn_container{
+  flex-wrap: nowrap;
+  width: 100%;
+}
+.callPut_ltp {
+  height: 205px;
+}
+.busketView_container {
+  height: 210px !important;
+}
+}
+@media screen and (max-width: 620px) {
+  .busketList .busketList_btn_container {
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+.busketList_btns{
+  max-width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+.busketList_btns{
+  text-align: center;
+}
+}
+@media screen and (max-width: 527px) {
+  .main-content {
+    margin-top: 150px;
+}
+}
+@media screen and (max-width: 319px) {
+  .main-content {
+    margin-top: 170px;
+}
 }

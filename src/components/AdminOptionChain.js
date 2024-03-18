@@ -1289,8 +1289,10 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                       </Row>
                                       {globleOptionChainType==='opt'?
                                       <Row className='optionChain mt-1'>
-                                        <Col xl="12">
-                                          <div className="table-container" ref={tableRef} style={{height:height}}>
+                                        <Col xl="12"> 
+                                          {/* <div className="table-container" ref={tableRef} style={{height:height}} class="callPut_ltp"> */}
+                                          <div className="table-container" ref={tableRef} class="callPut_ltp">
+
                                                   <Table className="align-items-center">
                                                                       <thead className="thead-light">
                                                                                   <tr className="text-center">
@@ -1370,7 +1372,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                   <Col xl="9" className='busketList' style={{backgroundColor:"#FFFFFF"}}>
                                                   <Row>
                                                     <Col xl="12" className='busketView'>
-                                                        <div className="table-container" style={{height:height}}>
+                                                        <div className="table-container" style={{height:height}} class="busketView_container">
                                                             <Table className="align-items-center" >
                                                                     <thead class="thead-light">
                                                                                 <tr className="text-center">                                                                            
@@ -1546,8 +1548,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                         </div>
                                                     </Col>
                                                    </Row>
-                                                  <Row style={{backgroundColor:"#dcdcdc29" }}>
-                                                  <Col xl="4" xs="1" ></Col>
+                                                  <Row className="busketList_btn_container" style={{backgroundColor:"#dcdcdc29" }}>
                                                   <Col xl="2" xs="3" style={{textAlign:"center",lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
                                                   <label className='font-13px'
                                                                   style={{marginBottom:"0px"}}                 >
@@ -1570,7 +1571,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       <b>Final Margin</b>  
                                                                   </span>
                                                   </Col>
-                                                  <Col xl="4" xs="12" className='pt-2'>
+                                                  <Col xl="4" xs="" className='busketList_btns'>
                                                   <Button                                                         
                                                         color="primary" className='font-10px'                                                        
                                                         href="#pablo"

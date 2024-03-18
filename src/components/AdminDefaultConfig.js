@@ -529,6 +529,7 @@ const AdminDefaultConfig = () => {
                       disabled={isButtonDisabled}
                       onClick={() => handleDefaultConfig()}
                       size="sm"
+                      className='mt-2'
                     >
                       <i className="fas fa-floppy-disk" aria-hidden="true"></i> Save
 
