@@ -75,7 +75,7 @@ const AdminHeader = () => {
           }
         });
         setOptionsBroker(brokerName);
-        if(sessionStorage.getItem("brokername")!==""){         
+        if(sessionStorage.getItem("brokername") !== null && sessionStorage.getItem("brokername")!==""){         
           let currentBrokerName=sessionStorage.getItem("brokername");
           var currentBrokerList=brokerName.find((data)=>data.value===currentBrokerName);          
           setBrokerSelect(currentBrokerList); 
@@ -111,7 +111,7 @@ const AdminHeader = () => {
           clientList = []; // Provide a default value if brokerName is empty
         }
         setOptionsClient(clientList);
-        if(sessionStorage.getItem("clienttoken")!==""){
+        if(sessionStorage.getItem("clienttoken") !== null && sessionStorage.getItem("clienttoken")!==""){
           setClientSelect(clientList[0]);
           updateGlobleSelectedClientInfo(sessionStorage.getItem("clienttoken"));
         }else{
@@ -138,7 +138,7 @@ const AdminHeader = () => {
       getSymbolExpiry();
     }
 
-    if(sessionStorage.getItem("tradingtype")!==""){
+    if(sessionStorage.getItem("tradingtype") !== null && sessionStorage.getItem("tradingtype")!==""){
       updateGlobleSelectedTradingType(sessionStorage.getItem("tradingtype"));
       let dataTraderType=optionsTradingType.find((data)=>data.label===sessionStorage.getItem("tradingtype"));
       if(dataTraderType!==null){
@@ -223,7 +223,7 @@ const AdminHeader = () => {
   useEffect(() => {
     if (expityData.length > 0) {
       debugger;
-      if(sessionStorage.getItem("currentExpityData")!==""){
+      if(sessionStorage.getItem("currentExpityData") !== null && sessionStorage.getItem("currentExpityData")!==""){
         let currentExpityData=sessionStorage.getItem("currentExpityData");
         let expiryCurrentData=expityData.find((data)=>data.value===currentExpityData);
         if(expiryCurrentData!=null){
@@ -436,7 +436,7 @@ const AdminHeader = () => {
     if (stockSymbolInformation.length > 0) {
       debugger;
       if (symbolSelect === "") {        
-        if(sessionStorage.getItem("currentStockSymbol")!==null){
+        if(sessionStorage.getItem("currentStockSymbol") !== null && sessionStorage.getItem("currentStockSymbol")!==null){
           let currentStockSymbol=sessionStorage.getItem("currentStockSymbol")
           let stockSymbolData=stockSymbolInformation.find((data)=>data.label===currentStockSymbol);
           setSymbolSelect(stockSymbolData);
