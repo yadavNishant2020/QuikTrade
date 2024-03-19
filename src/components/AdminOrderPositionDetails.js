@@ -3272,7 +3272,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <Col xl="2" xs="6">
+            <Col xl="2" xs="12">
               <Input
                 className="form-control-alternative"
                 id="input-postal-code"
@@ -3280,7 +3280,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="3" xs="6" style={{ height: "25px", lineHeight: "20px" }}>
+            <Col xl="3" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
               <label className="form-control-label" htmlFor="input-username">
                 Unrealised MTM
               </label>
