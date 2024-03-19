@@ -3280,7 +3280,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="2" xs="6" style={{ height: "25px", lineHeight: "20px" }}>
+            <Col xl="3" xs="6" style={{ height: "25px", lineHeight: "20px" }}>
               <label className="form-control-label" htmlFor="input-username">
                 Unrealised MTM
               </label>
@@ -3393,7 +3393,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </fieldset>
             </Col>
 
-            <Col xl="5" xs="12" className="text-center">
+            <Col xl="4" xs="12" className="text-center">
               <Button
                disabled={                 
                 isexecuteProcess

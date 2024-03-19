@@ -212,7 +212,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                   const rowIndex = Array.from(targetRow.parentNode.children).indexOf(targetRow);
                   const tableRows = Array.from(tableRef.current.querySelectorAll('tbody tr'));
                   const newtargetRow = tableRows[(rowIndex)-3];                   
-                  tableRef.current.scrollTop = newtargetRow.offsetTop+8;                 
+                  tableRef.current.scrollTop = newtargetRow?.offsetTop+8;                 
                 }    
         }
     },[strikePrices,sortedCurrentOptionChain])
@@ -1571,7 +1571,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       <b>Final Margin</b>  
                                                                   </span>
                                                   </Col>
-                                                  <Col xl="4" xs="" className='busketList_btns'>
+                                                  <Col xl="5" xs="" className='busketList_btns'>
                                                   <Button                                                         
                                                         color="primary" className='font-10px'                                                        
                                                         href="#pablo"

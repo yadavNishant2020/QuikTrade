@@ -57,9 +57,9 @@ const AdminHeader = () => {
   ];
 
   useEffect(() => {
-    if (globleBrokerClientList != null) {
-      debugger;
+    if (globleBrokerClientList != null) {      
       if (globleBrokerClientList.length > 0) {
+        debugger;
         let brokerName = [];
         let clientList = [];
         globleBrokerClientList.map((dataClient) => {
@@ -75,14 +75,20 @@ const AdminHeader = () => {
           }
         });
         setOptionsBroker(brokerName);
-        if (brokerSelect === "") {
-          setBrokerSelect(brokerName[0]);
-          debugger;
-          let indexClient = globleBrokerClientList.findIndex(
-            (dataClient) => dataClient.userName === brokerName[0].value
-          );
-          updateGlobleBrokerName(brokerName[0].value);
-          sessionStorage.setItem("brokername", brokerName[0].value);
+        if(sessionStorage.getItem("brokername")!==""){         
+          let currentBrokerName=sessionStorage.getItem("brokername");
+          var currentBrokerList=brokerName.find((data)=>data.value===currentBrokerName);          
+          setBrokerSelect(currentBrokerList); 
+          updateGlobleBrokerName(currentBrokerName);          
+        }else{
+            if (brokerSelect === "") {
+              setBrokerSelect(brokerName[0]);           
+              let indexClient = globleBrokerClientList.findIndex(
+                (dataClient) => dataClient.userName === brokerName[0].value
+              );
+              updateGlobleBrokerName(brokerName[0].value);
+              sessionStorage.setItem("brokername", brokerName[0].value);
+            }
         }
         sessionStorage.setItem(
           "apiSecret",
@@ -91,7 +97,7 @@ const AdminHeader = () => {
             globleBrokerClientList[0].apiToken
         );
         if (brokerName.length > 0) {
-          const firstBrokerNameValue = brokerName[0].value; // Assuming brokerName[0].value exists
+          const firstBrokerNameValue = sessionStorage.getItem("brokername"); // Assuming brokerName[0].value exists
           clientList = globleBrokerClientList
             .filter(
               (dataClient) =>
@@ -105,11 +111,16 @@ const AdminHeader = () => {
           clientList = []; // Provide a default value if brokerName is empty
         }
         setOptionsClient(clientList);
-        if (clientSelect === "") {
+        if(sessionStorage.getItem("clienttoken")!==""){
           setClientSelect(clientList[0]);
-          updateGlobleSelectedClientInfo(clientList[0].value);
-          sessionStorage.setItem("clienttoken", clientList[0].value);
-        }
+          updateGlobleSelectedClientInfo(sessionStorage.getItem("clienttoken"));
+        }else{
+          if (clientSelect === "") {
+            setClientSelect(clientList[0]);
+            updateGlobleSelectedClientInfo(clientList[0].value);
+            sessionStorage.setItem("clienttoken", clientList[0].value);
+          }
+        }        
       }
     }
   }, [globleBrokerClientList]);
@@ -127,11 +138,20 @@ const AdminHeader = () => {
       getSymbolExpiry();
     }
 
-    if (tradingTypeSelect === "") {
-      setTradingTypeSelect(optionsTradingType[0]);
-      sessionStorage.setItem("tradingtype", optionsTradingType[0].value);
-      updateGlobleSelectedTradingType(optionsTradingType[0].value);
+    if(sessionStorage.getItem("tradingtype")!==""){
+      updateGlobleSelectedTradingType(sessionStorage.getItem("tradingtype"));
+      let dataTraderType=optionsTradingType.find((data)=>data.label===sessionStorage.getItem("tradingtype"));
+      if(dataTraderType!==null){
+        setTradingTypeSelect(dataTraderType);
+      }
+    }else{
+      if (tradingTypeSelect === "") {
+        setTradingTypeSelect(optionsTradingType[0]);
+        sessionStorage.setItem("tradingtype", optionsTradingType[0].value);
+        updateGlobleSelectedTradingType(optionsTradingType[0].value);
+      }
     }
+    
   }, []);
 
   const setSymbolData = () => {
@@ -202,8 +222,19 @@ const AdminHeader = () => {
 
   useEffect(() => {
     if (expityData.length > 0) {
-      setExpityValue(expityData[0]);
-      updateGlobleExpityValue(expityData[0].value);
+      debugger;
+      if(sessionStorage.getItem("currentExpityData")!==""){
+        let currentExpityData=sessionStorage.getItem("currentExpityData");
+        let expiryCurrentData=expityData.find((data)=>data.value===currentExpityData);
+        if(expiryCurrentData!=null){
+          setExpityValue(expiryCurrentData);
+          updateGlobleExpityValue(currentExpityData);           
+        }
+      }else{
+          setExpityValue(expityData[0]);
+          updateGlobleExpityValue(expityData[0].value);
+          sessionStorage.setItem("currentExpityData",expityData[0].value);
+      }
     }
   }, [expityData]);
 
@@ -314,82 +345,112 @@ const AdminHeader = () => {
     }
   };
 
-  useEffect(() => {
-    if (indexData?.length > 0 && symbolSelect) {
-      let dsSpotTokenList = JSON.parse(
-        CookiesConfig.getCookie("symbolSpotTokenList")
-      );
-      let infoData = dsSpotTokenList.find(
-        (data) =>
-          data.underlying === symbolSelect.value && data.tokenType === "spot"
-      );
-      const { instrumentToken, lastDayClosinglp } = infoData;
-      let infoIndexData = indexData.find(
-        (data) =>
-          data.token === parseInt(instrumentToken) && data.tokenType === "spot"
-      );
-      if (infoIndexData != null) {
-        const { lp } = infoIndexData;
-        const dayOpen = infoIndexData?.do;
-        setCurrentStockIndex(lp);
-        updateGlobleCurrentStockIndex(lp);
-        const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosinglp);
-        setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
-        const changePer =
-          ((parseFloat(lp) - parseFloat(lastDayClosinglp)) /
-            parseFloat(lastDayClosinglp)) *
-          100;
-        setCurrentStockLTPPercent(
-          (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
-            parseFloat(changePer).toFixed(2)
+  const callApiToHeadtocken = async (instrumentToken) => {        
+        const result = await ZerodaAPI.callApiToGetPreviosDayDataForChannel(
+          instrumentToken
         );
-      }
-      calculateFuture();
-    }
-  }, [indexData, symbolSelect]);
+        if(result!==null){
+            const { code, data } = result;
+            let infodata = data[instrumentToken];   
+            return infodata.prev.p;
+        }else{
+            return 0;
+        }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+        if (indexData?.length > 0 && symbolSelect) {
+            let dsSpotTokenList = JSON.parse(
+                CookiesConfig.getCookie("symbolSpotTokenList")
+            );
+            let infoData = dsSpotTokenList.find(
+                (data) =>
+                data.underlying === symbolSelect.value && data.tokenType === "spot"
+            );
+            const { instrumentToken } = infoData;
+            // Call your asynchronous function inside async function
+            const lastDayClosing = await callApiToHeadtocken(instrumentToken);
+            let infoIndexData = indexData.find(
+                (data) =>
+                data.token === parseInt(instrumentToken) && data.tokenType === "spot"
+            );
+            if (infoIndexData != null) {
+                const { lp } = infoIndexData;
+                setCurrentStockIndex(lp);
+                updateGlobleCurrentStockIndex(lp);
+                const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosing);
+                setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
+                const changePer =
+                    ((parseFloat(lp) - parseFloat(lastDayClosing)) /
+                        parseFloat(lastDayClosing)) *
+                    100;
+                setCurrentStockLTPPercent(
+                    (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
+                    parseFloat(changePer).toFixed(2)
+                );
+            }
+            calculateFuture();
+        }
+    };
+    fetchData(); // Call the async function inside useEffect
+
+}, [indexData, symbolSelect]);
 
   const calculateFuture = () => {
-    let dsSpotTokenList = JSON.parse(
-      CookiesConfig.getCookie("symbolSpotTokenList")
-    );
-    let infoFutureData = dsSpotTokenList.find(
-      (data) =>
-        data.underlying === symbolSelect.value && data.tokenType === "future"
-    );
+    const fetchDataFuture = async () => {
+          let dsSpotTokenList = JSON.parse(
+            CookiesConfig.getCookie("symbolSpotTokenList")
+          );
+          let infoFutureData = dsSpotTokenList.find(
+            (data) =>
+              data.underlying === symbolSelect.value && data.tokenType === "future"
+          );
 
-    const { instrumentToken, lastDayClosinglp } = infoFutureData;
-    let infoFutureIndexData = indexData.find(
-      (data) =>
-        data.token === parseInt(instrumentToken) && data.tokenType === "future"
-    );
-    if (infoFutureIndexData != null) {
-      const { lp } = infoFutureIndexData;
-      const dayOpen = infoFutureIndexData?.do;
-      setCurrentStockIndexFuture(lp);
-      updateGlobleCurrentStockIndexFuture(lp);
-      const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosinglp);
-      setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2));
-      const changePer =
-        ((parseFloat(lp) - parseFloat(lastDayClosinglp)) /
-          parseFloat(lastDayClosinglp)) *
-        100;
-      setCurrentStockLTPPercentFuture(
-        (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
-          parseFloat(changePer).toFixed(2)
-      );
+          const { instrumentToken} = infoFutureData;
+          const lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
+          let infoFutureIndexData = indexData.find(
+            (data) =>
+              data.token === parseInt(instrumentToken) && data.tokenType === "future"
+          );
+          if (infoFutureIndexData != null) {
+            const { lp } = infoFutureIndexData;
+            const dayOpen = infoFutureIndexData?.do;
+            setCurrentStockIndexFuture(lp);
+            updateGlobleCurrentStockIndexFuture(lp);
+            const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosinglp);
+            setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2));
+            const changePer =
+              ((parseFloat(lp) - parseFloat(lastDayClosinglp)) /
+                parseFloat(lastDayClosinglp)) *
+              100;
+            setCurrentStockLTPPercentFuture(
+              (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
+                parseFloat(changePer).toFixed(2)
+            );
+          }
     }
+    fetchDataFuture(); // Call the async function inside useEffect
   };
 
   useEffect(() => {
     if (stockSymbolInformation.length > 0) {
-      if (symbolSelect == "") {
-        setSymbolSelect(stockSymbolInformation[0]);
-        CookiesConfig.setCookie(
-          "currentStockSymbol",
-          stockSymbolInformation[0]
-        );
-        getExpiryForSymbol(stockSymbolInformation[0].value);
-        updateGlobleSymbol(stockSymbolInformation[0].value);
+      debugger;
+      if (symbolSelect === "") {        
+        if(sessionStorage.getItem("currentStockSymbol")!==null){
+          let currentStockSymbol=sessionStorage.getItem("currentStockSymbol")
+          let stockSymbolData=stockSymbolInformation.find((data)=>data.label===currentStockSymbol);
+          setSymbolSelect(stockSymbolData);
+          getExpiryForSymbol(currentStockSymbol);
+          updateGlobleSymbol(currentStockSymbol);
+        }else{
+          setSymbolSelect(stockSymbolInformation[0]);
+          sessionStorage.setItem(
+            "currentStockSymbol",
+             stockSymbolInformation[0].value
+          );
+          getExpiryForSymbol(stockSymbolInformation[0].value);
+          updateGlobleSymbol(stockSymbolInformation[0].value);
+        }       
       }
     }
   }, [stockSymbolInformation]);
@@ -448,12 +509,13 @@ const AdminHeader = () => {
   const handleExpityData = (e) => {
     setExpityValue(e);
     updateGlobleExpityValue(e.value);
-    CookiesConfig.setCookie("currentExpityData", e.value);
+    sessionStorage.setItem("currentExpityData", e.value);
   };
 
   const handleSymbolChange = (e) => {
     setSymbolSelect(e);
-    CookiesConfig.setCookie("currentStockSymbol", e.value);
+    sessionStorage.setItem("currentStockSymbol", e.value);
+    sessionStorage.setItem("currentExpityData","");
     getExpiryForSymbol(e.value);
     updateGlobleSymbol(e.value);
   };
@@ -577,6 +639,7 @@ const AdminHeader = () => {
         CookiesConfig.removeCookie("User-BrokerLoggedIn");
         sessionStorage.removeItem("fnotraderUserid");
         sessionStorage.removeItem("fnotraderSecret");
+        sessionStorage.clear();
         window.open(
           "https://www.fnotrader.com/trading/broker-accounts",
           "_self"
