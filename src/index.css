@@ -184,9 +184,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   border-radius: 5px;
 }
 .react-tabs__tab { 
-  padding: 1px 5px !important;  
+  padding: 2.5px 5px !important;  
 }
-
 .react-tabs__tab-list {  
   margin: 0 0 0px !important;   
 }
@@ -314,6 +313,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   box-shadow: none;
 }
 
+.rules-tab {
+  height: 260px;
+}
+
 @media (min-width: 768px){ 
     .main-content .container-fluid, .main-content .container-sm, .main-content .container-md, .main-content .container-lg, .main-content .container-xl {
         padding-left: 15px !important;
@@ -382,7 +385,7 @@ body, .main-content,.admindefaultconfig {
 .sidemenu{
   width:33px;
   float:right;
-  background-color:#dcdcdc40;  
+  background-color:#fff;  
   height: 100vh;
 }
 
@@ -835,7 +838,15 @@ fieldset.border{
       margin-top: -2px !important;
     }
     
-      
+    .main-content .container-fluid {
+		padding-left: 5px !important;
+		padding-right: 2px !important;
+	}
+
+  .UnrealisedMTM{
+    height: 25px;
+    line-height: 14px;
+  }
 }
 
 /* Styles for devices with a minimum width of 769 pixels (typical for tablets) up to 1024 pixels */

@@ -16,7 +16,8 @@ import { Container, Row, Col,   Button,
 const AdminRule = ({optionChainData}) => {
     return (
         <>
-                <Card className="shadow">
+          <div className="rules-tab">
+            <Card className="shadow">
                           
                           <CardBody>
                                     <Row className="align-items-center">
@@ -28,6 +29,7 @@ const AdminRule = ({optionChainData}) => {
 
                           </CardBody>
                 </Card>
+          </div>
         </>
     )
 }
