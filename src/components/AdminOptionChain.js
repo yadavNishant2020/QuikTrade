@@ -1555,7 +1555,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       {requiredBusketMargin}
                                                                   </label>
                                                                   
-                                                                  <span className='font-8px uppercase'>                                                                
+                                                                  <span className='font-10px uppercase'>                                                                
                                                                       <b>Required Margin</b>  
                                                                   </span>
                                                   </Col>
@@ -1567,7 +1567,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                    {busketMargin}
                                                                   </label>
                                                                    
-                                                                  <span className='font-8px uppercase'>                                                                
+                                                                  <span className='font-10px uppercase'>                                                                
                                                                       <b>Final Margin</b>  
                                                                   </span>
                                                   </Col>
