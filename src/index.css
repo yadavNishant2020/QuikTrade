@@ -23,6 +23,9 @@ code {
   text-align: center;
   
 }
+.card-header h6{
+  font-size: 12px;
+}
 
 .dashboard .col-xl,.dashboard  .col-xl-auto,.dashboard  .col-xl-12,.dashboard  .col-xl-11,.dashboard  .col-xl-10,.dashboard  .col-xl-9,.dashboard  .col-xl-8,.dashboard .col-xl-7,.dashboard  .col-xl-6,.dashboard  .col-xl-5,.dashboard  .col-xl-4,.dashboard  .col-xl-3,.dashboard  .col-xl-2,.dashboard  .col-xl-1,.dashboard  .col-lg,.dashboard  .col-lg-auto,.dashboard  .col-lg-12,.dashboard  .col-lg-11,.dashboard  .col-lg-10,.dashboard  .col-lg-9,.dashboard  .col-lg-8,.dashboard  .col-lg-7,.dashboard  .col-lg-6,.dashboard  .col-lg-5,.dashboard  .col-lg-4,.dashboard  .col-lg-3,.dashboard  .col-lg-2,.dashboard .col-lg-1,.dashboard  .col-md,.dashboard  .col-md-auto,.dashboard  .col-md-12,.dashboard  .col-md-11,.dashboard  .col-md-10,.dashboard  .col-md-9,.dashboard  .col-md-8,.dashboard  .col-md-7,.dashboard  .col-md-6,.dashboard  .col-md-5,.dashboard  .col-md-4,.dashboard  .col-md-3,.dashboard  .col-md-2,.dashboard  .col-md-1,.dashboard  .col-sm,.dashboard  .col-sm-auto,.dashboard  .col-sm-12,.dashboard  .col-sm-11,.dashboard  .col-sm-10,.dashboard  .col-sm-9,.dashboard  .col-sm-8,.dashboard  .col-sm-7,.dashboard  .col-sm-6,.dashboard  .col-sm-5,.dashboard  .col-sm-4,.dashboard  .col-sm-3,.dashboard  .col-sm-2,.dashboard  .col-sm-1,.dashboard  .col,.dashboard  .col-auto,.dashboard  .col-12,.dashboard  .col-11,.dashboard  .col-10,.dashboard  .col-9,.dashboard  .col-8,.dashboard  .col-7,.dashboard  .col-6,.dashboard  .col-5,.dashboard  .col-4,.dashboard  .col-3,.dashboard  .col-2,.dashboard  .col-1 {
   padding-right: 5px !important;
@@ -38,7 +41,7 @@ hr {
 
  
 .form-control-label{
-  font-size: .750rem !important;
+  font-size: 12px !important;
   margin-bottom: 0px !important;
 }
 
@@ -323,7 +326,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .full-close{
-  width:97%;
+  width:calc(100% - 36px);
 }
 
 .full-open{
@@ -335,7 +338,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   height: 100vh !important;
 }
 .full-open.mainpanel{  
-  width: calc(100% - 196px);
+  width: calc(100% - 184px);
 }
 
 body, .main-content,.admindefaultconfig {
@@ -377,7 +380,7 @@ body, .main-content,.admindefaultconfig {
 }
 
 .sidemenu{
-  width:2.5%;
+  width:33px;
   float:right;
   background-color:#dcdcdc40;  
   height: 100vh;
@@ -1042,7 +1045,7 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
   .fundlist .table-container {
-    height : 175px;
+    height : 152px;
     overflow-y: auto;
     font-size: 11px !important;
   }
@@ -1073,7 +1076,7 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 5px;
 }
  .orderposition .table-container {
-  height: 210px !important;
+  height: 285px !important;
   overflow-y: auto;
  }
 .optionchaindashboard{
@@ -1112,19 +1115,32 @@ line-height: 0;
   display: block;
 }
 .completeorderlist .table-container {
-  height: 240px;
+  height: 160px;
 }
 .closeorderlist .table-container {
-  height: 240px;
+  height: 160px;
 }
 .logorderlist .table-container {
-  height: 270px;
+  height: 188px;
 }
 .fundlist .table-container {
-  min-height: 230px;
+  min-height: 152px;
+    overflow: auto;
 }
 .completeorderlist tbody{
   background-color: #fff;
+}
+.closeorderlist tbody{
+  background: #fff;
+}
+.orderdashboardlist .card-body .col-xl-11{
+  background: #fff;
+}
+.Straddle .table-container {
+  height: 272px !important;
+}
+.strangle .table-container {
+  height: 272px !important;
 }
 @media screen and (max-width: 1240px) {
   .main-content {
@@ -1146,8 +1162,42 @@ line-height: 0;
 .callPut_ltp {
   height: 205px;
 }
+.Straddle .table-container {
+  height: 260px !important;
+}
+.strangle .table-container {
+  height: 260px !important;
+}
 .busketView_container {
   height: 210px !important;
+}
+}
+@media screen and (max-width: 768px) {
+
+.logorderlist{
+  overflow: auto;
+}
+.orderdashboardlist .react-tabs {
+  padding: 0 10px 10px;
+  background: #fff;
+}
+.orderdashboardlist .react-tabs{
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+.react-tabs__tab-panel--selected {
+  padding: 0 5px;
+}
+.busketList{
+  background-color: initial !important;
+}
+.positiondashboardlist{
+  background: rgb(255, 255, 255);
+  width: 99%;
+  margin-left: 1% !important;
+}
+.positiondashboardlist.mt-1{
+  margin-top: 10px !important;
 }
 }
 @media screen and (max-width: 620px) {
