@@ -322,6 +322,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   height: 260px;
 }
 
+.profile-tab {
+  height: 100vh !important;
+  background-color: #FFFFFF;
+}
+
 @media (min-width: 768px){ 
     .main-content .container-fluid, .main-content .container-sm, .main-content .container-md, .main-content .container-lg, .main-content .container-xl {
         padding-left: 15px !important;
@@ -994,7 +999,11 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 5px 5px;
   border-radius: 5px !important;
 }
-
+.strangle .table thead, .Straddle .table thead{
+  position: sticky;
+  top: 0;
+  z-index: 1 !important;
+}
 .table-container {
   overflow-y: auto;
 }

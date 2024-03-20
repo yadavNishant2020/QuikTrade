@@ -119,7 +119,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
             const{instrumentname,defaultProductName,defaultSliceQty, defaultValidity, defaultOrderType,    defaultLotSize,       defaultQty,        defaultBrokerType, defaultShowQty}={...configInformation};
             setStraddleData(prevStraddleData => {
               return prevStraddleData.map(rowData => {
-                debugger;
+                 
                 // Update each row here
                 return {
                   ...rowData,
@@ -161,11 +161,11 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
     let selectedValue = e.target.value;   
     // Update the state for the selected row
     setStraddleData((prevRowData) => {  
-        debugger;
+         
         let defaultLotSize= prevRowData[index]["lotSize"];
         let sizeMaxQty= prevRowData[index]["volumeFreeze"];
       if(refType==="celot"){ 
-         debugger;
+          
          let petotalqty= prevRowData[index]["pelotqty"];
          if(petotalqty===""){
             petotalqty="0";
@@ -544,7 +544,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
   }
 
 const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{  
-  debugger;    
+      
   const orderArray = [];
   var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
   let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
@@ -702,7 +702,7 @@ const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{
     processInsertUpdateOrderBulk(scopedUpdatedRowsArray);
 }
 const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{  
-  debugger;    
+      
   const orderArray = [];
   var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
   let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
@@ -878,7 +878,7 @@ const processInsertUpdateOrder=async(requestOrderList)=>{
       logmessage:""
     }
       const resultData=await PaperTradingAPI.processInsertUpdateOrderPaper(requestData);
-      debugger;
+       
       if(resultData!=null){     
         alertify.success("Order added successfully.")
       }else{

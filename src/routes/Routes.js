@@ -3,9 +3,13 @@ import WebSocketComponent from "../components/WebSocketComponent.js";
 import TreadingDashboard from "../pages/TreadingDashboard.js";
 import Login from "../pages/Login.js";
 import AuthLogin from "../pages/AuthLogin.js";
+import UserProfile from "../pages/UserProfile.js";
+
 
 const adminRoutes = [     
-    { path: "/dashboard", component: <TreadingDashboard /> ,layout: "/Admin"},        
+    { path: "/dashboard", component: <TreadingDashboard /> ,layout: "/Admin"},  
+    { path: "/userprofile", component: <UserProfile /> ,layout: "/Admin"},  
+          
   ];
 
 

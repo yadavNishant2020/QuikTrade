@@ -18,17 +18,19 @@ const AdminHeader = () => {
   const [symbolSelect, setSymbolSelect] = useState("");
   const [expityvalue, setExpityValue] = useState("");
   const [currentStockIndex, setCurrentStockIndex] = useState("0.00");
-  const [currentStockIndexFuture, setCurrentStockIndexFuture] =
-    useState("0.00");
+  const [currentStockIndexFuture, setCurrentStockIndexFuture] = useState("0.00");
   const [stockSymbolInformation, setStockSymbolInformation] = useState([]);
   const [currentStockLTP, setCurrentStockLTP] = useState("0.00");
   const [currentStockLTPPercent, setCurrentStockLTPPercent] = useState("0.00");
   const [currentStockLTPFuture, setCurrentStockLTPFuture] = useState("0.00");
-  const [currentStockLTPPercentFuture, setCurrentStockLTPPercentFuture] =
-    useState("0.00");
+  const [currentStockLTPPercentFuture, setCurrentStockLTPPercentFuture] = useState("0.00");
   const [expityData, setExpityData] = useState([]);
   const [show, setShow] = useState(false);
- 
+  const [stopLastPrice, setStopLastPrice] = useState(false);
+  const [futureLastPrice, setFutureLastPrice] = useState(false);
+
+  const [stopLastAmt, setStopLastAmt] = useState(0);
+  const [futureLastAmt, setFutureLastAmt] = useState(0);
   const {
     updateGlobleSymbol,
     updateGlobleExpityValue,
@@ -252,7 +254,16 @@ const AdminHeader = () => {
 
   useEffect(() => {
     if (channelName != "") {
-      getStockIndex();
+      setStopLastPrice(false);
+      setStopLastAmt(0);
+      setFutureLastPrice(false);
+      setFutureLastAmt(0);
+      if (!isMarketHours()) { 
+        callApiToGetPreviosDayData();
+      }else{
+        getStockIndex();
+      }
+      
     }
   }, [channelName]);
 
@@ -263,10 +274,7 @@ const AdminHeader = () => {
     );
     // Set up event listeners for connection state
     centrifugeInstance.on("connect", () => {
-      //console.log('Connected to Centrifuge');
-      if (!isMarketHours()) { 
-        callApiToGetPreviosDayData();
-      }
+      //console.log('Connected to Centrifuge');    
       channelName.map((cName) => {      
         const channel = centrifugeInstance.subscribe(cName.instrumentToken);
         channel.on("publish", (data) => {
@@ -328,7 +336,7 @@ const AdminHeader = () => {
   };
 
   const callApiToGetPreviosDayData = async () => {
-    if (channelName?.length > 0) {
+    if (channelName?.length > 0) {      
       channelName.map(async (cName) => {
         const result = await ZerodaAPI.callApiToGetPreviosDayDataForChannel(
           cName.instrumentToken
@@ -379,14 +387,20 @@ const AdminHeader = () => {
                 (data) =>
                 data.underlying === symbolSelect.value && data.tokenType === "spot"
             );
-            const { instrumentToken } = infoData;
-            // Call your asynchronous function inside async function
-            const lastDayClosing = await callApiToHeadtocken(instrumentToken);
+            const { instrumentToken } = infoData;          
+            let lastDayClosing = await callApiToHeadtocken(instrumentToken);            
             let infoIndexData = indexData.find(
                 (data) =>
                 data.token === parseInt(instrumentToken) && data.tokenType === "spot"
             );
-            if (infoIndexData != null) {
+            if (infoIndexData != null) {                   
+                //Call your asynchronous function inside async function                
+                let  lastDayClosing = stopLastAmt;
+                if(stopLastPrice===false){
+                  lastDayClosing = await callApiToHeadtocken(instrumentToken);
+                  setStopLastPrice(true);
+                  setStopLastAmt(lastDayClosing);
+                }  
                 const { lp } = infoIndexData;
                 setCurrentStockIndex(lp);
                 updateGlobleCurrentStockIndex(lp);
@@ -405,8 +419,16 @@ const AdminHeader = () => {
         }
     };
     fetchData(); // Call the async function inside useEffect
+      
+}, [indexData, symbolSelect,stopLastAmt,futureLastAmt]);
 
-}, [indexData, symbolSelect]);
+useEffect(() => { 
+      setStopLastPrice(false);
+      setStopLastAmt(0);
+      setFutureLastPrice(false);
+      setFutureLastAmt(0);    
+}, [symbolSelect, expityvalue]);
+
 
   const calculateFuture = () => {
     const fetchDataFuture = async () => {
@@ -419,7 +441,13 @@ const AdminHeader = () => {
           );
 
           const { instrumentToken} = infoFutureData;
-          const lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
+          let   lastDayClosinglp =  futureLastAmt;
+          if(futureLastPrice===false){
+            lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
+            setFutureLastPrice(true);
+            setFutureLastAmt(lastDayClosinglp);
+          } 
+           
           let infoFutureIndexData = indexData.find(
             (data) =>
               data.token === parseInt(instrumentToken) && data.tokenType === "future"
@@ -588,7 +616,7 @@ const AdminHeader = () => {
     }
   };
 
-  const isMarketHours = () => {
+  const isMarketHours = () => {    
     if(globalServerTime!==""){
       const receivedTime = new Date(globalServerTime);
       const marketOpenTime = new Date();
@@ -597,7 +625,12 @@ const AdminHeader = () => {
       marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
       return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
     }else{
-      return true;
+      const receivedTime = new Date();
+      const marketOpenTime = new Date();
+      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+      const marketCloseTime = new Date();
+      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+      return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
     }
     
 };
@@ -814,7 +847,7 @@ const AdminHeader = () => {
                             <h6 className="text-overflow m-0">Welcome!</h6>
                           </DropdownItem>
                           <DropdownItem divider />
-                          <DropdownItem to="/admin/user-profile" tag={Link}>
+                          <DropdownItem to="/admin/userprofile" tag={Link}>
                             <i className="ni ni-single-02" />
                             <span>My profile</span>
                           </DropdownItem>

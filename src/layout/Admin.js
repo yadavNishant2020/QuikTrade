@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {  Route, Routes, Navigate } from "react-router-dom";
+import React, { useEffect, useState  } from "react";
+import {  Route, Routes, Navigate,useLocation } from "react-router-dom";
 import { Container, Row, Col,   Button,
     Card,
     CardHeader,
@@ -10,6 +10,8 @@ import { Container, Row, Col,   Button,
     Progress,
     Table } from "reactstrap";
 import AdminHeader from "../components/AdminHeader.js"; 
+import AdminHeaderProfile from "../components/AdminHeaderProfile.js"; 
+
 import { ZerodaAPI } from '../api/ZerodaAPI.js';
 import '../index.css'
 import { adminRoutes } from "../routes/Routes.js";
@@ -26,6 +28,14 @@ const Admin = (props) => {
   const {    
     updateGlobleBrokerClientList
     } = useContext(PostContext); 
+
+    const location = useLocation();
+    // Function to determine if the AdminHeader should be displayed
+    const shouldDisplayAdminHeader = () => {
+      return location.pathname !== '/admin/userprofile';
+    };
+
+    
 
     useEffect(()=>{ 
       if(CookiesConfig.getCookie("Fnotrader-Secret").length===0){
@@ -114,18 +124,15 @@ const getBrockerAccountList=async(fnotraderUserid,fnotraderSecret)=>{
     const mainContent = React.useRef(null);
     return(
         <>
-                <AdminHeader />  
-               
-                <div className="main-content" ref={mainContent}>   
-              
-                <Routes>
-         {getRoutes()} 
-          <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
-        </Routes>
-       
-                                      
+                {shouldDisplayAdminHeader() && <AdminHeader />}    
+                {!shouldDisplayAdminHeader() && <AdminHeaderProfile />}   
                             
-        </div>
+                <div className="main-content" ref={mainContent}>  
+                        <Routes>
+                              {getRoutes()} 
+                                <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+                        </Routes> 
+               </div>
                             
                 
         </>

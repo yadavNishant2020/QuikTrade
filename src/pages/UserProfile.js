@@ -13,11 +13,11 @@ import { Container, Row, Col,   Button,
    Table } from "reactstrap";
    import Select from 'react-select'
 
-const AdminRule = ({optionChainData}) => {
+const UserProfile = () => {
  
     return (
         <>
-          <div className="rules-tab">
+          <div className="profile-tab">
             <Card className="shadow">
                           
                           <CardBody>
@@ -34,4 +34,4 @@ const AdminRule = ({optionChainData}) => {
         </>
     )
 }
-export default AdminRule;
+export default UserProfile;

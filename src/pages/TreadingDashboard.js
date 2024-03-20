@@ -296,7 +296,7 @@ const TreadingDashboard = () => {
     }
 
 
-    const isMarketHours = () => {      
+    const isMarketHours = () => {         
       if(globalServerTime!==""){    
       const receivedTime = new Date(globalServerTime);
       const marketOpenTime = new Date();
