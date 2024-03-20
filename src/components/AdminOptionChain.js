@@ -1549,7 +1549,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                     </Col>
                                                    </Row>
                                                   <Row className="busketList_btn_container" style={{backgroundColor:"#dcdcdc29" }}>
-                                                  <Col xl="2" xs="6" style={{textAlign:"center",lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
+                                                  <Col xl="2" md="3" xs="6" style={{textAlign:"center",lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
                                                   <label className='font-13px'
                                                                   style={{marginBottom:"0px"}}                 >
                                                                       {requiredBusketMargin}
@@ -1559,7 +1559,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       <b>Required Margin</b>  
                                                                   </span>
                                                   </Col>
-                                                  <Col xl="2" xs="6" style={{textAlign:"center" ,lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
+                                                  <Col xl="2" md="3" xs="6" style={{textAlign:"center" ,lineHeight:"0.8rem"}} className='py-1 d-flex flex-column'>
                                                   <label  
                                                                   style={{marginBottom:"0px"}}
                                                                     className='font-13px'
@@ -1571,7 +1571,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       <b>Final Margin</b>  
                                                                   </span>
                                                   </Col>
-                                                  <Col xl="5"   className='busketList_btns'>
+                                                  <Col xl="5"  md="6" xs="12" className='busketList_btns'>
                                                   <Button                                                         
                                                         color="primary" className='font-10px'                                                        
                                                         href="#pablo"

@@ -3274,7 +3274,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <Col xl="2" xs="12">
+            <Col xl="2"  md="6" xs="12">
               <Input
                 className="form-control-alternative"
                 id="input-postal-code"
@@ -3282,7 +3282,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="3" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
+            <Col xl="3"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
               <label className="form-control-label" htmlFor="input-username">
                 Unrealised MTM
               </label>
@@ -3299,7 +3299,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 {Constant.CurrencyFormat(mltUnrealized)}
               </span>
             </Col>
-            <Col xl="1" xs="4" className="stoplosstarget">
+            <Col xl="1"  md="2" xs="4" className="stoplosstarget">
               <fieldset
                 className="border"
                 onClick={() => {
@@ -3331,7 +3331,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 )}
               </fieldset>
             </Col>
-            <Col xl="1" xs="4" className="stoplosstarget">
+            <Col xl="1"  md="2" xs="4" className="stoplosstarget">
               <fieldset
                 className="border"
                 onClick={() => {
@@ -3363,7 +3363,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 )}
               </fieldset>
             </Col>
-            <Col xl="1" xs="4" className="stoplosstarget">
+            <Col xl="1" md="2" xs="4" className="stoplosstarget">
               <fieldset
                 className="border"
                 onClick={() => {
@@ -3395,7 +3395,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </fieldset>
             </Col>
 
-            <Col xl="4" xs="12" className="text-center">
+            <Col xl="4" md="6" xs="12" className="text-center">
               <Button
                disabled={                 
                 isexecuteProcess
