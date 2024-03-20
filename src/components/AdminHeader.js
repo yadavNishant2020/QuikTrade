@@ -164,7 +164,7 @@ const AdminHeader = () => {
       && sessionStorage.getItem("tradingtype")!==null 
       && sessionStorage.getItem("tradingtype")!==""
       )
-    document.title = sessionStorage.getItem("clienttoken")+" ( "+sessionStorage.getItem("tradingtype")+" ) - QuikTrade - FNOTrader.com"; // Set the title when the component mounts
+    document.title = sessionStorage.getItem("clienttoken")+" ("+sessionStorage.getItem("tradingtype")+") - QuikTrade - FNOTrader.com"; // Set the title when the component mounts
   }, [sessionStorage.getItem("clienttoken"),
       sessionStorage.getItem("tradingtype")]); // Empty dependency array to ensure it only runs once on mount
 
@@ -847,9 +847,9 @@ useEffect(() => {
                             <h6 className="text-overflow m-0">Welcome!</h6>
                           </DropdownItem>
                           <DropdownItem divider />
-                          <DropdownItem to="/admin/userprofile" tag={Link}>
+                          <DropdownItem to="https://www.fnotrader.com/trading/broker-accounts" tag={Link}>
                             <i className="ni ni-single-02" />
-                            <span>My profile</span>
+                            <span>Broker List</span>
                           </DropdownItem>
                           <DropdownItem
                             href="#pablo"

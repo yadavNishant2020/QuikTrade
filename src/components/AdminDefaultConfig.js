@@ -155,7 +155,7 @@ const AdminDefaultConfig = () => {
        
 
      const handleChange = (e) => {
-            debugger;     
+                  
             const name = e.target.name;
             let value = e.target.value;
             const isValidChar = /^-?\d*$/.test(value);
@@ -197,8 +197,7 @@ const AdminDefaultConfig = () => {
       
 
 
-      const handleDefaultConfig=async()=>{   
-        
+      const handleDefaultConfig=async()=>{ 
         if(createConfig.defaultOrderType==='LMT' && (createConfig.defaultLMTPerCentage===""|| createConfig.defaultLMTPerCentage==="0")){
             setShowValidationError(true);          
         }else if(createConfig.defaultLotSize===""|| createConfig.defaultLotSize==="0"){
@@ -213,8 +212,7 @@ const AdminDefaultConfig = () => {
                   sessionStorage.getItem("defaultConfig");
                   sessionStorage.setItem("defaultConfig",JSON.stringify(result));
                   alertify.success("Configuration saved successfully.")
-                  setButtonDisabled(false);
-                  debugger;
+                  setButtonDisabled(false);                   
                   updateGlobleChangeDefaultSetting(1)
               }
             } 
@@ -335,7 +333,7 @@ const AdminDefaultConfig = () => {
                                     <Row className="align-items-center">
                                                 <div className="col">
                                                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                                           {globleSymbol}                                                            
+                                                           {globleSymbol}-{globleSelectedTradingType}                                                         
                                                     </h6>   
                                                                                       
                                                 </div>
@@ -353,8 +351,7 @@ const AdminDefaultConfig = () => {
                                                         </label>
                                                         <Select options={productOptions} 
                                                         value={productName} styles={customStyles}
-                                                        onChange={(e) => {
-                                                         debugger;
+                                                        onChange={(e) => {                                                         
                                                          setProductName(e);
                                                          setCreateConfig({
                                                            ...createConfig,
@@ -372,7 +369,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                           Slice Qty
+                                                           Slice Qty (Max Qty/Order)
                                                         </label>
                                                         <fieldset className={showValidationError  && (createConfig.defaultSliceLot===0|| createConfig.defaultSliceLot==='')?'was-validated':'border'} >
                                                             <legend align="right">{createConfig.defaultSliceQty}</legend>
@@ -451,7 +448,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                          LMT (%)
+                                                          Price Buffer % (Market Product)
                                                         </label>
                                                         <Input className={ showValidationError && createConfig.defaultOrderType==='LMT'
                                                                 && (createConfig.defaultLMTPerCentage===0|| createConfig.defaultLMTPerCentage==='')?'was-validated':''}
@@ -474,7 +471,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                          Default Qty
+                                                          Default Qty (Per Click)
                                                         </label>
                                                         <fieldset className={ showValidationError  && (createConfig.defaultLotSize===0|| createConfig.defaultLotSize==='')?'was-validated':'border'}>
                                                             <legend align="right">{createConfig.defaultShowQty}</legend>
@@ -504,7 +501,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                           Broker Type
+                                                          Order Sequence
                                                         </label>
                                                         <Select options={brokerTypeOption} 
                                                          value={brokerType}
