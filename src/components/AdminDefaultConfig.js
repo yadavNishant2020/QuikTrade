@@ -333,7 +333,7 @@ const AdminDefaultConfig = () => {
                                     <Row className="align-items-center">
                                                 <div className="col">
                                                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                                           {globleSymbol}-{globleSelectedTradingType}                                                         
+                                                           {globleSymbol}({globleSelectedTradingType})                                                         
                                                     </h6>   
                                                                                       
                                                 </div>
