@@ -152,7 +152,19 @@ const AdminHeader = () => {
       }
     }
     
+    
   }, []);
+
+
+  useEffect(() => {
+    if( sessionStorage.getItem("clienttoken")!==null 
+      && sessionStorage.getItem("clienttoken")!==""
+      && sessionStorage.getItem("tradingtype")!==null 
+      && sessionStorage.getItem("tradingtype")!==""
+      )
+    document.title = sessionStorage.getItem("clienttoken")+" ( "+sessionStorage.getItem("tradingtype")+" ) - QuikTrade - FNOTrader.com"; // Set the title when the component mounts
+  }, [sessionStorage.getItem("clienttoken"),
+      sessionStorage.getItem("tradingtype")]); // Empty dependency array to ensure it only runs once on mount
 
   const setSymbolData = () => {
     let stockSymbols = JSON.parse(CookiesConfig.getCookie("symbolList"));

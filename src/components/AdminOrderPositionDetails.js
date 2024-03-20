@@ -56,6 +56,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     updateGlobleLogList,
     updateGlobleServerTime,
   } = useContext(PostContext);
+
+  
   const [searchValue, setSearchValue] = useState("");
   const [mtmchange, setMTMChange] = useState(0);
 
