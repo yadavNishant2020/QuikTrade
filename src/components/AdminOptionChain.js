@@ -275,7 +275,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       let newSecondOutExchangeToken=Constant.GetStrikeExchangeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondOutStrike,temptype);
       let expiryNewDate=(globleOptionChainType==='opt'?globleExpityvalue: chaindata.expiry.split('T')[0])
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
-      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
+      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo && data.defaultTradingMode===sessionStorage.getItem("tradingtype"));
       const{  defaultProductName,   defaultSliceQty, 
               defaultOrderType,     defaultLotSize,       
               defaultQty,           defaultLMTPerCentage,
@@ -583,7 +583,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
 
   const sortBasketList=(updatedList)=>{       
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
-      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
+      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo && data.defaultTradingMode===sessionStorage.getItem("tradingtype"));
       const{   
               defaultBrokerType 
           }={...configInformation};
@@ -890,7 +890,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
   const handdleRowChange=(refValue,index,refType)=>{
        
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
-      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
+      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo && data.defaultTradingMode===sessionStorage.getItem("tradingtype"));
       const{  defaultProductName,   defaultSliceQty, 
         defaultOrderType,     defaultLotSize,       
         defaultQty,           defaultLMTPerCentage,
@@ -965,7 +965,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       setEditBucketRow(false);
       setEditBucketRowNo("-1");
       var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
-      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
+      let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo && data.defaultTradingMode===sessionStorage.getItem("tradingtype"));
       const{  defaultProductName,   defaultSliceQty, 
         defaultOrderType,     defaultLotSize,       
         defaultQty,           defaultLMTPerCentage,
@@ -1336,6 +1336,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                       </Row>
                                       :<Row className='optionChain mt-1'>
                                          <Col xl="12">
+                                         <div className="table-container"   class="callPut_ltp">
                                                   <Table className="align-items-center table-flush header-table"  responsive>
                                                                       
                                                                       <thead className="thead-light">
@@ -1365,6 +1366,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                               </tbody>
                                                                       
                                                   </Table>
+                                          </div>
                                                   
                                          </Col>
                                       </Row>}
