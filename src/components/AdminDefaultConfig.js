@@ -347,7 +347,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                            Product Name
+                                                            Product
                                                         </label>
                                                         <Select options={productOptions} 
                                                         value={productName} styles={customStyles}
