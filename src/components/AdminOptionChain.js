@@ -1356,8 +1356,8 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                                                   }</td>
                                                                                                   <td className="text-center">{data.ltp} <span className={calculateLTPPercentage(data.ltp,data.lastDayClosinglp)>=0?'text-success':'text-danger'}>({(calculateLTPPercentage(data.ltp,data.lastDayClosinglp)>=0? '+': '')}{calculateLTPPercentage(data.ltp,data.lastDayClosinglp)})</span> </td>
                                                                                                   <td className="text-right">
-                                                                                                            <button className='btn btn-primary' onClick={()=>handleBasketQuickBuySell(data,'Call','Buy')}>  BUY</button>
-                                                                                                            <button className='btn btn-danger' onClick={()=>handleBasketQuickBuySell(data,'Call','Sell')}>  SELL</button>
+                                                                                                            <button className='btn btn-success buy-light text-success text-bold' onClick={()=>handleBasketQuickBuySell(data,'Call','Buy')}>  BUY</button>
+                                                                                                            <button className='btn btn-danger text-danger text-bold sell-light' onClick={()=>handleBasketQuickBuySell(data,'Call','Sell')}>  SELL</button>
                                                                                                   </td>
                                                                                                 </tr>
                                                                                                 )
