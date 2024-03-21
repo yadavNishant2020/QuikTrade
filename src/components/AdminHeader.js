@@ -60,8 +60,7 @@ const AdminHeader = () => {
 
   useEffect(() => {
     if (globleBrokerClientList != null) {      
-      if (globleBrokerClientList.length > 0) {
-        debugger;
+      if (globleBrokerClientList.length > 0) {         
         let brokerName = [];
         let clientList = [];
         globleBrokerClientList.map((dataClient) => {
@@ -179,8 +178,7 @@ const AdminHeader = () => {
     setStockSymbolInformation(StockSymbolList);
   };
 
-  const getSymbolExpiry = async () => {
-    debugger;
+  const getSymbolExpiry = async () => { 
     let symbol = [];
     let data = await ZerodaAPI.getSymbolExpiry();
     if (data != null) {
@@ -202,8 +200,7 @@ const AdminHeader = () => {
     }
   };
 
-  const getExpiryForSymbol = (symbolName) => {
-    debugger;
+  const getExpiryForSymbol = (symbolName) => {     
     let symbolExpiryData = JSON.parse(
       CookiesConfig.getCookie("symbolExpiryData")
     );
@@ -235,8 +232,7 @@ const AdminHeader = () => {
   };
 
   useEffect(() => {
-    if (expityData.length > 0) {
-      debugger;
+    if (expityData.length > 0) {       
       if(sessionStorage.getItem("currentExpityData") !== null && sessionStorage.getItem("currentExpityData")!==""){
         let currentExpityData=sessionStorage.getItem("currentExpityData");
         let expiryCurrentData=expityData.find((data)=>data.value===currentExpityData);
@@ -253,7 +249,7 @@ const AdminHeader = () => {
   }, [expityData]);
 
   useEffect(() => {
-    if (channelName != "") {
+    if (channelName != "") {     
       setStopLastPrice(false);
       setStopLastAmt(0);
       setFutureLastPrice(false);
@@ -387,14 +383,14 @@ const AdminHeader = () => {
                 (data) =>
                 data.underlying === symbolSelect.value && data.tokenType === "spot"
             );
-            const { instrumentToken } = infoData;          
-            let lastDayClosing = await callApiToHeadtocken(instrumentToken);            
+            const { instrumentToken } = infoData;         
+                  
             let infoIndexData = indexData.find(
                 (data) =>
                 data.token === parseInt(instrumentToken) && data.tokenType === "spot"
             );
             if (infoIndexData != null) {                   
-                //Call your asynchronous function inside async function                
+                //Call your asynchronous function inside async function                           
                 let  lastDayClosing = stopLastAmt;
                 if(stopLastPrice===false){
                   lastDayClosing = await callApiToHeadtocken(instrumentToken);
@@ -423,10 +419,12 @@ const AdminHeader = () => {
 }, [indexData, symbolSelect,stopLastAmt,futureLastAmt]);
 
 useEffect(() => { 
+  if(symbolSelect!=="" && expityvalue!==""){
       setStopLastPrice(false);
       setStopLastAmt(0);
       setFutureLastPrice(false);
       setFutureLastAmt(0);    
+  }
 }, [symbolSelect, expityvalue]);
 
 
@@ -439,8 +437,7 @@ useEffect(() => {
             (data) =>
               data.underlying === symbolSelect.value && data.tokenType === "future"
           );
-
-          const { instrumentToken} = infoFutureData;
+          const { instrumentToken} = infoFutureData;           
           let   lastDayClosinglp =  futureLastAmt;
           if(futureLastPrice===false){
             lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
@@ -473,8 +470,7 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    if (stockSymbolInformation.length > 0) {
-      debugger;
+    if (stockSymbolInformation.length > 0) {       
       if (symbolSelect === "") {        
         if(sessionStorage.getItem("currentStockSymbol") !== null && sessionStorage.getItem("currentStockSymbol")!==null){
           let currentStockSymbol=sessionStorage.getItem("currentStockSymbol")
@@ -596,7 +592,6 @@ useEffect(() => {
       let result = await PaperTradingAPI.getDefaultConfiguration(dataInfo);
       if (result != null) {
         if (result.length > 0) {
-          debugger;
           sessionStorage.removeItem("defaultConfig");
           sessionStorage.setItem("defaultConfig", JSON.stringify(result));
         } else {
@@ -607,8 +602,7 @@ useEffect(() => {
             getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value);
           }
         }
-      } else {
-        debugger;
+      } else {        
         if (symbolSelect.value != undefined && expityvalue.value != undefined) {
           getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value);
         }
