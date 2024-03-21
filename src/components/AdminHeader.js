@@ -599,12 +599,12 @@ useEffect(() => {
             symbolSelect.value != undefined &&
             expityvalue.value != undefined
           ) {
-            getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value);
+            getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value,tradingTypeSelect.value);
           }
         }
       } else {        
         if (symbolSelect.value != undefined && expityvalue.value != undefined) {
-          getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value);
+          getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value,tradingTypeSelect.value);
         }
       }
     }
@@ -630,7 +630,7 @@ useEffect(() => {
 };
 
 
-  const getDefaultConfigFromBroker = async (instrumentName, expiryDate) => {
+  const getDefaultConfigFromBroker = async (instrumentName, expiryDate,tradingTypeSelect) => {
     const result = await ZerodaAPI.callOptionChain(instrumentName, expiryDate);
     if (result != null) {
       const { code, data } = result;
@@ -654,6 +654,7 @@ useEffect(() => {
             defaultBrokerType: "Buy First",
             defaultShowQty: data["opt"][expiryDate][0].lotSize,
             defaultLMTPerCentage: 0,
+            defaultTradingMode:tradingTypeSelect
           };
           defaultArray.push(dataInfo);
           sessionStorage.removeItem("defaultConfig");
