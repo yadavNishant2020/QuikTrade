@@ -31,11 +31,13 @@ const AdminFunds = () => {
             let requestData={
                 logintoken:sessionStorage.getItem("apiSecret")                
             }
-             const resultData=await ZerodaAPI.getFundsAndMargins(requestData);  
-            if(resultData!=null){   
-                         console.log(resultData)                   
-                         setAvailableFunds(resultData);
-            }
+                const resultData=await ZerodaAPI.getFundsAndMargins(requestData);  
+                if(resultData!=null){   
+                            console.log(resultData)                   
+                            setAvailableFunds(resultData);
+                }else{
+                    alert("HI");
+                }
           }
 
 
