@@ -81,7 +81,7 @@ const AdminFunds = () => {
                                                                                         </td>
                                                                                         <td className='text-right'>
                                                                                              <span className='font-12px font-bold'>
-                                                                                                    {Constant.CurrencyFormat(availableFunds?.available?.adhoc_margin)}
+                                                                                                    {Constant.CurrencyFormat(availableFunds?.utilised?.debits)}
                                                                                              </span>
                                                                                         </td>
                                                                                         <td>
@@ -97,7 +97,7 @@ const AdminFunds = () => {
                                                                                             Payin
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                        {Constant.CurrencyFormat(availableFunds?.available?.intraday_payin)}
+                                                                                        {Constant.CurrencyFormat(availableFunds?.available?.intradayPayin)}
                                                                                         </td>
                                                                                         <td>
                                                                                             Payout
@@ -130,8 +130,9 @@ const AdminFunds = () => {
                                                                                         <td>
                                                                                                 Option Premium
                                                                                         </td>
+                                                                                       
                                                                                         <td className='text-right'>
-                                                                                             {Constant.CurrencyFormat(availableFunds?.utilised?.option_premium)}
+                                                                                             {Constant.CurrencyFormat(availableFunds?.utilised?.optionPremium)}
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>                                                                                        

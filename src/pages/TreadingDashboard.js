@@ -103,9 +103,9 @@ const TreadingDashboard = () => {
 
 
     const getallconfigforpositionData=async (requestData)=>{     
-      debugger;   
+         
       const resultData=await PaperTradingAPI.getallconfigforposition(requestData);   
-      debugger;        
+              
       if(resultData!=null){
               //console.log(resultData);
               updateGlobleConfigPostionData(resultData);
@@ -214,7 +214,7 @@ const TreadingDashboard = () => {
 
 
     const getOptionChainList=async ()=>{       
-      debugger;
+      
       let data = await ZerodaAPI.getOptionChainList();       
       if(data!=null){
         setTotalRows(data.length);
@@ -433,7 +433,7 @@ const TreadingDashboard = () => {
       // Connect to the server   
       const centrifugePositionInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');       
       centrifugePositionInstanceNew.on('connect', () => {
-        debugger;
+        
         if(!isMarketHours()){
           callApiToGetPreviosDayDataForPosition()
         }

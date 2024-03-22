@@ -235,7 +235,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleMoveInOutQtyChange = (e, index, data) => {
-    debugger;
+    
     let defaultSaveedQty = getSetting(
       data.positioninstrumentname,
       data.positionexpirydate
@@ -1236,7 +1236,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const processExitAllPositionLive = (logmessage) => {
-    debugger;
+    
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1698,7 +1698,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         requestData
       );
       if (resultData != null) {
-        debugger;
+        
         alertify.success(resultData);
         setChangeOrderPosition((data) => data + 1);
       }
@@ -1774,7 +1774,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     if(resultData!=null){   
       setOrderPosition((previousData) => {
             if (previousData !== undefined) {  
-               debugger;
+               
                 if(previousData!=null){
                 const updatedOrderPosition = previousData.map((position) => {
                   const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
@@ -1804,7 +1804,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     };
     const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);    
     if (resultData != null) {
-      debugger;
+      
       if (resultData.length > 0) {
         if(slEdit===false){     
             updateGlobalStopLoss(resultData[0].stopLoss);
@@ -1830,7 +1830,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       brockername:sessionStorage.getItem("brokername")  ,
     };
     const resultData = await PaperTradingAPI.gettrailingvalues(requestData);
-    debugger;
+    
     if (resultData != null) {
       if (resultData.length > 0) {
         updateGlobalStopLoss(resultData[0].stopLoss);
@@ -1947,7 +1947,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const getOrderClosedList = async () => {
-    debugger;
+    
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
@@ -1980,7 +1980,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleFirstPositionLive = (dataInfo, positionmovetype) => {
-    debugger;
+    
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -2911,7 +2911,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleSecondPositionPaper = (dataInfo, positionmovetype) => {
-    debugger;
+    
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -3251,7 +3251,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handleKeyDownPosition = (e, index,data) => {
-    debugger;
+    
     if (e.key === "Enter" || e.key === "Tab") {
       if(!isValidDecimal(data.positionstoploss) && data.positionstoploss!==""){
         alertify.error("Stoploss value is invalid.");         

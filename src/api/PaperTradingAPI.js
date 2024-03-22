@@ -3,7 +3,7 @@ import { BASE_URL,BROKER_URL } from "../Config/BaseUrl";
 
 export const PaperTradingAPI = {
   processInsertUpdateDefaultConfiguration: async (requestData) => { 
-    debugger;
+    
   try {  
             var axiosConfig = {
               method: "POST",
@@ -81,7 +81,7 @@ export const PaperTradingAPI = {
       
   
     }, processInsertUpdateOrderBulkPaper: async (requestData) => { 
-      debugger;
+      
     try {  
               var axiosConfig = {
                 method: "POST",
@@ -108,7 +108,7 @@ export const PaperTradingAPI = {
   
     },    
     getOrderCompletedList: async (requestData) => { 
-      debugger;
+      
     try {  
               var axiosConfig = {
                 method: "POST",
@@ -135,7 +135,7 @@ export const PaperTradingAPI = {
   
     }, 
     getAllOpenPositionList: async (requestData) => { 
-      debugger;
+      
     try {  
               var axiosConfig = {
                 method: "POST",
@@ -162,7 +162,7 @@ export const PaperTradingAPI = {
   
     },
     getOrderClosedList: async (requestData) => { 
-      debugger;
+      
     try {  
               var axiosConfig = {
                 method: "POST",
@@ -189,7 +189,7 @@ export const PaperTradingAPI = {
   
     },
     getLogList: async (requestData) => { 
-      debugger;
+      
     try {  
               var axiosConfig = {
                 method: "POST",

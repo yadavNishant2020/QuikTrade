@@ -228,20 +228,23 @@ const AdminDefaultConfig = () => {
 
       useEffect(()=>{
         if(globleSymbol.length>0 && globleExpityvalue.length>0 && globleSelectedClientInfo.length>0 && globleSelectedTradingType.length>0){
+         
           getDefaultConfiguration();
         }
      },[globleSymbol,globleExpityvalue,globleSelectedClientInfo,globleSelectedTradingType])
 
 
 
-    const getDefaultConfiguration=async ()=>{    
+    const getDefaultConfiguration=async ()=>{   
+      debugger; 
       let dataInfo={
         clientId:globleSelectedClientInfo,
         instrumentName:globleSymbol,
         expityDate:globleExpityvalue,
         tradingMode:globleSelectedTradingType
       }
-      let result = await PaperTradingAPI.getDefaultConfiguration(dataInfo);    
+      let result = await PaperTradingAPI.getDefaultConfiguration(dataInfo); 
+      debugger;    
       if(result!=null){
          if(result.length>0){
             sessionStorage.removeItem("defaultConfig");
