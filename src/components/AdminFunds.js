@@ -63,15 +63,15 @@ const AdminFunds = () => {
                                                                                         </td>
                                                                                         <td className='text-right'>
                                                                                             <span className='font-14px font-bold'>
-                                                                                                {Constant.CurrencyFormat(availableFunds?.net)}
+                                                                                                {Constant.CurrencyFormat(availableFunds.data.equity?.net)}
                                                                                             </span>
                                                                                         </td>
                                                                                         <td>
                                                                                             Available Cash
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                           <span className='font-14px font-bold'>
-                                                                                           {Constant.CurrencyFormat(availableFunds?.available?.cash)}
+                                                                                           <span className='font-14px font-bold'>                                                                                           
+                                                                                           {Constant.CurrencyFormat(availableFunds.data.equity?.available?.live_balance)}
                                                                                           </span> 
                                                                                         </td>
                                                                                     </tr>
@@ -81,14 +81,14 @@ const AdminFunds = () => {
                                                                                         </td>
                                                                                         <td className='text-right'>
                                                                                              <span className='font-12px font-bold'>
-                                                                                                    {Constant.CurrencyFormat(availableFunds?.utilised?.debits)}
+                                                                                                    {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.debits)}
                                                                                              </span>
                                                                                         </td>
                                                                                         <td>
                                                                                             Opening Balance
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                        {Constant.CurrencyFormat(availableFunds?.available?.cash)}
+                                                                                        {Constant.CurrencyFormat(availableFunds.data.equity?.available?.opening_balance)}
                                                                                         
                                                                                         </td>
                                                                                     </tr>
@@ -97,13 +97,13 @@ const AdminFunds = () => {
                                                                                             Payin
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                        {Constant.CurrencyFormat(availableFunds?.available?.intradayPayin)}
+                                                                                        {Constant.CurrencyFormat(availableFunds.data.equity?.available?.intraday_payin)}
                                                                                         </td>
                                                                                         <td>
                                                                                             Payout
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                        {Constant.CurrencyFormat(availableFunds?.utilised?.payout)}
+                                                                                        {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.payout)}
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>                                                                                        
@@ -111,13 +111,13 @@ const AdminFunds = () => {
                                                                                             SPAN
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                            {Constant.CurrencyFormat(availableFunds?.available?.span)}
+                                                                                            {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.span)}
                                                                                         </td>
                                                                                         <td>
-                                                                                            Delivery Changes
+                                                                                            Delivery Margin
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                             {Constant.CurrencyFormat(availableFunds?.utilised?.delivery)}
+                                                                                             {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.delivery)}
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>                                                                                        
@@ -125,14 +125,14 @@ const AdminFunds = () => {
                                                                                                 Exposure
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                            {Constant.CurrencyFormat(availableFunds?.available?.exposure)}
+                                                                                            {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.exposure)}
                                                                                         </td>
                                                                                         <td>
                                                                                                 Option Premium
                                                                                         </td>
                                                                                        
                                                                                         <td className='text-right'>
-                                                                                             {Constant.CurrencyFormat(availableFunds?.utilised?.optionPremium)}
+                                                                                             {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.option_premium)}
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>                                                                                        
@@ -140,13 +140,13 @@ const AdminFunds = () => {
                                                                                                 Collateral (Liquid funds)
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                            {Constant.CurrencyFormat(availableFunds?.available?.liquid_collateral)}
+                                                                                            {Constant.CurrencyFormat(availableFunds.data.equity?.available?.liquid_collateral)}
                                                                                         </td>
                                                                                         <td>
                                                                                                 Collateral ( Equity )
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                             {Constant.CurrencyFormat(availableFunds?.utilised?.stock_collateral)}
+                                                                                             {Constant.CurrencyFormat(availableFunds.data.equity?.utilised?.stock_collateral)}
                                                                                         </td>
                                                                                         </tr>
                                                                                     <tr>    
@@ -154,7 +154,7 @@ const AdminFunds = () => {
                                                                                                 Total collateral
                                                                                         </td>
                                                                                         <td className='text-right'>
-                                                                                             {Constant.CurrencyFormat(availableFunds?.available?.collateral)}
+                                                                                             {Constant.CurrencyFormat(availableFunds.data.equity?.available?.collateral)}
                                                                                         </td>
                                                                                     
                                                                                     </tr>
