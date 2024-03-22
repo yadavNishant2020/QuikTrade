@@ -83,28 +83,36 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
             }));   
 
             
-         
+            
       
           // Use the functional form of setStraddleData to ensure you're working with the latest state
           setStraddleData(prevStraddleData => {
             // Merge the constant properties with the dynamic ones
-           
+           debugger;
             const mergedData = updatedChainData.map(data => ({
               ...data,
-              celot: prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.celot || data.celot,
-              celotqty: prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.celotqty || data.celotqty,
+              celot: prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.celot===""?"": prevStraddleData.find(d =>d.instrumentToken === data.instrumentToken)?.celot
+              || 
+               (data.pelotqty === "" ? "" : (data.celot || defaultLotSize)),             
+              celotqty: prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.celotqty===""?"": 
+              prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.celotqty
+              || data.celotqty || defaultShowQty,
               pelot: (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelot !== undefined)
-                ? prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelot
-                : data.pelot,
+                ? (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelot=== ""?"":
+                prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelot)
+                : data.pelot || defaultLotSize,
               pelotqty: (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelotqty !== undefined)
-                ? prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelotqty
-                : data.pelotqty,
+                ? (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelotqty ===""?"":
+                  prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.pelotqty )
+                : data.pelotqty || defaultShowQty,
               totallot: (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallot !== undefined)
-                ? prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallot
-                : data.totallot,
+                ? (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallot ===""?"":
+                prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallot)
+                : data.totallot || defaultLotSize,
               totallotqty: (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallotqty !== undefined)
-                ? prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallotqty
-                : data.totallotqty,
+                ? (prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallotqty ===""?"":
+                  prevStraddleData.find(d => d.instrumentToken === data.instrumentToken)?.totallotqty)
+                : data.totallotqty || defaultShowQty,
             }));
             return mergedData;
           });
@@ -114,12 +122,12 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
 
       useEffect(() => {    
           if(globleSelectedClientInfo.length>0){
+            
             var configData=JSON.parse(sessionStorage.getItem("defaultConfig"));
             let configInformation=configData.find((data)=>data.instrumentname===globleSymbol && data.expirydate===globleExpityvalue && data.clientId===globleSelectedClientInfo);
             const{instrumentname,defaultProductName,defaultSliceQty, defaultValidity, defaultOrderType,    defaultLotSize,       defaultQty,        defaultBrokerType, defaultShowQty}={...configInformation};
             setStraddleData(prevStraddleData => {
               return prevStraddleData.map(rowData => {
-                 
                 // Update each row here
                 return {
                   ...rowData,
@@ -133,7 +141,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
               });
             });
           }
-      },[globleSelectedClientInfo,globleChangeDefaultSetting])
+      },[globleSelectedClientInfo,globleChangeDefaultSetting,globleSymbol, globleExpityvalue])
   
       
 
@@ -157,15 +165,15 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
   },[strikePrices,screenSize])
 
   const handdleTextBoxEvent = (e, index,refType) => {
-      
+      debugger;
     let selectedValue = e.target.value;   
     // Update the state for the selected row
-    setStraddleData((prevRowData) => {  
-         
+    setStraddleData((prevRowData) => { 
         let defaultLotSize= prevRowData[index]["lotSize"];
         let sizeMaxQty= prevRowData[index]["volumeFreeze"];
-      if(refType==="celot"){ 
-          
+      if(refType==="celot"){           
+        
+        prevRowData[index]["celedit"]=true;
          let petotalqty= prevRowData[index]["pelotqty"];
          if(petotalqty===""){
             petotalqty="0";
@@ -187,6 +195,7 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
             let currentTotalQty=(parseInt(0)*defaultLotSize)+parseFloat(petotalqty);
             let currentTotalLot=parseInt(0)+parseFloat(pelot);
             prevRowData[index]["celotqty"]="0";
+            prevRowData[index]["celot"]="";
             // prevRowData[index]["totallotqty"]=currentTotalQty;
             // prevRowData[index]["totallot"]=currentTotalLot;
           }

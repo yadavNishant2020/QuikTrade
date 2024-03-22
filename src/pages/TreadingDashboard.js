@@ -233,10 +233,7 @@ const TreadingDashboard = () => {
             const centrifugeInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
             // Connect to the server
             //let selectedChannel=optionChainList.find((data)=>data.underlying===globleSymbol && data.expiryDate===globleExpityvalue)
-            centrifugeInstanceNew.on('connect', () => {
-              if(!isMarketHours()){                
-                callApiToGetPreviosDayData()
-              }                        
+            centrifugeInstanceNew.on('connect', () => {                                   
               baseTable.map((cName) => {  
             // Subscribe to the channel (replace 'your-channel' with the actual channel name)
                       if (cName.instrumentToken !== undefined) { 
@@ -510,7 +507,13 @@ const getRandomFloat = (min, max) => {
 
     useEffect(()=>{       
       if(baseTable?.length>0){
-        processOptionChain();        
+        debugger;
+        if(!isMarketHours()){                
+          callApiToGetPreviosDayData()
+        } else{
+          processOptionChain();  
+        }
+              
       }
     },[baseTable])
 
