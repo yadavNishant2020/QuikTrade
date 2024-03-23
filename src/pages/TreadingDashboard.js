@@ -294,16 +294,17 @@ const TreadingDashboard = () => {
 
 
     const isMarketHours = () => {         
-      if(globalServerTime!==""){    
-      const receivedTime = new Date(globalServerTime);
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-      return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-    }else{
-      return true;
-    }
+    //   if(globalServerTime!==""){    
+    //   const receivedTime = new Date(globalServerTime);
+    //   const marketOpenTime = new Date();
+    //   marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+    //   const marketCloseTime = new Date();
+    //   marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+    //   return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+    // }else{
+    //   return true;
+    // }
+    return false;
   };
 
     const callApiToGetPreviosDayData=async ()=>{
@@ -317,12 +318,12 @@ const TreadingDashboard = () => {
                     updatGlobleTabIndex(1);                                                   
                     const index = previousData.findIndex((item) => item.instrumentToken === infodata?.token?.toString());
                     if (index !== -1) {
-                      previousData[index].ltp = parseFloat(infodata.lp).toFixed(2);
-                      previousData[index].atp = parseFloat(infodata.atp).toFixed(2);                            
+                      previousData[index].ltp = parseFloat(infodata?.lp).toFixed(2);
+                      previousData[index].atp = parseFloat(infodata?.atp).toFixed(2);                            
                       return previousData;
                     }else{                            
                       const tempBaseTable = baseTable.find((item) => item.instrumentToken === infodata?.token?.toString());
-                      const updateData={...tempBaseTable,ltp:parseFloat(infodata.lp).toFixed(2),atp:parseFloat(infodata.atp).toFixed(2)}
+                      const updateData={...tempBaseTable,ltp:parseFloat(infodata?.lp).toFixed(2),atp:parseFloat(infodata?.atp).toFixed(2)}
                       return [...previousData,updateData]
                     }
                   }else{
