@@ -1759,7 +1759,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       const receivedTime = new Date(receivedData);      
       updateGlobleServerTime(receivedTime);        
     });
-
+    
+    connectionData.on('ReceiveOrderDataToClients', (receivedData) => {
+      getOrderCompletedList();           
+    });
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
       connectionData.stop();
