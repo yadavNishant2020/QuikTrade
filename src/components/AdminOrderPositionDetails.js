@@ -1625,6 +1625,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let dataInfo = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestData,
+        logmessage:logmessage
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderBulkLive(
         dataInfo
