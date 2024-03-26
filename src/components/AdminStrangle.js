@@ -114,8 +114,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
                 celotqty: defaultShowQty || (1*rowData.lotSize),
                 pelot: defaultLotSize || 1,
                 pelotqty: defaultShowQty || (1*rowData.lotSize),
-                totallot: (2*defaultLotSize) || 2,
-                totallotqty: (2*defaultShowQty) || (2*rowData.lotSize),
+                totallot: (1*defaultLotSize) || 1,
+                totallotqty: (1*defaultShowQty) || (1*rowData.lotSize),
               };
             });
           });
@@ -125,8 +125,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
       useEffect(()=>{  
          
         if(tempStraddleData?.length>0  && strikePrices>0){ 
-             
-            let strikeDiff=0;
+          debugger;
+          let strikeDiff=0;
             if(globleSymbol==="NIFTY"){
                     strikeDiff=50;
             }else  if(globleSymbol==="BANKNIFTY"){
@@ -1006,7 +1006,9 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                                                                         </thead>
                                                                          
                                                                         <tbody >
+                                                                        
                                                                                 {
+                                                                                  
                                                                                     strangleList.length>0?
                                                                                     strangleList.filter((dataInfo)=>dataInfo.name===globleSymbol && dataInfo.expiryDate===globleExpityvalue).map((data,index)=>
                                                                                         (index % 2 === 0? (
