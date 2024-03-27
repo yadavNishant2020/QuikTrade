@@ -293,18 +293,38 @@ const TreadingDashboard = () => {
     }
 
 
-    const isMarketHours = () => {         
-      if(globalServerTime!==""){    
-      const receivedTime = new Date(globalServerTime);
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-      return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-    }else{
-      return true;
-    }
-    
+    const isMarketHours = () => {    
+      debugger;
+      if(globalServerTime!==""){
+        const receivedTime = new Date(globalServerTime);
+        const marketOpenTime = new Date();
+        marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+        const marketCloseTime = new Date();
+        marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+  
+        const dayOfWeek = receivedTime.getDay();
+        if(dayOfWeek===0 || dayOfWeek===6)
+        {
+          return false;
+        }else{
+          return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+        }
+       
+      }else{
+        const receivedTime = new Date();
+        const marketOpenTime = new Date();
+        marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+        const marketCloseTime = new Date();
+        marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+        const dayOfWeek = receivedTime.getDay();
+        if(dayOfWeek===0 || dayOfWeek===6)
+        {
+          return false;
+        }else{
+          return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+        }
+      }
+      
   };
 
     const callApiToGetPreviosDayData=async ()=>{
