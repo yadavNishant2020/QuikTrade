@@ -623,8 +623,7 @@ useEffect(() => {
         return false;
       }else{
         return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-      }
-     
+      }     
     }else{
       const receivedTime = new Date();
       const marketOpenTime = new Date();
@@ -639,7 +638,6 @@ useEffect(() => {
         return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
       }
     }
-    
 };
 
 
