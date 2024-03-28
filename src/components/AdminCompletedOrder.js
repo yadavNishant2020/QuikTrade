@@ -106,8 +106,8 @@ const AdminCompletedOrder = () => {
                                                                                 <td className='text-center'>{data.ordertype}</td>
                                                                                 <td className='text-center' style={{width:"10%"}}> 
                                                                                 <fieldset className='border'>
-                                                                                        <legend align="right">{data.orderqty}</legend>
-                                                                                        {data.nooforderlot}
+                                                                                        <legend align="right">{data.filledQty}/{data.orderqty}</legend>
+                                                                                      {data.filledLot}/{data.nooforderlot}
                                                                                     </fieldset>
                                                                                 
                                                                                 </td>
