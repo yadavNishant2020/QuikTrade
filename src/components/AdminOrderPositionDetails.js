@@ -1618,7 +1618,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       const resultData =
         await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objReq);
       if (resultData != null) {
-        alertify.success("All open order closed successfully.");
+        alertify.success("All open position closed successfully.");
         setChangeOrderPosition((data) => data + 1);
       }
     } else {
@@ -1631,7 +1631,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         dataInfo
       );
       if (resultData != null) {
-        alertify.message(resultData);
+        alertify.success("All open position closed successfully.");
       } else {
       }
     }
