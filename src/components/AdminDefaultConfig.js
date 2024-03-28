@@ -451,7 +451,7 @@ const AdminDefaultConfig = () => {
                                                             className="form-control-label"
                                                             htmlFor="input-username"
                                                         >
-                                                          Price Buffer % (Market Product)
+                                                          Price Buffer % (Market Protect)
                                                         </label>
                                                         <Input className={ showValidationError && createConfig.defaultOrderType==='LMT'
                                                                 && (createConfig.defaultLMTPerCentage===0|| createConfig.defaultLMTPerCentage==='')?'was-validated':''}
