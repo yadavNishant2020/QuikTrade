@@ -64,7 +64,7 @@ const AdminCompletedOrder = () => {
                                                                                         <th scope="col">Product</th>                                                                                      
                                                                                                                                                                             
                                                                                         <th scope="col" >Type</th>       
-                                                                                        <th scope="col" className="text-center" style={{width:"10%"}} >Lot</th>  
+                                                                                        <th scope="col" className="text-center" style={{width:"12%"}} >Lot</th>  
                                                                                         <th scope="col" className="text-right">Price</th>  
                                                                                         <th scope="col" >Status</th> 
                                                                                                                         
