@@ -27,6 +27,7 @@ import { Container, Row, Col,   Button,
    import { useContext } from 'react';  
    import AdminFooter from "../components/AdminFooter.js";
    import { PaperTradingAPI } from '../api/PaperTradingAPI.js';
+import { CookiesConfig } from '../Config/CookiesConfig.js';
 
 const TreadingDashboard = () => {
     const divRef = useRef(null);
@@ -292,40 +293,44 @@ const TreadingDashboard = () => {
         }; 
     }
 
-    const isMarketHours = () => {  
-        return false;
-    }
+   
 
 
-  //   const isMarketHours = () => {   
-  //     if(globalServerTime!==""){
-  //       const receivedTime = new Date(globalServerTime);
-  //       const marketOpenTime = new Date();
-  //       marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-  //       const marketCloseTime = new Date();
-  //       marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM  
-  //       const dayOfWeek = receivedTime.getDay();
-  //       if(dayOfWeek===0 || dayOfWeek===6)
-  //       {
-  //         return false;
-  //       }else{
-  //         return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-  //       }       
-  //     }else{
-  //       const receivedTime = new Date();
-  //       const marketOpenTime = new Date();
-  //       marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-  //       const marketCloseTime = new Date();
-  //       marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-  //       const dayOfWeek = receivedTime.getDay();
-  //       if(dayOfWeek===0 || dayOfWeek===6)
-  //       {
-  //         return false;
-  //       }else{
-  //         return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-  //       }
-  //     }      
-  // };
+    const isMarketHours = () => {   
+      if(globalServerTime!==""){
+        const receivedTime = new Date(globalServerTime);
+        const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
+        let holidays=JSON.parse(CookiesConfig.getCookie("holidaylist"));        
+        const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);         
+        const marketOpenTime = new Date();
+        marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+        const marketCloseTime = new Date();
+        marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM  
+        const dayOfWeek = receivedTime.getDay();
+        if(dayOfWeek===0 || dayOfWeek===6 || isHoliday)
+        {
+          return false;
+        }else{
+          return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+        }       
+      }else{
+        const receivedTime = new Date();
+        const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
+        let holidays=JSON.parse(CookiesConfig.getCookie("holidaylist"));        
+        const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);
+        const marketOpenTime = new Date();
+        marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+        const marketCloseTime = new Date();
+        marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+        const dayOfWeek = receivedTime.getDay();
+        if(dayOfWeek===0 || dayOfWeek===6 || isHoliday)
+        {
+          return false;
+        }else{
+          return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+        }
+      }      
+  };
 
     const callApiToGetPreviosDayData=async ()=>{
       if(baseTable?.length>0){
@@ -407,10 +412,14 @@ const TreadingDashboard = () => {
 
   
   useEffect(()=>{        
-    if(globleUniqueChannelData?.length>0){                     
+    if(!isMarketHours()){
+      callApiToGetPreviosDayDataForPosition()
+    }else{
+      if(globleUniqueChannelData?.length>0){                     
         processPositionDataFromSocket()
-    }else{          
-      
+      }else{          
+        
+      }
     }
   },[globleUniqueChannelData])
 
@@ -451,11 +460,6 @@ const TreadingDashboard = () => {
       // Connect to the server   
       const centrifugePositionInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');       
       centrifugePositionInstanceNew.on('connect', () => {
-        
-        if(!isMarketHours()){
-          callApiToGetPreviosDayDataForPosition()
-        }
-
         globleUniqueChannelData.forEach((cName) => {                              
                 // Subscribe to the channel (replace 'your-channel' with the actual channel name)
                 if (cName !== undefined) { 
@@ -527,8 +531,7 @@ const getRandomFloat = (min, max) => {
     }
 
     useEffect(()=>{       
-      if(baseTable?.length>0){
-        debugger;
+      if(baseTable?.length>0){        
         if(!isMarketHours()){                
           callApiToGetPreviosDayData()
         } else{

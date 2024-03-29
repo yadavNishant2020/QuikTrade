@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useContext } from 'react'
 import { CookiesConfig } from "../Config/CookiesConfig.js";
 import { ZerodaAPI } from '../api/ZerodaAPI.js';
-import { PostProvider,PostContext } from '../PostProvider.js';
+import { PostProvider,PostContext } from '../PostProvider.js'; 
 import alertify from 'alertifyjs';
 const AuthLogin = () => {
     const { globleFnotraderUserId,
@@ -17,6 +17,17 @@ const AuthLogin = () => {
         } 
       }, []);  
 
+      const getexchangeholidays=async()=>{
+        const resultData = await ZerodaAPI.getexchangeholidays();
+        if(resultData!=null){
+          const {code,data}=resultData;
+          if(code===200){
+            CookiesConfig.setCookie("holidaylist",JSON.stringify(data["NFO"]));
+            window.open("/admin/dashboard", '_self');
+          }
+        }
+      }
+
       const loginCheckForFNOTraderData=async(fnotraderUserid,fnotraderSecret)=>{ 
         // Get the navigate function using useNavigate
        const resultData = await ZerodaAPI.loginCheckForFNOTrader(fnotraderUserid,fnotraderSecret);
@@ -31,7 +42,8 @@ const AuthLogin = () => {
                'Information',
                'Login successfully.',
                () => {
-                 window.open("/admin/dashboard", '_self');
+                 debugger;
+                 getexchangeholidays();                
                });
            }
        }else{
