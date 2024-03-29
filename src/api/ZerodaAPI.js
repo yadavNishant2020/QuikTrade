@@ -267,7 +267,26 @@ export const ZerodaAPI = {
             console.log('Error Details:'+(error.response || error.request || error.message));
             return null;
         }
-    },
+    },getexchangeholidays: async () => { 
+      try {  
+                var axiosConfig = {
+                  method: "GET",
+                  url: `${BROKER_URL}get_exchange_holidays?exchange=nfo`
+                };
+                const response = await axios(axiosConfig);                    
+                const {status,data}=response;
+                if(status===200){
+                    return data;
+                }else{
+                    return null;
+                }
+      } catch (error) {
+            console.log(error);
+            return null;
+      }
+        
+    
+      }
           
 
 }
