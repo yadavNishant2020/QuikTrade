@@ -3317,7 +3317,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   <label className="float-right">
                     {parseFloat(globalStopLoss) !== 0 && globalStopLoss !== "" 
                       ?  parseFloat(globalStopLoss).toFixed(2)
-                      : "---"}
+                      :  parseFloat(globalStopLoss) === 0 && parseFloat(globalTP) !== 0 ? parseFloat(globalStopLoss): "---"}
                   </label>
                 ) : (
                   <Input
