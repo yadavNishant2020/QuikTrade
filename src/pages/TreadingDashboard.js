@@ -10,6 +10,7 @@ import AdminStrangle from "../components/AdminStrangle.js";
 import AdminOrderFooter from "../components/AdminOrderFooter.js";
 import AdminRule from "../components/AdminRule.js";
 import AdminCompletedOrder from "../components/AdminCompletedOrder.js";
+import AdminTrades from "../components/AdminTrades.js";
 import { ZerodaAPI } from "../api/ZerodaAPI";
 import Centrifuge from 'centrifuge';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -598,9 +599,13 @@ const getRandomFloat = (min, max) => {
                                             <Tabs style={{backgroundColor:"#FFFFFF"}}>
                                                 <TabList>
                                                         <Tab>Orders</Tab>
+                                                        <Tab>Trades</Tab>
                                                         </TabList>
                                                         <TabPanel>
                                             <AdminCompletedOrder />
+                                            </TabPanel>
+                                            <TabPanel>
+                                            <AdminTrades />
                                             </TabPanel>
                                                </Tabs>
                                             </Col>

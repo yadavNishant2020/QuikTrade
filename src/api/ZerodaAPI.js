@@ -286,7 +286,30 @@ export const ZerodaAPI = {
       }
         
     
-      }
+      },getTradesForClient: async (requestData) => { 
+        try {  
+                var axiosConfig = {
+                  method: "POST",
+                  url: `${BASE_URL}zeroda/getTradesForClient`,  
+                  headers: {        
+                    "Content-Type": "application/json",
+                    "token":localStorage.getItem("token")
+                  },    
+                  data:requestData
+                };
+                const response = await axios(axiosConfig);
+                const {status,data}=response;
+                if(status===200){
+                    return data;
+                }else{
+                    return null;
+                }
+        } catch (error) {
+            console.log(error);
+            console.log('Error Details:'+(error.response || error.request || error.message));
+            return null;
+        }
+    }
           
 
 }

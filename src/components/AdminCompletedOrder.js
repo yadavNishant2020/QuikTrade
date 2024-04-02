@@ -77,7 +77,7 @@ const AdminCompletedOrder = () => {
                                                                             globleOrderList.map((data)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>{data.ordertimestamp}</td>
-                                                                                <td className='text-center'>{data.orderreferanceid}</td>
+                                                                                <td className='text-center'>{globleSelectedTradingType==='Live'?data.orderidbybroker:data.orderreferanceid}</td>
                                                                                 <td className='text-center'>
                                                                                 <span className={ data.orderaction.toLowerCase()==='buy'?'btn text-success text-bold buy-light':'btn text-danger text-bold sell-light'}>
                                                                                     {data.orderaction}
