@@ -24,6 +24,7 @@ import { BASE_SIGNALR_HUB } from "../Config/BaseUrl";
 import { Constant } from "../Config/Constant";
 import { LiveTradingAPI } from "../api/LiveTradingAPI";
 import Centrifuge from "centrifuge";
+import ZerodaAPI from "../api/ZerodaAPI.js";
 
 const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const {
@@ -55,6 +56,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     globleBrokerName,
     updateGlobleLogList,
     updateGlobleServerTime,
+    updateGlobleTrades,
   } = useContext(PostContext);
 
   
@@ -78,13 +80,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const [tragetEdit, setTragetEdit] = useState(false);
   const [tpEdit, setTpEdit] = useState(false);
   const [changeOrderPosition, setChangeOrderPosition] = useState(0);
-
   const [selectedClientInfo, setSelectedClientInfo] = useState("");
   const [isMounted, setIsMounted] = useState(true);
   const [tpValue, setTpValue] = useState(0);
-  const [centrifugePositionInstance, setCentrifugePositionInstance] =
-    useState(null);
-
+  const [centrifugePositionInstance, setCentrifugePositionInstance] = useState(null);
   const [editPositionRow, setEditPositionRow] = useState(false);
   const [editPositionRowNo, setEditPositionRowNo] = useState(0);
   //const positionCentrifugeInstance = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
@@ -195,7 +194,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [orderPosition, globlePositionChange]);
 
   useEffect(() => {
-    if (orderPosition != undefined) {
+    if (orderPosition !== undefined) {
       if (orderPosition.length > 0) {
         if (searchValue.length > 0) {
           const filteredPositions = orderPosition.filter((position) => {
@@ -205,6 +204,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 ?.toLowerCase()
                 .includes(searchValue.toLowerCase()) ||
               position?.strikeprice
+                ?.toLowerCase()
+                .includes(searchValue.toLowerCase()) ||
+                position?.positionordertype
                 ?.toLowerCase()
                 .includes(searchValue.toLowerCase())
             );
@@ -1716,6 +1718,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
+      if(globleSelectedTradingType==="Live"){
+        getTradesForClient();
+      }      
     }
   }, [globleSelectedTradingType, globleSelectedClientInfo]);
 
@@ -1744,6 +1749,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
+      if(globleSelectedTradingType==="Live"){
+        getTradesForClient();
+      }  
+       
     });    
     connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
       getLogList();           
@@ -1761,13 +1770,34 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
     
     connectionData.on('ReceiveOrderDataToClients', (receivedData) => {
-      getOrderCompletedList();           
+      getOrderCompletedList();      
+      if(globleSelectedTradingType==="Live"){
+        getTradesForClient();
+      }    
     });
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
       connectionData.stop();
     };
   }, []);
+
+  const getTradesForClient=async()=>{  
+      let requestData = {
+        logintoken:sessionStorage.getItem("apiSecret")       
+      };
+      const resultData=await ZerodaAPI.getTradesForClient(requestData);        
+      if(resultData!=null){   
+        const {code,data}=resultData;
+        if(code!==200){
+          updateGlobleTrades(data);
+        }else{
+          updateGlobleTrades([]);
+        }             
+      }else{
+        updateGlobleTrades([]);
+      }   
+  }
+
 
   const getPositionStoplossList=async()=>{         
     let requestData={
@@ -3484,7 +3514,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                       filterOrderPosition?.map((dataInfo, index) => {
                         if (dataInfo) {
                           return (
-                              <tr key={index}>
+                              <tr key={index} className={dataInfo.positionordertype==='CE'?"ce-light":"pe-light"}>
                                 <td className="text-center">
                                   <span
                                     className={

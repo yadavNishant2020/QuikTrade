@@ -39,6 +39,14 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.rules-tab  .form-control-label{
+  font-size: 9px !important;
+  margin-bottom: 0px !important;
+  font-weight:700 !important;
+}
+
+
+
 .admindefaultconfig  .form-control-label{
   font-size: 9px !important;
   margin-bottom: 0px !important;
@@ -760,6 +768,13 @@ fieldset.border{
         font-size: 11px !important;
       } 
 
+      .AdminRule .table-container {
+        height : 160px;
+        overflow-y: auto;
+        font-size: 11px !important;
+      } 
+
+
       .busketView  .table-container {
         height : 175px;
         overflow-y: auto;
@@ -886,6 +901,13 @@ fieldset.border{
     overflow-y: auto;
     font-size: 11px !important;
   }  
+
+  .AdminRule .table-container {
+    height : 160px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  } 
+
   .Straddle .table-container {
     height : 215px;
     overflow-y: auto;
@@ -901,6 +923,12 @@ fieldset.border{
     overflow-y: auto;
     font-size: 11px !important;
   }  
+
+  .AdminRule .table-container {
+    height : 165px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  } 
   
  
   .table td,.table th {
@@ -999,6 +1027,16 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 5px 5px;
   border-radius: 5px !important;
 }
+
+.ce-light {
+  background-color: #0080000a !important;  
+}
+
+.pe-light {
+  background-color: #ff00000a !important;   
+}
+
+
 .strangle .table thead, .Straddle .table thead{
   position: sticky;
   top: 0;
@@ -1017,6 +1055,12 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     overflow-y: auto;
     font-size: 11px !important;
   }  
+
+  .AdminRule .table-container {
+    height : 190px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  } 
 
   .busketView  .table-container {
     height : 200px;
