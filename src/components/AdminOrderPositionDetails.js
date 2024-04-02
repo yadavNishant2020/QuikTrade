@@ -87,7 +87,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   const [editPositionRow, setEditPositionRow] = useState(false);
   const [editPositionRowNo, setEditPositionRowNo] = useState(0);
-  //const positionCentrifugeInstance = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
+  //const positionCentrifugeInstance = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
 
   const handleSLEdit = () => {
     setSLEdit((slEdit) => !slEdit);

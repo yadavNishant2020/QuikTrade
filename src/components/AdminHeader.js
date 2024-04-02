@@ -266,7 +266,7 @@ const AdminHeader = () => {
   const getStockIndex = () => {
     // Initialize Centrifuge client
     const centrifugeInstance = new Centrifuge(
-      "wss://stock-api.fnotrader.com/connection/websocket"
+      "wss://stock-api2.fnotrader.com/connection/websocket"
     );
     // Set up event listeners for connection state
     centrifugeInstance.on("connect", () => {

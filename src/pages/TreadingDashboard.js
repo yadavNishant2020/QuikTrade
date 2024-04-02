@@ -50,7 +50,7 @@ const TreadingDashboard = () => {
     const [height, setHeight] = useState(0)
 
 
-    const centrifugeInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
+    const centrifugeInstanceNew = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
     const { globleSymbol,
       globleExpityvalue,
       globleCurrentStockIndex,
@@ -124,7 +124,7 @@ const TreadingDashboard = () => {
         }
   
         // Create a new Centrifuge instance
-        const newCentrifugeInstance = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
+        const newCentrifugeInstance = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
   
         // Connect to the server
         newCentrifugeInstance.connect();
@@ -231,7 +231,7 @@ const TreadingDashboard = () => {
     const processOptionChain = () => {
          
           // Initialize Centrifuge client
-            const centrifugeInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
+            const centrifugeInstanceNew = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
             // Connect to the server
             //let selectedChannel=optionChainList.find((data)=>data.underlying===globleSymbol && data.expiryDate===globleExpityvalue)
             centrifugeInstanceNew.on('connect', () => {                                   
@@ -458,7 +458,7 @@ const TreadingDashboard = () => {
     // Initialize Centrifuge client
       
       // Connect to the server   
-      const centrifugePositionInstanceNew = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');       
+      const centrifugePositionInstanceNew = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');       
       centrifugePositionInstanceNew.on('connect', () => {
         globleUniqueChannelData.forEach((cName) => {                              
                 // Subscribe to the channel (replace 'your-channel' with the actual channel name)

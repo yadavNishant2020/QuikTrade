@@ -5,7 +5,7 @@ const WebSocketComponent = () => {
   const channel = "chat:index";
   useEffect(() => {
     // Initialize Centrifuge client
-    const centrifuge = new Centrifuge('wss://stock-api.fnotrader.com/connection/websocket');
+    const centrifuge = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
     centrifuge.on('connect', () => {
       console.log('Connected to Centrifuge');
       
