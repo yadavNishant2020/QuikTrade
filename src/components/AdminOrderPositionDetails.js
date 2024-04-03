@@ -1700,8 +1700,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       const resultData = await LiveTradingAPI.processAllPendingOrderForClient(
         requestData
       );
-      if (resultData != null) {
-        
+      if (resultData != null) {        
         alertify.success(resultData);
         setChangeOrderPosition((data) => data + 1);
       }
@@ -1717,10 +1716,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderCompletedList();
       getOrderClosedList();
       getLogList();
-      gettrailingvalues();
-      if(globleSelectedTradingType==="Live"){
+      gettrailingvalues();       
         getTradesForClient();
-      }      
+           
     }
   }, [globleSelectedTradingType, globleSelectedClientInfo]);
 
@@ -1749,9 +1747,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
-      if(globleSelectedTradingType==="Live"){
-        getTradesForClient();
-      }  
+      getTradesForClient();
        
     });    
     connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
@@ -1770,10 +1766,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
     
     connectionData.on('ReceiveOrderDataToClients', (receivedData) => {
-      getOrderCompletedList();      
-      if(globleSelectedTradingType==="Live"){
-        getTradesForClient();
-      }    
+        getOrderCompletedList();   
+        getTradesForClient();         
     });
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
@@ -1786,7 +1780,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         logintoken:sessionStorage.getItem("apiSecret")       
       };
       const resultData=await ZerodaAPI.getTradesForClient(requestData);        
-      if(resultData!=null){   
+      if(resultData!=null){ 
         const {code,data}=resultData;
         if(code!==200){
           updateGlobleTrades(data);
