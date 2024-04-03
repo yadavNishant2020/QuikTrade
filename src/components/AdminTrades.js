@@ -73,6 +73,8 @@ const AdminTrades = () => {
                                                                                         <th scope="col" >Order TimeStamp</th> 
                                                                                         <th scope="col">Trade ID</th>  
                                                                                         <th scope="col">Order ID</th>
+                                                                                        <th scope="col">Instrument</th>
+                                                                                        
                                                                                         <th scope="col">Avg. Price</th>
                                                                                         <th scope="col">QTY</th>
                                                                                         <th scope="col">Transaction Type</th>
@@ -89,9 +91,9 @@ const AdminTrades = () => {
                                                                                                                 const timestamp = dataInfo.fill_timestamp;
                                                                                                                 const date = new Date(timestamp);                                                                                                    
                                                                                                                 // Get the time in hours, minutes, and seconds
-                                                                                                                const hours = date.getHours();
-                                                                                                                const minutes = date.getMinutes();
-                                                                                                                const seconds = date.getSeconds();                                                                                                    
+                                                                                                                const hours = date.getHours()<10?"0"+date.getHours():date.getHours();
+                                                                                                                const minutes = date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes();
+                                                                                                                const seconds = date.getSeconds()<10?"0"+date.getSeconds():date.getSeconds();;                                                                                                    
                                                                                                                 // Format the time as needed
                                                                                                                 const formattedTime = `${hours}:${minutes}:${seconds}`;
                                                                                                             return (
@@ -104,6 +106,9 @@ const AdminTrades = () => {
                                                                                                                      </td>
                                                                                                                      <td className="text-center">
                                                                                                                             {dataInfo.order_id}
+                                                                                                                     </td>
+                                                                                                                     <td className="text-center">
+                                                                                                                            {dataInfo.tradingsymbol}
                                                                                                                      </td>
                                                                                                                      <td className="text-center">
                                                                                                                             {dataInfo.average_price}
