@@ -236,8 +236,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
      
   };
 
-  const handdleMoveInOutQtyChange = (e, index, data) => {
-    
+  const handdleMoveInOutQtyChange = (e, index, data) => {    
     let defaultSaveedQty = getSetting(
       data.positioninstrumentname,
       data.positionexpirydate
@@ -1716,9 +1715,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderCompletedList();
       getOrderClosedList();
       getLogList();
-      gettrailingvalues();       
+      gettrailingvalues();  
+      if(sessionStorage.getItem("tradingtype")==="Live"){
         getTradesForClient();
-           
+      }     
     }
   }, [globleSelectedTradingType, globleSelectedClientInfo]);
 
@@ -1747,7 +1747,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
-      getTradesForClient();
+      if(sessionStorage.getItem("tradingtype")==="Live"){
+        getTradesForClient();
+      }     
        
     });    
     connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
@@ -1767,7 +1769,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     
     connectionData.on('ReceiveOrderDataToClients', (receivedData) => {
         getOrderCompletedList();   
-        getTradesForClient();         
+        if(sessionStorage.getItem("tradingtype")==="Live"){
+          getTradesForClient();
+        }              
     });
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
