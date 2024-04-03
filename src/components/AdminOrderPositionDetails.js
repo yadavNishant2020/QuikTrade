@@ -1718,6 +1718,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       gettrailingvalues();  
       if(sessionStorage.getItem("tradingtype")==="Live"){
         getTradesForClient();
+      }else{
+        updateGlobleTrades([]);
       }     
     }
   }, [globleSelectedTradingType, globleSelectedClientInfo]);
@@ -1749,7 +1751,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       gettrailingvalues();
       if(sessionStorage.getItem("tradingtype")==="Live"){
         getTradesForClient();
-      }     
+      }else{
+        updateGlobleTrades([]);
+      }        
        
     });    
     connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
@@ -1771,7 +1775,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         getOrderCompletedList();   
         if(sessionStorage.getItem("tradingtype")==="Live"){
           getTradesForClient();
-        }              
+        }else{
+          updateGlobleTrades([]);
+        }                 
     });
     return () => {    
       console.log("Dis-Connected to SignalR Hub");
@@ -1785,9 +1791,17 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       };
       const resultData=await ZerodaAPI.getTradesForClient(requestData);        
       if(resultData!=null){ 
-        const {code,data}=resultData;
-        if(code!==200){
-          updateGlobleTrades(data);
+        const {status,data}=resultData;
+        if(status==="success"){
+          debugger;
+         let sortedData= data.sort((a, b) => {
+            // Convert times to Date objects for comparison
+            const timeA = new Date("1970-01-01T" + a.order_timestamp);
+            const timeB = new Date("1970-01-01T" + b.order_timestamp);
+            return timeB-timeA ;
+          });
+           
+          updateGlobleTrades(sortedData);
         }else{
           updateGlobleTrades([]);
         }             
