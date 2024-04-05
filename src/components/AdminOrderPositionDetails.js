@@ -57,6 +57,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     updateGlobleLogList,
     updateGlobleServerTime,
     updateGlobleTrades,
+    globlemltRealized
   } = useContext(PostContext);
 
   
@@ -3322,7 +3323,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       <Card className="shadow">
         <CardHeader className="border-0">
           <Row className="align-items-center">
-            <Col xl="2"  md="6" xs="12">
+            <Col xl="1"  md="6" xs="12">
               <Input
                 className="form-control-alternative"
                 id="input-postal-code"
@@ -3330,7 +3331,24 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="3"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
+            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
+              <label className="form-control-label" htmlFor="input-username">
+                Total MTM
+              </label>
+              <span
+                className={
+                  ((globlemltRealized+mltUnrealized) > 0
+                    ? " text-success"
+                    : (globlemltRealized+mltUnrealized) < 0
+                    ? "text-danger"
+                    : "text-data-secondary") + " m-1 font-14px  text-center"
+                }
+              >
+                {(globlemltRealized+mltUnrealized) > 0 ? "+" : ""}
+                {Constant.CurrencyFormat((globlemltRealized+mltUnrealized))}
+              </span>
+            </Col>
+            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
               <label className="form-control-label" htmlFor="input-username">
                 Unrealised MTM
               </label>
@@ -3443,7 +3461,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </fieldset>
             </Col>
 
-            <Col xl="4" md="6" xs="12" className="text-center">
+            <Col xl="3" md="6" xs="12" className="text-center">
+            
               <Button
                disabled={                 
                 isexecuteProcess
@@ -3454,7 +3473,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onClick={(e) => handleExitAllPosition(e)}
                 size="sm"
               >
-                Exit All Positions
+                Exit All
               </Button>
               <Button
                 className="font-10px"
@@ -3463,7 +3482,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onClick={(e) => handleExitAllOrder(e)}
                 size="sm"
               >
-                Exit All Orders
+                Exit Orders
               </Button>
             </Col>
           </Row>

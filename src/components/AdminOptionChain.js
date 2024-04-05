@@ -1349,8 +1349,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                       </thead>
                                                                       <tbody>
                                                                               {
-                                                                                      sortedCurrentOptionChain.map((data,index) =>(
-                                                                                              
+                                                                                      sortedCurrentOptionChain.map((data,index) =>(                                                                                              
                                                                                                 <tr>
                                                                                                   <td className="text-center">{ `${data?.name} ${(new Date(data.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()} ${data?.instrumentType}`
                                                                                                   }</td>
@@ -1589,6 +1588,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                         href="#pablo"
                                                         onClick={handleClearBasket}
                                                         size="sm"
+                                                        disabled={ bucketList?.length===0  ? true : diableBasketExecute}
                                                       >
                                                        Clear
                                                       </Button>
@@ -1598,6 +1598,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                          href="#pablo"
                                                          onClick={processBasketMargin}
                                                          size="sm"
+                                                         disabled={ bucketList?.length===0  ? true : diableBasketExecute}
                                                        >
                                                         Calculate Margin
                                                        </Button>
