@@ -73,8 +73,7 @@ const AdminTrades = () => {
                                                                                         <th scope="col" >Order TimeStamp</th> 
                                                                                         <th scope="col">Trade ID</th>  
                                                                                         <th scope="col">Order ID</th>
-                                                                                        <th scope="col">Instrument</th>
-                                                                                        
+                                                                                        <th scope="col">Instrument</th>                                                                                        
                                                                                         <th scope="col">Avg. Price</th>
                                                                                         <th scope="col">QTY</th>
                                                                                         <th scope="col">Transaction Type</th>
