@@ -1209,6 +1209,41 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
      
   };
 
+  const handleExitPEPosition = (e) => {
+    alertify.confirm(
+      "Information",
+      "Do you want to exit open PE position ?",
+      () => {
+        setIsExecuteProcess(true);
+        const msgtext="EXIT ALL PE Positions";
+        if (globleSelectedTradingType.toLowerCase() === "paper") {
+          processExitPEPositionPaper(msgtext);
+        } else {
+          processExitPEPositionLive(msgtext);
+        }
+      },
+      () => {}
+    );
+  };
+  
+  const handleExitCEPosition = (e) => {
+    alertify.confirm(
+      "Information",
+      "Do you want to exit open CE position ?",
+      () => {
+        setIsExecuteProcess(true);
+        const msgtext="EXIT ALL CE Positions";
+        if (globleSelectedTradingType.toLowerCase() === "paper") {
+          processExitCEPositionPaper(msgtext);
+        } else {
+          processExitCEPositionLive(msgtext);
+        }
+      },
+      () => {}
+    );
+  };
+
+
   const handleExitAllPosition = (e) => {
     alertify.confirm(
       "Information",
@@ -1216,6 +1251,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       () => {
         setIsExecuteProcess(true);
         const msgtext="EXIT ALL Positions";
+        debugger;
         if (globleSelectedTradingType.toLowerCase() === "paper") {
           processExitAllPositionPaper(msgtext);
         } else {
@@ -1256,7 +1292,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       defaultShowQty,
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
-    const newOrderPosition = filterOrderPosition.map(
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true)
+    .map(
       ({
         strikeprice,
         positionproductname,
@@ -1394,6 +1432,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         data.expirydate === globleExpityvalue &&
         data.clientId === globleSelectedClientInfo
     );
+   
     const {
       defaultProductName,
       defaultSliceQty,
@@ -1404,7 +1443,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       defaultShowQty,
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
-    const newOrderPosition = filterOrderPosition.map(
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true)
+    .map(
       ({
         strikeprice,
         positionproductname,
@@ -1578,6 +1619,701 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     }
     processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
   };
+
+  const processExitPEPositionLive = (logmessage) => {    
+    var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
+    let configInformation = configData.find(
+      (data) =>
+        data.instrumentname === globleSymbol &&
+        data.expirydate === globleExpityvalue &&
+        data.clientId === globleSelectedClientInfo
+    );
+    const {
+      defaultProductName,
+      defaultSliceQty,
+      defaultOrderType,
+      defaultLotSize,
+      defaultQty,
+      defaultLMTPerCentage,
+      defaultShowQty,
+    } = { ...configInformation };
+    //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="PE")
+    .map(
+      ({
+        strikeprice,
+        positionproductname,
+        positiontype,
+        positioninstrumentname,
+        positionexpirydate,
+        positionordertype,
+        exitqty,
+        maxorderqty,
+        defaultlotqty,
+        positionsidetype,
+        instrumentToken,
+        positionexchangetoken,
+        ltp,
+        firstInInstrumentToken,
+        secondInInstrumentToken,
+        firstOutInstrumentToken,
+        secondOutInstrumentToken,
+        firstInStrike,
+        secondInStrike,
+        firstOutStrike,
+        secondOutStrike,
+        firstInExchangeToken,
+        secondInExchangeToken,
+        firstOutExchangeToken,
+        secondOutExchangeToken,
+        tradingSymbol,
+        exchange,
+      }) => ({
+        strikePrice: strikeprice,
+        productname: positionproductname,
+        ordertype: positiontype,
+        expirydate: positionexpirydate,
+        instrumentname: positioninstrumentname,
+        orderside: positionordertype,
+        orderqty: "0",
+        totalorderqty: (
+          (getSetting(positioninstrumentname, positionexpirydate) != null
+            ? parseInt(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  .defaultQty
+              )
+            : defaultlotqty) * parseInt(exitqty)
+        ).toString(),
+        nooforderlot: exitqty.toString(),
+        maxorderqty: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultSliceQty.toString(),
+        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+        "MKT"
+          ? ltp
+          : parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) <= parseFloat(ltp)
+          ? ltp
+          : calculateOrderPrice(
+              getSetting(positioninstrumentname, positionexpirydate)
+                ?.defaultLMTPerCentage,
+              positiontype,
+              positionsidetype,
+              ltp
+            ).toString()
+        ).toString(),
+        tradermode: globleSelectedTradingType,
+        orderidbybroker: "",
+        clientid: globleSelectedClientInfo,
+        lotsize: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultQty.toString(),
+        instrumentToken: instrumentToken,
+        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+        stoploss: globalStopLoss.toString(),
+        target: globalTarget.toString(),
+        trailling: globalTP.toString(),
+        orderexchangetoken: positionexchangetoken,
+        orderstatus: "Pending",
+        firstInInstrumentToken: firstInInstrumentToken.toString(),
+        secondInInstrumentToken: secondInInstrumentToken.toString(),
+        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+        firstInStrike: firstInStrike.toString(),
+        secondInStrike: secondInStrike.toString(),
+        firstOutStrike: firstOutStrike.toString(),
+        secondOutStrike: secondOutStrike.toString(),
+        firstInExchangeToken: firstInExchangeToken.toString(),
+        secondInExchangeToken: secondInExchangeToken.toString(),
+        firstOutExchangeToken: firstOutExchangeToken.toString(),
+        secondOutExchangeToken: secondOutExchangeToken.toString(),
+        tradingSymbol: tradingSymbol,
+        exchange: exchange,
+        brokerName: globleBrokerName,
+      })
+    );
+    const scopedUpdatedRowsArray = [];
+    const updatedRows = [...newOrderPosition];
+    while (updatedRows.some((row) => row.totalorderqty > 0)) {
+      updatedRows.forEach((row) => {
+        const clonedRow = { ...row };
+        if (
+          parseInt(clonedRow.totalorderqty) >= parseInt(clonedRow.maxorderqty)
+        ) {
+          clonedRow.orderqty = clonedRow.maxorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(clonedRow.maxorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        } else {
+          clonedRow.orderqty = row.totalorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(row.totalorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        }
+        scopedUpdatedRowsArray.push(clonedRow);
+        row.totalorderqty = Math.max(
+          0,
+          parseInt(row.totalorderqty) - parseInt(clonedRow.maxorderqty)
+        );
+      });
+    }
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+  };
+
+  const processExitPEPositionPaper = (logmessage) => {
+    var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
+    let configInformation = configData.find(
+      (data) =>
+        data.instrumentname === globleSymbol &&
+        data.expirydate === globleExpityvalue &&
+        data.clientId === globleSelectedClientInfo
+    );
+    const {
+      defaultProductName,
+      defaultSliceQty,
+      defaultOrderType,
+      defaultLotSize,
+      defaultQty,
+      defaultLMTPerCentage,
+      defaultShowQty,
+    } = { ...configInformation };
+    //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="PE")
+    .map(
+      ({
+        strikeprice,
+        positionproductname,
+        positiontype,
+        positioninstrumentname,
+        positionexpirydate,
+        positionordertype,
+        exitqty,
+        maxorderqty,
+        defaultlotqty,
+        positionsidetype,
+        instrumentToken,
+        positionexchangetoken,
+        ltp,
+        firstInInstrumentToken,
+        secondInInstrumentToken,
+        firstOutInstrumentToken,
+        secondOutInstrumentToken,
+        firstInStrike,
+        secondInStrike,
+        firstOutStrike,
+        secondOutStrike,
+        firstInExchangeToken,
+        secondInExchangeToken,
+        firstOutExchangeToken,
+        secondOutExchangeToken,
+        tradingSymbol,
+        exchange,
+      }) => ({
+        strikePrice: strikeprice,
+        productname: positionproductname,
+        ordertype: positiontype,
+        expirydate: positionexpirydate,
+        instrumentname: positioninstrumentname,
+        orderside: positionordertype,
+        orderqty: "0",
+        totalorderqty: (
+          (getSetting(positioninstrumentname, positionexpirydate) != null
+            ? parseInt(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  .defaultQty
+              )
+            : defaultlotqty) * parseInt(exitqty)
+        ).toString(),
+        nooforderlot: exitqty.toString(),
+        maxorderqty: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultSliceQty.toString(),
+        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+        "MKT"
+          ? ltp
+          : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+            "buy"
+          ? parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) >= parseFloat(ltp)
+            ? ltp
+            : calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              ).toString()
+          : parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) <= parseFloat(ltp)
+          ? ltp
+          : calculateOrderPrice(
+              getSetting(positioninstrumentname, positionexpirydate)
+                ?.defaultLMTPerCentage,
+              positiontype,
+              positionsidetype,
+              ltp
+            ).toString()
+        ).toString(),
+        tradermode: globleSelectedTradingType,
+        orderidbybroker: "",
+        clientid: globleSelectedClientInfo,
+        lotsize: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultQty.toString(),
+        instrumentToken: instrumentToken,
+        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+        stoploss: globalStopLoss.toString(),
+        target: globalTarget.toString(),
+        trailling: globalTP.toString(),
+        orderexchangetoken: positionexchangetoken,
+        orderstatus:
+          (positiontype === undefined ? "MKT" : positiontype) === "MKT"
+            ? "Completed"
+            : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+              "buy"
+            ? parseFloat(
+                calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                )
+              ) >= parseFloat(ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(
+                calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                )
+              ) <= parseFloat(ltp)
+            ? "Completed"
+            : "Pending",
+        firstInInstrumentToken: firstInInstrumentToken.toString(),
+        secondInInstrumentToken: secondInInstrumentToken.toString(),
+        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+        firstInStrike: firstInStrike.toString(),
+        secondInStrike: secondInStrike.toString(),
+        firstOutStrike: firstOutStrike.toString(),
+        secondOutStrike: secondOutStrike.toString(),
+        firstInExchangeToken: firstInExchangeToken.toString(),
+        secondInExchangeToken: secondInExchangeToken.toString(),
+        firstOutExchangeToken: firstOutExchangeToken.toString(),
+        secondOutExchangeToken: secondOutExchangeToken.toString(),
+        tradingSymbol: tradingSymbol,
+        exchange: exchange,
+        brokerName: globleBrokerName,
+      })
+    );
+    const scopedUpdatedRowsArray = [];
+    const updatedRows = [...newOrderPosition];
+    while (updatedRows.some((row) => row.totalorderqty > 0)) {
+      updatedRows.forEach((row) => {
+        const clonedRow = { ...row };
+        if (
+          parseInt(clonedRow.totalorderqty) >= parseInt(clonedRow.maxorderqty)
+        ) {
+          clonedRow.orderqty = clonedRow.maxorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(clonedRow.maxorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        } else {
+          clonedRow.orderqty = row.totalorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(row.totalorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        }
+        scopedUpdatedRowsArray.push(clonedRow);
+        row.totalorderqty = Math.max(
+          0,
+          parseInt(row.totalorderqty) - parseInt(clonedRow.maxorderqty)
+        );
+      });
+    }
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+  };
+
+
+  const processExitCEPositionLive = (logmessage) => {
+    
+    var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
+    let configInformation = configData.find(
+      (data) =>
+        data.instrumentname === globleSymbol &&
+        data.expirydate === globleExpityvalue &&
+        data.clientId === globleSelectedClientInfo
+    );
+    const {
+      defaultProductName,
+      defaultSliceQty,
+      defaultOrderType,
+      defaultLotSize,
+      defaultQty,
+      defaultLMTPerCentage,
+      defaultShowQty,
+    } = { ...configInformation };
+    //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="CE")
+    .map(
+      ({
+        strikeprice,
+        positionproductname,
+        positiontype,
+        positioninstrumentname,
+        positionexpirydate,
+        positionordertype,
+        exitqty,
+        maxorderqty,
+        defaultlotqty,
+        positionsidetype,
+        instrumentToken,
+        positionexchangetoken,
+        ltp,
+        firstInInstrumentToken,
+        secondInInstrumentToken,
+        firstOutInstrumentToken,
+        secondOutInstrumentToken,
+        firstInStrike,
+        secondInStrike,
+        firstOutStrike,
+        secondOutStrike,
+        firstInExchangeToken,
+        secondInExchangeToken,
+        firstOutExchangeToken,
+        secondOutExchangeToken,
+        tradingSymbol,
+        exchange,
+      }) => ({
+        strikePrice: strikeprice,
+        productname: positionproductname,
+        ordertype: positiontype,
+        expirydate: positionexpirydate,
+        instrumentname: positioninstrumentname,
+        orderside: positionordertype,
+        orderqty: "0",
+        totalorderqty: (
+          (getSetting(positioninstrumentname, positionexpirydate) != null
+            ? parseInt(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  .defaultQty
+              )
+            : defaultlotqty) * parseInt(exitqty)
+        ).toString(),
+        nooforderlot: exitqty.toString(),
+        maxorderqty: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultSliceQty.toString(),
+        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+        "MKT"
+          ? ltp
+          : parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) <= parseFloat(ltp)
+          ? ltp
+          : calculateOrderPrice(
+              getSetting(positioninstrumentname, positionexpirydate)
+                ?.defaultLMTPerCentage,
+              positiontype,
+              positionsidetype,
+              ltp
+            ).toString()
+        ).toString(),
+        tradermode: globleSelectedTradingType,
+        orderidbybroker: "",
+        clientid: globleSelectedClientInfo,
+        lotsize: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultQty.toString(),
+        instrumentToken: instrumentToken,
+        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+        stoploss: globalStopLoss.toString(),
+        target: globalTarget.toString(),
+        trailling: globalTP.toString(),
+        orderexchangetoken: positionexchangetoken,
+        orderstatus: "Pending",
+        firstInInstrumentToken: firstInInstrumentToken.toString(),
+        secondInInstrumentToken: secondInInstrumentToken.toString(),
+        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+        firstInStrike: firstInStrike.toString(),
+        secondInStrike: secondInStrike.toString(),
+        firstOutStrike: firstOutStrike.toString(),
+        secondOutStrike: secondOutStrike.toString(),
+        firstInExchangeToken: firstInExchangeToken.toString(),
+        secondInExchangeToken: secondInExchangeToken.toString(),
+        firstOutExchangeToken: firstOutExchangeToken.toString(),
+        secondOutExchangeToken: secondOutExchangeToken.toString(),
+        tradingSymbol: tradingSymbol,
+        exchange: exchange,
+        brokerName: globleBrokerName,
+      })
+    );
+    const scopedUpdatedRowsArray = [];
+    const updatedRows = [...newOrderPosition];
+    while (updatedRows.some((row) => row.totalorderqty > 0)) {
+      updatedRows.forEach((row) => {
+        const clonedRow = { ...row };
+        if (
+          parseInt(clonedRow.totalorderqty) >= parseInt(clonedRow.maxorderqty)
+        ) {
+          clonedRow.orderqty = clonedRow.maxorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(clonedRow.maxorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        } else {
+          clonedRow.orderqty = row.totalorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(row.totalorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        }
+        scopedUpdatedRowsArray.push(clonedRow);
+        row.totalorderqty = Math.max(
+          0,
+          parseInt(row.totalorderqty) - parseInt(clonedRow.maxorderqty)
+        );
+      });
+    }
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+  };
+
+  const processExitCEPositionPaper = (logmessage) => {
+    var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
+    let configInformation = configData.find(
+      (data) =>
+        data.instrumentname === globleSymbol &&
+        data.expirydate === globleExpityvalue &&
+        data.clientId === globleSelectedClientInfo
+    );
+    const {
+      defaultProductName,
+      defaultSliceQty,
+      defaultOrderType,
+      defaultLotSize,
+      defaultQty,
+      defaultLMTPerCentage,
+      defaultShowQty,
+    } = { ...configInformation };
+    //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
+    const newOrderPosition = filterOrderPosition
+    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="CE")
+    .map(
+      ({
+        strikeprice,
+        positionproductname,
+        positiontype,
+        positioninstrumentname,
+        positionexpirydate,
+        positionordertype,
+        exitqty,
+        maxorderqty,
+        defaultlotqty,
+        positionsidetype,
+        instrumentToken,
+        positionexchangetoken,
+        ltp,
+        firstInInstrumentToken,
+        secondInInstrumentToken,
+        firstOutInstrumentToken,
+        secondOutInstrumentToken,
+        firstInStrike,
+        secondInStrike,
+        firstOutStrike,
+        secondOutStrike,
+        firstInExchangeToken,
+        secondInExchangeToken,
+        firstOutExchangeToken,
+        secondOutExchangeToken,
+        tradingSymbol,
+        exchange,
+      }) => ({
+        strikePrice: strikeprice,
+        productname: positionproductname,
+        ordertype: positiontype,
+        expirydate: positionexpirydate,
+        instrumentname: positioninstrumentname,
+        orderside: positionordertype,
+        orderqty: "0",
+        totalorderqty: (
+          (getSetting(positioninstrumentname, positionexpirydate) != null
+            ? parseInt(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  .defaultQty
+              )
+            : defaultlotqty) * parseInt(exitqty)
+        ).toString(),
+        nooforderlot: exitqty.toString(),
+        maxorderqty: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultSliceQty.toString(),
+        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+        "MKT"
+          ? ltp
+          : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+            "buy"
+          ? parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) >= parseFloat(ltp)
+            ? ltp
+            : calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              ).toString()
+          : parseFloat(
+              calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              )
+            ) <= parseFloat(ltp)
+          ? ltp
+          : calculateOrderPrice(
+              getSetting(positioninstrumentname, positionexpirydate)
+                ?.defaultLMTPerCentage,
+              positiontype,
+              positionsidetype,
+              ltp
+            ).toString()
+        ).toString(),
+        tradermode: globleSelectedTradingType,
+        orderidbybroker: "",
+        clientid: globleSelectedClientInfo,
+        lotsize: getSetting(
+          positioninstrumentname,
+          positionexpirydate
+        ).defaultQty.toString(),
+        instrumentToken: instrumentToken,
+        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+        stoploss: globalStopLoss.toString(),
+        target: globalTarget.toString(),
+        trailling: globalTP.toString(),
+        orderexchangetoken: positionexchangetoken,
+        orderstatus:
+          (positiontype === undefined ? "MKT" : positiontype) === "MKT"
+            ? "Completed"
+            : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+              "buy"
+            ? parseFloat(
+                calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                )
+              ) >= parseFloat(ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(
+                calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                )
+              ) <= parseFloat(ltp)
+            ? "Completed"
+            : "Pending",
+        firstInInstrumentToken: firstInInstrumentToken.toString(),
+        secondInInstrumentToken: secondInInstrumentToken.toString(),
+        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+        firstInStrike: firstInStrike.toString(),
+        secondInStrike: secondInStrike.toString(),
+        firstOutStrike: firstOutStrike.toString(),
+        secondOutStrike: secondOutStrike.toString(),
+        firstInExchangeToken: firstInExchangeToken.toString(),
+        secondInExchangeToken: secondInExchangeToken.toString(),
+        firstOutExchangeToken: firstOutExchangeToken.toString(),
+        secondOutExchangeToken: secondOutExchangeToken.toString(),
+        tradingSymbol: tradingSymbol,
+        exchange: exchange,
+        brokerName: globleBrokerName,
+      })
+    );
+    const scopedUpdatedRowsArray = [];
+    const updatedRows = [...newOrderPosition];
+    while (updatedRows.some((row) => row.totalorderqty > 0)) {
+      updatedRows.forEach((row) => {
+        const clonedRow = { ...row };
+        if (
+          parseInt(clonedRow.totalorderqty) >= parseInt(clonedRow.maxorderqty)
+        ) {
+          clonedRow.orderqty = clonedRow.maxorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(clonedRow.maxorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        } else {
+          clonedRow.orderqty = row.totalorderqty.toString();
+          clonedRow.nooforderlot = (
+            parseInt(row.totalorderqty) / parseInt(clonedRow.lotsize)
+          ).toString();
+        }
+        scopedUpdatedRowsArray.push(clonedRow);
+        row.totalorderqty = Math.max(
+          0,
+          parseInt(row.totalorderqty) - parseInt(clonedRow.maxorderqty)
+        );
+      });
+    }
+    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+  };
+
+
+
 
   const getSetting = (instrumentname, expiryDate) => {    
     const dataSetting = globalConfigPostionData.find(
@@ -1975,6 +2711,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         } else {
           data.secondOutltp = parseFloat(0).toFixed(2);
         }
+        data.checkPositionRow = true;
         return data;
       });
       updateGlobleOrderPosition(dataResult);
@@ -3318,10 +4055,26 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     }
   };
 
+  const handleclieckevent=(positionid,index)=>{
+    setOrderPosition((prevRowData) => {
+      const updatedTempOrderPosition = prevRowData.map((position, i) => {
+        if (i === index) {          
+          return {
+            ...position,
+            checkPositionRow: !position.checkPositionRow,
+          };
+        }
+        return position;
+      });
+      return updatedTempOrderPosition;
+    });
+
+  }
+
   return (
     <>
       <Card className="shadow">
-        <CardHeader className="border-0">
+        <CardHeader className="border-0" style={{padding: "5px 5px 5px !important"}}>
           <Row className="align-items-center">
             <Col xl="1"  md="6" xs="12">
               <Input
@@ -3331,39 +4084,47 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
-              <label className="form-control-label" htmlFor="input-username">
-                Total MTM
-              </label>
-              <span
-                className={
-                  ((globlemltRealized+mltUnrealized) > 0
-                    ? " text-success"
-                    : (globlemltRealized+mltUnrealized) < 0
-                    ? "text-danger"
-                    : "text-data-secondary") + " m-1 font-14px  text-center"
-                }
-              >
-                {(globlemltRealized+mltUnrealized) > 0 ? "+" : ""}
-                {Constant.CurrencyFormat((globlemltRealized+mltUnrealized))}
-              </span>
+            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
+            <div>
+                  <label className="form-control-label" htmlFor="input-username">
+                    Total MTM
+                  </label>
+              </div>
+              <div>
+                    <span
+                      className={
+                        ((globlemltRealized+mltUnrealized) > 0
+                          ? " text-success"
+                          : (globlemltRealized+mltUnrealized) < 0
+                          ? "text-danger"
+                          : "text-data-secondary") + " m-1 font-14px  text-center"
+                      }
+                    >
+                      {(globlemltRealized+mltUnrealized) > 0 ? "+" : ""}
+                      {Constant.CurrencyFormat((globlemltRealized+mltUnrealized))}
+                    </span>
+              </div>
             </Col>
-            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "20px" }}>
-              <label className="form-control-label" htmlFor="input-username">
-                Unrealised MTM
-              </label>
-              <span
-                className={
-                  (mltUnrealized > 0
-                    ? " text-success"
-                    : mltUnrealized < 0
-                    ? "text-danger"
-                    : "text-data-secondary") + " m-1 font-14px  text-center"
-                }
-              >
-                {mltUnrealized > 0 ? "+" : ""}
-                {Constant.CurrencyFormat(mltUnrealized)}
-              </span>
+            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
+              <div>
+                    <label className="form-control-label" htmlFor="input-username">
+                        Unrealised MTM
+                    </label>
+              </div>
+              <div>
+                    <span
+                      className={
+                        (mltUnrealized > 0
+                          ? " text-success"
+                          : mltUnrealized < 0
+                          ? "text-danger"
+                          : "text-data-secondary") + " m-1 font-14px  text-center"
+                      }
+                    >
+                      {mltUnrealized > 0 ? "+" : ""}
+                      {Constant.CurrencyFormat(mltUnrealized)}
+                    </span>
+              </div>
             </Col>
             <Col xl="1"  md="2" xs="4" className="stoplosstarget">
               <fieldset
@@ -3461,11 +4222,36 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </fieldset>
             </Col>
 
-            <Col xl="3" md="6" xs="12" className="text-center">
-            
+            <Col xl="4" md="6" xs="12" className="text-center">
+                
+            <Button
+               disabled={                 
+                isexecuteProcess || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="CE").length===0
+              }
+                className="font-10px btn btn-success buy-light text-success text-bold"                
+                href="#pablo"
+                onClick={(e) => handleExitCEPosition(e)}
+                size="sm"
+              >
+                Exit CE
+              </Button>
+
               <Button
                disabled={                 
-                isexecuteProcess
+                isexecuteProcess  || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="PE").length===0
+              }
+                className="font-10px btn btn-danger text-danger text-bold sell-light"                 
+                href="#pablo"
+                onClick={(e) => handleExitPEPosition(e)}
+                size="sm"
+              >
+                Exit PE
+              </Button>
+
+
+              <Button
+               disabled={                 
+                isexecuteProcess || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true).length===0
               }
                 className="font-10px"
                 color="danger"
@@ -3477,7 +4263,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </Button>
               <Button
                 className="font-10px"
-                color="danger"
+                color="warning"
                 href="#pablo"
                 onClick={(e) => handleExitAllOrder(e)}
                 size="sm"
@@ -3494,6 +4280,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <Table className="align-items-center">
                   <thead className="thead-light">
                     <tr className="text-center">
+                      <th scope="col" style={{width:"3%"}}>
+
+                      </th>
                       <th scope="col" style={{ width: "3%" }}>
                         Side
                       </th>
@@ -3546,6 +4335,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                         if (dataInfo) {
                           return (
                               <tr key={index} className={dataInfo.positionordertype==='CE'?"ce-light":"pe-light"}>
+                                <td>
+                                <input 
+                                    type="checkbox" 
+                                    checked={dataInfo.checkPositionRow} 
+                                    onClick={() => handleclieckevent(dataInfo.positionid,index)} 
+                                  />
+                                </td>
                                 <td className="text-center">
                                   <span
                                     className={

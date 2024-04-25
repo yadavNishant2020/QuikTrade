@@ -25,6 +25,7 @@ import { Container, Row, Col,   Button,
    import 'alertifyjs/build/css/alertify.css';
    import 'alertifyjs/build/css/themes/default.css'; 
    import { Constant } from "../Config/Constant";
+import { data } from 'jquery';
    
 
 const AdminOptionChain = ({filterOptionChainList, height}) => {
@@ -255,8 +256,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
   
     
 
-  const handleBasketQuickBuySell=(chaindata,type,side)=>{  
-      debugger;    
+  const handleBasketQuickBuySell=(chaindata,type,side)=>{ 
       let temptype='';
       if(type==='Call'){
         temptype='CE';
@@ -281,9 +281,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               defaultQty,           defaultLMTPerCentage,
               defaultShowQty
           }={...configInformation};
-      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage);  
-    
-
+      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
       if(globleSelectedTradingType.toLowerCase()==="paper"){
         processPaperModeOptionChanin(chaindata,temptype,side,expiryNewDate,
           newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike,
@@ -311,6 +309,30 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       defaultSliceQty,defaultLotSize,defaultQty)=>{
         if(switchState===false){          
           if(editBucketRow===false){
+            let basketPriceAmt= (
+              defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'? chaindata.ltp:
+                (parseFloat(defaultLMTPer)>0?
+                side.toLowerCase()==='buy'?
+                (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
+                (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
+                :parseFloat(chaindata.ltp));
+              var stoplosspoint=0;
+              var targetpoint=0;
+              var newStoplosspoint=0
+              var newTargetpoint=0;
+              // var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
+              // var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
+              // if(settingData!==null){
+              //   stoplosspoint=settingData.stoplosspoint;
+              //   targetpoint=settingData.targetpoint;
+              //   if (side.toLowerCase()==="sell"){
+              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+              //   }else{
+              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+              //   }
+              // }
             let newdata={
               bucketSide:side.toUpperCase(),
               bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
@@ -323,15 +345,9 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               bucketDefaultQty:(defaultQty===undefined?chaindata.lotSize:defaultQty),
               bucketLotTotalQty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty),
               bucketMaxQty:(defaultSliceQty===undefined?chaindata.volumeFreeze:defaultSliceQty),
-              bucketStickePrice:              (
-                defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'? chaindata.ltp:
-                  (parseFloat(defaultLMTPer)>0?
-                  side.toLowerCase()==='buy'?
-                  (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
-                  (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-                  :parseFloat(chaindata.ltp)), 
-              bucketSL:0,
-              bucketTarget:0,
+              bucketStickePrice:basketPriceAmt , 
+              bucketSL:newStoplosspoint.toString(),
+              bucketTarget:newTargetpoint.toString(),
               bucketMargin:0,
               instrumentToken:chaindata.instrumentToken,
               exchangeToken:chaindata.exchangeToken,
@@ -446,69 +462,119 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       newFirstInExchangeToken,newSecondInExchangeToken,newFirstOutExchangeToken,newSecondOutExchangeToken,
       defaultProductName,defaultOrderType,defaultShowQty,defaultLMTPer,
       defaultSliceQty,defaultLotSize,defaultQty)=>{
-      if(switchState===false){          
+      if(switchState===false){  
+        debugger;        
         if(editBucketRow===false){
-          let newdata={
-            bucketSide:side.toUpperCase(),
-            bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
-            bucketStrike:chaindata.strikePrice,
-            bucketExpiry:expiryNewDate,
-            bucketType:(globleOptionChainType==='opt'? temptype:'FUT'),
-            bucketProduct:(defaultProductName===undefined?'MIS': defaultProductName),
-            bucketOrderType:(defaultOrderType===undefined?'MKT': defaultOrderType),
-            bucketSliceQty:(defaultLotSize===undefined?1:defaultLotSize),
-            bucketDefaultQty:(defaultQty===undefined?chaindata.lotSize:defaultQty),
-            bucketLotTotalQty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty),
-            bucketMaxQty:(defaultSliceQty===undefined?chaindata.volumeFreeze:defaultSliceQty),
-            bucketStickePrice:              (
+          
+          let indexOfBasket=bucketList.findIndex((data)=>data.baskettradingSymbol===chaindata.tradingSymbol
+                                &&  data.bucketProduct===(defaultProductName===undefined?'MIS': defaultProductName)
+                                &&  data.bucketOrderType===(defaultOrderType===undefined?'MKT': defaultOrderType)
+                                && data.bucketSide===side.toUpperCase())
+          
+          if(indexOfBasket===-1){
+            let basketPriceAmt= (
               defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'? chaindata.ltp:
                 (parseFloat(defaultLMTPer)>0?
                 side.toLowerCase()==='buy'?
                 (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
                 (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-                :parseFloat(chaindata.ltp)), 
-            bucketSL:0,
-            bucketTarget:0,
-            bucketMargin:0,
-            instrumentToken:chaindata.instrumentToken,
-            exchangeToken:chaindata.exchangeToken,
-            bucketltp:chaindata.ltp,
-            basketFirstInInstrumentToken:(globleOptionChainType==='opt'?
-            newFirstInInstrumentToken.toString():""),
-            basketSecondInInstrumentToken:(globleOptionChainType==='opt'?
-            newSecondInInstrumentToken.toString():""),
-            basketFirstOutInstrumentToken:(globleOptionChainType==='opt'?
-            newFirstOutInstrumentToken.toString():""),
-            basketSecondOutInstrumentToken:(globleOptionChainType==='opt'?
-            newSecondOutInstrumentToken.toString():""),
-            basketFirstInStrike:(globleOptionChainType==='opt'?
-            newFirstInStrike.toString():""),
-            basketSecondInStrike:(globleOptionChainType==='opt'?
-            newSecondInStrike.toString():""),
-            basketFirstOutStrike:(globleOptionChainType==='opt'?
-            newFirstOutStrike.toString():""),
-            basketSecondOutStrike:(globleOptionChainType==='opt'?
-            newSecondOutStrike.toString():""),
-            basketFirstInExchangeToken:(globleOptionChainType==='opt'?
-            newFirstInExchangeToken.toString():""),
-            basketSecondInExchangeToken:(globleOptionChainType==='opt'?
-            newSecondInExchangeToken.toString():""),
-            basketFirstOutExchangeToken:(globleOptionChainType==='opt'?
-            newFirstOutExchangeToken.toString():""),
-            basketSecondOutExchangeToken:(globleOptionChainType==='opt'?
-            newSecondOutExchangeToken.toString() :""),
-            baskettradingSymbol:chaindata.tradingSymbol,
-            basketexchange:chaindata.exchange,
-            basketBrokerName:globleBrokerName,
-            basketTraderMode:globleSelectedTradingType,
-            basketClient: globleSelectedClientInfo
-          };
-
-          const updatedList=[...bucketList,newdata];  
-          let sortdata=sortBasketList(updatedList);         
-          setBucketList(sortdata);    
-          let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
-          CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
+                :parseFloat(chaindata.ltp));
+              var stoplosspoint=0;
+              var targetpoint=0;
+              var newStoplosspoint=0
+              var newTargetpoint=0;
+              // var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
+              // var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
+              // if(settingData!==null){
+              //   stoplosspoint=settingData.stoplosspoint;
+              //   targetpoint=settingData.targetpoint;
+              //   if (side.toLowerCase()==="sell"){
+              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+              //   }else{
+              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+              //   }
+              // }
+              let newdata={
+                bucketSide:side.toUpperCase(),
+                bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
+                bucketStrike:chaindata.strikePrice,
+                bucketExpiry:expiryNewDate,
+                bucketType:(globleOptionChainType==='opt'? temptype:'FUT'),
+                bucketProduct:(defaultProductName===undefined?'MIS': defaultProductName),
+                bucketOrderType:(defaultOrderType===undefined?'MKT': defaultOrderType),
+                bucketSliceQty:(defaultLotSize===undefined?1:defaultLotSize),
+                bucketDefaultQty:(defaultQty===undefined?chaindata.lotSize:defaultQty),
+                bucketLotTotalQty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty),
+                bucketMaxQty:(defaultSliceQty===undefined?chaindata.volumeFreeze:defaultSliceQty),
+                bucketStickePrice:basketPriceAmt , 
+                bucketSL:newStoplosspoint.toString(),
+                bucketTarget:newTargetpoint.toString(),
+                bucketMargin:0,
+                instrumentToken:chaindata.instrumentToken,
+                exchangeToken:chaindata.exchangeToken,
+                bucketltp:chaindata.ltp,
+                basketFirstInInstrumentToken:(globleOptionChainType==='opt'?
+                newFirstInInstrumentToken.toString():""),
+                basketSecondInInstrumentToken:(globleOptionChainType==='opt'?
+                newSecondInInstrumentToken.toString():""),
+                basketFirstOutInstrumentToken:(globleOptionChainType==='opt'?
+                newFirstOutInstrumentToken.toString():""),
+                basketSecondOutInstrumentToken:(globleOptionChainType==='opt'?
+                newSecondOutInstrumentToken.toString():""),
+                basketFirstInStrike:(globleOptionChainType==='opt'?
+                newFirstInStrike.toString():""),
+                basketSecondInStrike:(globleOptionChainType==='opt'?
+                newSecondInStrike.toString():""),
+                basketFirstOutStrike:(globleOptionChainType==='opt'?
+                newFirstOutStrike.toString():""),
+                basketSecondOutStrike:(globleOptionChainType==='opt'?
+                newSecondOutStrike.toString():""),
+                basketFirstInExchangeToken:(globleOptionChainType==='opt'?
+                newFirstInExchangeToken.toString():""),
+                basketSecondInExchangeToken:(globleOptionChainType==='opt'?
+                newSecondInExchangeToken.toString():""),
+                basketFirstOutExchangeToken:(globleOptionChainType==='opt'?
+                newFirstOutExchangeToken.toString():""),
+                basketSecondOutExchangeToken:(globleOptionChainType==='opt'?
+                newSecondOutExchangeToken.toString() :""),
+                baskettradingSymbol:chaindata.tradingSymbol,
+                basketexchange:chaindata.exchange,
+                basketBrokerName:globleBrokerName,
+                basketTraderMode:globleSelectedTradingType,
+                basketClient: globleSelectedClientInfo
+              };
+              const updatedList=[...bucketList,newdata];  
+              let sortdata=sortBasketList(updatedList);         
+              setBucketList(sortdata);    
+              let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
+              CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
+          }else{
+            setBucketList((previousData) => {
+                // Check if the quantity has already been updated
+                if (previousData[indexOfBasket].updated) {
+                    previousData[indexOfBasket].updated = false;
+                    return previousData; // If already updated, return previous data without modification
+                }            
+                const newData = [...previousData]; // Create a copy of the previous data to avoid mutation
+                const oldQty = newData[indexOfBasket].bucketLotTotalQty; // Retrieve the old quantity from the previous data
+                const updatedQty = oldQty + (defaultShowQty === undefined ? chaindata.lotSize : defaultShowQty); // Calculate the updated quantity
+                newData[indexOfBasket].bucketLotTotalQty = updatedQty; // Update the quantity in the new data
+                const oldLot = newData[indexOfBasket].bucketSliceQty; 
+                const updatedLot = oldLot+(defaultLotSize===undefined?1:defaultLotSize)// Calculate the updated quantity
+                newData[indexOfBasket].bucketSliceQty=updatedLot
+                newData[indexOfBasket].updated = true; // Mark the item as updated to prevent multiple updates
+                
+                let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
+                var busketList=JSON.parse(CookiesConfig.getItemWithExpiry(basketName));
+                busketList[indexOfBasket].bucketSliceQty=updatedLot;
+                busketList[indexOfBasket].bucketLotTotalQty=updatedQty;                   
+                CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(busketList));
+                
+                return newData; // Return the updated data
+            });
+          }
           setEditBucketRow(false);
           setEditBucketRowNo('-1');
          // processBasketMargin(sortdata);
