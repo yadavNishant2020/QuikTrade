@@ -782,6 +782,12 @@ fieldset.border{
         width: 1000px !important;
       }  
 
+      .adminrulelist  .table-container {
+        height : 220px;
+        overflow-y: auto;
+        font-size: 11px !important;
+      } 
+
       .Straddle,  .strangle{
         overflow-x: auto; 
       }
@@ -922,7 +928,13 @@ fieldset.border{
     height : 175px;
     overflow-y: auto;
     font-size: 11px !important;
-  }  
+  } 
+  
+  .adminrulelist  .table-container {
+    height : 220px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  } 
 
   .AdminRule .table-container {
     height : 165px;
@@ -1036,6 +1048,10 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   background-color: #ff00001a !important;   
 }
 
+.css-w2rpwu-menu{
+    z-index: 999999999999 !important;
+}
+
 
 .strangle .table thead, .Straddle .table thead{
   position: sticky;
@@ -1067,6 +1083,13 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     overflow-y: auto;
     font-size: 11px !important;
   }  
+
+  .adminrulelist  .table-container {
+    height : 245px;
+    overflow-y: auto;
+    font-size: 11px !important;
+  } 
+
 
   .table td,.table th {
     font-size: 12px  !important;
