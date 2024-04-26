@@ -496,6 +496,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
               //   }
               // }
+              
               let newdata={
                 bucketSide:side.toUpperCase(),
                 bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
