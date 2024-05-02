@@ -3739,6 +3739,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
             ).toFixed(2)
         : parseFloat(dataInfo.ltp);
 
+        
     let data = {
       strikePrice: dataInfo.strikeprice,
       productname: dataInfo.positionproductname,
