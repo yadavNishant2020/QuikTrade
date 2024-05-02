@@ -1210,56 +1210,34 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handleExitPEPosition = (e) => {
-    alertify.confirm(
-      "Information",
-      "Do you want to exit open PE position ?",
-      () => {
-        setIsExecuteProcess(true);
-        const msgtext="EXIT ALL PE Positions";
-        if (globleSelectedTradingType.toLowerCase() === "paper") {
-          processExitPEPositionPaper(msgtext);
-        } else {
-          processExitPEPositionLive(msgtext);
-        }
-      },
-      () => {}
-    );
+    setIsExecuteProcess(true);
+    const msgtext="EXIT ALL PE Positions";
+    if (globleSelectedTradingType.toLowerCase() === "paper") {
+      processExitPEPositionPaper(msgtext);
+    } else {
+      processExitPEPositionLive(msgtext);
+    }
   };
   
   const handleExitCEPosition = (e) => {
-    alertify.confirm(
-      "Information",
-      "Do you want to exit open CE position ?",
-      () => {
-        setIsExecuteProcess(true);
+    setIsExecuteProcess(true);
         const msgtext="EXIT ALL CE Positions";
         if (globleSelectedTradingType.toLowerCase() === "paper") {
           processExitCEPositionPaper(msgtext);
         } else {
           processExitCEPositionLive(msgtext);
         }
-      },
-      () => {}
-    );
   };
 
 
   const handleExitAllPosition = (e) => {
-    alertify.confirm(
-      "Information",
-      "Do you want to exit all open position ?",
-      () => {
-        setIsExecuteProcess(true);
-        const msgtext="EXIT ALL Positions";
-        debugger;
-        if (globleSelectedTradingType.toLowerCase() === "paper") {
-          processExitAllPositionPaper(msgtext);
-        } else {
-          processExitAllPositionLive(msgtext);
-        }
-      },
-      () => {}
-    );
+    setIsExecuteProcess(true);
+    const msgtext="EXIT ALL Positions";         
+    if (globleSelectedTradingType.toLowerCase() === "paper") {
+      processExitAllPositionPaper(msgtext);
+    } else {
+      processExitAllPositionLive(msgtext);
+    }
   };
 
   const handleExitAllOrder = (e) => {
