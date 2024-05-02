@@ -257,6 +257,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
     
 
   const handleBasketQuickBuySell=(chaindata,type,side)=>{ 
+      debugger;
       let temptype='';
       if(type==='Call'){
         temptype='CE';
@@ -390,7 +391,9 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
             CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
             setEditBucketRow(false);
             setEditBucketRowNo('-1');
-           // processBasketMargin(sortdata);
+            //processBasketMargin(sortdata);
+
+            
           }else{
               alertify.error("You have unsaved changes in the basket list. Please save those changes first.")
           }
