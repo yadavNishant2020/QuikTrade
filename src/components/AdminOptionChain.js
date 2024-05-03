@@ -322,17 +322,19 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               var newStoplosspoint=0
               var newTargetpoint=0;
               var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
-              var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
-              if(settingData!==null){
-                stoplosspoint=settingData.stoplosspoint;
-                targetpoint=settingData.targetpoint;
-                if (side.toLowerCase()==="sell"){
-                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
-                }else{
-                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
-                }
+              var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);   
+              if(settingData!=undefined){         
+                  if(settingData!==null){
+                    stoplosspoint=settingData.stoplosspoint;
+                    targetpoint=settingData.targetpoint;
+                    if (side.toLowerCase()==="sell"){
+                      newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+                      newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                    }else{
+                      newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                      newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                    }
+                  }
               }
             let newdata={
               bucketSide:side.toUpperCase(),
@@ -488,15 +490,17 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               var newTargetpoint=0;
               var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
               var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
-              if(settingData!==null){
-                stoplosspoint=settingData.stoplosspoint;
-                targetpoint=settingData.targetpoint;
-                if (side.toLowerCase()==="sell"){
-                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
-                }else{
-                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+              if(settingData!=undefined){       
+                if(settingData!==null){
+                  stoplosspoint=settingData.stoplosspoint;
+                  targetpoint=settingData.targetpoint;
+                  if (side.toLowerCase()==="sell"){
+                    newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+                    newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                  }else{
+                    newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                    newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                  }
                 }
               }
               
