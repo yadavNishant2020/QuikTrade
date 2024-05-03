@@ -321,19 +321,19 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               var targetpoint=0;
               var newStoplosspoint=0
               var newTargetpoint=0;
-              // var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
-              // var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
-              // if(settingData!==null){
-              //   stoplosspoint=settingData.stoplosspoint;
-              //   targetpoint=settingData.targetpoint;
-              //   if (side.toLowerCase()==="sell"){
-              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
-              //   }else{
-              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
-              //   }
-              // }
+              var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
+              var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
+              if(settingData!==null){
+                stoplosspoint=settingData.stoplosspoint;
+                targetpoint=settingData.targetpoint;
+                if (side.toLowerCase()==="sell"){
+                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                }else{
+                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                }
+              }
             let newdata={
               bucketSide:side.toUpperCase(),
               bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
@@ -486,19 +486,19 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               var targetpoint=0;
               var newStoplosspoint=0
               var newTargetpoint=0;
-              // var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
-              // var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
-              // if(settingData!==null){
-              //   stoplosspoint=settingData.stoplosspoint;
-              //   targetpoint=settingData.targetpoint;
-              //   if (side.toLowerCase()==="sell"){
-              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
-              //   }else{
-              //     newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-              //     newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
-              //   }
-              // }
+              var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
+              var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
+              if(settingData!==null){
+                stoplosspoint=settingData.stoplosspoint;
+                targetpoint=settingData.targetpoint;
+                if (side.toLowerCase()==="sell"){
+                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                }else{
+                  newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                  newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                }
+              }
               
               let newdata={
                 bucketSide:side.toUpperCase(),
