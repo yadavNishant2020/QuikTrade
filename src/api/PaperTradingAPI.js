@@ -28,7 +28,109 @@ export const PaperTradingAPI = {
   }
     
 
-  },getDefaultConfiguration: async (requestData) => { 
+  },processInsertUpdateGeneralConfiguration: async (requestData) => { 
+    
+    try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}paperTrading/processInsertUpdateGeneralConfiguration`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                  "token":localStorage.getItem("token")
+                },    
+                data:requestData,
+              };
+              const response = await axios(axiosConfig); 
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+    } catch (error) {
+          console.log(error);
+          return null;
+    }
+      
+  
+    } ,processInsertUpdateRMSConfiguration: async (requestData) => { 
+    
+      try {  
+                var axiosConfig = {
+                  method: "POST",
+                  url: `${BASE_URL}paperTrading/processInsertUpdateRMSConfiguration`,  
+                  headers: {        
+                    "Content-Type": "application/json",
+                    "token":localStorage.getItem("token")
+                  },    
+                  data:requestData,
+                };
+                const response = await axios(axiosConfig); 
+                const {status,data}=response;
+                if(status===200){
+                    return data;
+                }else{
+                    return null;
+                }
+      } catch (error) {
+            console.log(error);
+            return null;
+      }
+        
+    
+      },
+  getGeneralConfiguration: async (requestData) => { 
+    try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}paperTrading/getGeneralConfiguration`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                  "token":localStorage.getItem("token")
+                },    
+                data:requestData,
+              };
+              const response = await axios(axiosConfig);    
+              
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+    } catch (error) {
+          console.log(error);
+          return null;
+    }
+      
+  
+    },   getRMSConfiguration: async (requestData) => { 
+      try {  
+                var axiosConfig = {
+                  method: "POST",
+                  url: `${BASE_URL}paperTrading/getRMSConfiguration`,  
+                  headers: {        
+                    "Content-Type": "application/json",
+                    "token":localStorage.getItem("token")
+                  },    
+                  data:requestData,
+                };
+                const response = await axios(axiosConfig);    
+                
+                const {status,data}=response;
+                if(status===200){
+                    return data;
+                }else{
+                    return null;
+                }
+      } catch (error) {
+            console.log(error);
+            return null;
+      }
+        
+    
+      },
+  getDefaultConfiguration: async (requestData) => { 
     try {  
               var axiosConfig = {
                 method: "POST",

@@ -2,6 +2,8 @@
 import {React,useEffect,useState, useLayoutEffect, useRef} from 'react'
 import AdminStockIndex from "../components/AdminStockIndex.js";
 import AdminDefaultConfig from "../components/AdminDefaultConfig.js";
+import AdminGeneralSetting from "../components/AdminGeneralSetting.js";
+import AdminRMSSetting from "../components/AdminRMSSetting.js";
 import AdminOptionChain from "../components/AdminOptionChain.js";
 import AdminOptionChainSetup from "../components/AdminOptionChainSetup.js";
 import AdminOrderPositionDetails from "../components/AdminOrderPositionDetails.js";
@@ -48,7 +50,10 @@ const TreadingDashboard = () => {
     const [channelStatus,setChannelStatus]=useState(0);
     const [channelProcessStatus,setChannelProcessStatus]=useState(0);
     const [filterOrderPositionList,setOrderPositionList]=useState([]);
-    const [height, setHeight] = useState(0)
+    const [height, setHeight] = useState(0);
+    const [sideMenuSettingTroggle,setSideMenuSettingTroggle]=useState(false);
+    const [sideMenuRMSTroggle,setSideMenuRMSTroggle]=useState(false);
+    
 
 
     const centrifugeInstanceNew = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
@@ -401,8 +406,7 @@ const TreadingDashboard = () => {
                 
                 const differences =newoptionChainData.map(dataInfo => Math.abs(globleCurrentStockIndex - parseFloat(dataInfo.strikePrice)));
                 const nearestValueIndex = differences.indexOf(Math.min(...differences));
-                const nearestValue = newoptionChainData[nearestValueIndex]?.strikePrice;
-                
+                const nearestValue = newoptionChainData[nearestValueIndex]?.strikePrice;                
                 setStrickPrices(parseInt(nearestValue));
                 updateGlobleCurrentATM(parseInt(nearestValue))
         }
@@ -542,28 +546,45 @@ const getRandomFloat = (min, max) => {
       }
     },[baseTable])
 
-
-
+    
+    const handleSideMenuGeneralSettingTroggle=(menuname)=>{
+      setSideMenuName(menuname);
+      setSideMenuTroggle(false);
+      setSideMenuRMSTroggle(false);
+      setSideMenuSettingTroggle((sideMenuSettingTroggle)=>!sideMenuSettingTroggle);
+    }
 
       const handleSideMenuTroggle=(menuname)=>{
         setSideMenuName(menuname);
+        setSideMenuSettingTroggle(false);
+        setSideMenuRMSTroggle(false);
         setSideMenuTroggle((sideMenuTroggle)=>!sideMenuTroggle)
       }
+
+      const handleSideMenuRMSSettingTroggle=(menuname)=>{
+        setSideMenuName(menuname);
+        setSideMenuSettingTroggle(false);
+        setSideMenuTroggle(false);
+        setSideMenuRMSTroggle((sideMenuRMSTroggle)=>!sideMenuRMSTroggle)
+      }
+      
 
     return (
        <>    
          <Container fluid style={{}}>
           <div style={{"width":"100%", height:"100%"}}>
          
-                    <div className={sideMenuTroggle?'full-open mainpanel':'full-close mainpanel'} ref={divRef}>
+                    <div className={sideMenuTroggle?'full-open mainpanel':
+                                    sideMenuSettingTroggle?'full-open mainpanel':
+                                    sideMenuRMSTroggle?'full-open mainpanel':
+                                    'full-close mainpanel'} ref={divRef}>
                                 <Row className='dashboard mt-1 optionchaindashboard'  id="_optionchaindashboard_id">                                
                                     <Col xl="12" className='firstDiv' >                                      
                                                 <Tabs style={{backgroundColor:"#FFFFFF"}}>
                                                     <TabList>
                                                     <Tab>Basket</Tab>
                                                     <Tab>Straddle</Tab>
-                                                    <Tab>Strangle</Tab>
-                                                   
+                                                    <Tab>Strangle</Tab>                                                   
                                                     <Tab>Rules</Tab>
                                                     </TabList>
 
@@ -578,7 +599,7 @@ const getRandomFloat = (min, max) => {
                                                     </TabPanel>
                                                    
                                                     <TabPanel>
-                                                          <AdminRule />    
+                                                          <AdminRule height={height}/>    
                                                     </TabPanel>
                                                 </Tabs>
                                             
@@ -616,8 +637,15 @@ const getRandomFloat = (min, max) => {
                                     <AdminFooter />
                     </div>
                     <div className={sideMenuTroggle?'sidepanel':'hide sidepanel'}>
-                      {sideMenuName?<AdminDefaultConfig/>:""}
+                      {sideMenuName?<AdminDefaultConfig/>: ''}
                     </div>
+                    <div className={sideMenuSettingTroggle?'sidepanel':'hide sidepanel'}>
+                      {sideMenuName?<AdminGeneralSetting/>: ''}
+                    </div>
+                    <div className={sideMenuRMSTroggle?'sidepanel':'hide sidepanel'}>
+                      {sideMenuName?<AdminRMSSetting/>: ''}
+                    </div>
+                    
                     <div className='sidemenu'>
                        <Row>
                             <Col xl="12 pt-1 text-center text-theam" >
@@ -626,6 +654,19 @@ const getRandomFloat = (min, max) => {
                             <Col  xl="12">
                             <hr/>
                             </Col>
+                            <Col xl="12 pt-1 text-center text-theam" >
+                                <i className='fas fa-sliders' onClick={() => handleSideMenuGeneralSettingTroggle('GeneralSetting')}></i>
+                            </Col>
+                            <Col  xl="12" className='hide'>
+                            <hr/>
+                            </Col>
+                            <Col xl="12 pt-1 text-center text-theam hide" >
+                                <i className='fas fa-toolbox' onClick={() => handleSideMenuRMSSettingTroggle('RMSSetting')}></i>
+                            </Col>
+                            <Col  xl="12" className='hide'>
+                            <hr/>
+                            </Col>
+                             
                        </Row>
                        
                        

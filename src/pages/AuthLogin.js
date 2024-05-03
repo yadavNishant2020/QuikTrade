@@ -8,10 +8,8 @@ const AuthLogin = () => {
         globleFnotraderSecret
      } = useContext(PostContext);
     useEffect(() => {
-
         let fnotraderUserId=sessionStorage.getItem("fnotraderUserid");
-        let fnotraderSecret=sessionStorage.getItem("fnotraderSecret"); 
-        
+        let fnotraderSecret=sessionStorage.getItem("fnotraderSecret");         
         if(fnotraderUserId.length>0 && fnotraderSecret.length>0){
             const dataInfo =loginCheckForFNOTraderData(fnotraderUserId,fnotraderSecret);
         } 
@@ -23,6 +21,7 @@ const AuthLogin = () => {
           const {code,data}=resultData;
           if(code===200){
             CookiesConfig.setCookie("holidaylist",JSON.stringify(data["NFO"]));
+            sessionStorage.setItem("currentStockSymbol","NIFTY") 
             window.open("/admin/dashboard", '_self');
           }
         }

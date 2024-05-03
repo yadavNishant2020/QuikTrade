@@ -235,8 +235,7 @@ const AdminDefaultConfig = () => {
 
 
 
-    const getDefaultConfiguration=async ()=>{   
-      debugger; 
+    const getDefaultConfiguration=async ()=>{ 
       let dataInfo={
         clientId:globleSelectedClientInfo,
         instrumentName:globleSymbol,

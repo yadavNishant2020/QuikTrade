@@ -31,7 +31,7 @@ export const ZerodaAPI = {
   try {  
             var axiosConfig = {
               method: "GET",
-              url: `${BASE_URL}zeroda/getsymbolexpiry`,  
+              url: `${BASE_URL}zerodha/getsymbolexpiry`,  
               headers: {        
                 "Content-Type": "application/json",
                 "token":localStorage.getItem("token")
@@ -106,7 +106,7 @@ export const ZerodaAPI = {
             try {  
                       var axiosConfig = {
                         method: "GET",
-                        url: `${BASE_URL}zeroda/getOptionChainList`,  
+                        url: `${BASE_URL}zerodha/getOptionChainList`,  
                         headers: {        
                           "Content-Type": "application/json",
                           "token":localStorage.getItem("token")
@@ -177,7 +177,7 @@ export const ZerodaAPI = {
           try {  
                     var axiosConfig = {
                       method: "POST",
-                      url: `${BASE_URL}zeroda/setBrokerCredentials`,  
+                      url: `${BASE_URL}zerodha/setBrokerCredentials`,  
                       headers: {        
                         "Content-Type": "application/json",
                       },  
@@ -200,7 +200,7 @@ export const ZerodaAPI = {
             try {  
                     var axiosConfig = {
                       method: "POST",
-                      url: `${BASE_URL}zeroda/getMarginBasket`,  
+                      url: `${BASE_URL}zerodha/getMarginBasket`,  
                       headers: {        
                         "Content-Type": "application/json",
                         "token":localStorage.getItem("token")
@@ -247,7 +247,7 @@ export const ZerodaAPI = {
         try {  
                 var axiosConfig = {
                   method: "POST",
-                  url: `${BASE_URL}zeroda/getFundsAndMargins`,  
+                  url: `${BASE_URL}zerodha/getFundsAndMargins`,  
                   headers: {        
                     "Content-Type": "application/json",
                     "token":localStorage.getItem("token")
@@ -290,7 +290,7 @@ export const ZerodaAPI = {
         try {  
                 var axiosConfig = {
                   method: "POST",
-                  url: `${BASE_URL}zeroda/getTradesForClient`,  
+                  url: `${BASE_URL}zerodha/getTradesForClient`,  
                   headers: {        
                     "Content-Type": "application/json",
                     "token":localStorage.getItem("token")
@@ -309,8 +309,102 @@ export const ZerodaAPI = {
             console.log('Error Details:'+(error.response || error.request || error.message));
             return null;
         }
+    },processInsertUpdateRuleData: async (requestData) => { 
+      try {  
+              var axiosConfig = {
+                method: "POST",
+                url: `${BASE_URL}zerodha/processInsertUpdateRuleData`,  
+                headers: {        
+                  "Content-Type": "application/json",
+                  "token":localStorage.getItem("token")
+                },    
+                data:requestData
+              };
+              const response = await axios(axiosConfig);
+              const {status,data}=response;
+              if(status===200){
+                  return data;
+              }else{
+                  return null;
+              }
+      } catch (error) {
+          console.log(error);
+          console.log('Error Details:'+(error.response || error.request || error.message));
+          return null;
+      }
+  },getruledata: async (requestData) => { 
+    try {  
+            var axiosConfig = {
+              method: "POST",
+              url: `${BASE_URL}zerodha/getruledata`,  
+              headers: {        
+                "Content-Type": "application/json",
+                "token":localStorage.getItem("token")
+              },    
+              data:requestData
+            };
+            const response = await axios(axiosConfig);
+            const {status,data}=response;
+            if(status===200){
+                return data;
+            }else{
+                return null;
+            }
+    } catch (error) {
+        console.log(error);
+        console.log('Error Details:'+(error.response || error.request || error.message));
+        return null;
     }
-          
+},processDeleteRuleData: async (requestData) => { 
+  try {  
+          var axiosConfig = {
+            method: "POST",
+            url: `${BASE_URL}zerodha/processDeleteRuleData`,  
+            headers: {        
+              "Content-Type": "application/json",
+              "token":localStorage.getItem("token")
+            },    
+            data:requestData
+          };
+          const response = await axios(axiosConfig);
+          const {status,data}=response;
+          if(status===200){
+              return data;
+          }else{
+              return null;
+          }
+  } catch (error) {
+      console.log(error);
+      console.log('Error Details:'+(error.response || error.request || error.message));
+      return null;
+  }
+},getRuleDataById: async (requestData) => { 
+  try {  
+          var axiosConfig = {
+            method: "POST",
+            url: `${BASE_URL}zerodha/getRuleDataById`,  
+            headers: {        
+              "Content-Type": "application/json",
+              "token":localStorage.getItem("token")
+            },    
+            data:requestData
+          };
+          const response = await axios(axiosConfig);
+          const {status,data}=response;
+          if(status===200){
+              return data;
+          }else{
+              return null;
+          }
+  } catch (error) {
+      console.log(error);
+      console.log('Error Details:'+(error.response || error.request || error.message));
+      return null;
+  }
+}
 
+  
+          
+    
 }
 export default ZerodaAPI;

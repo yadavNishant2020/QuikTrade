@@ -185,13 +185,13 @@ const AdminHeader = () => {
       if (data.objExpiryData != null) {
         data.objExpiryData.map((cl) => symbol.push(cl.name));
         CookiesConfig.setCookie("symbolList", JSON.stringify(symbol));
-        CookiesConfig.setCookie(
+        localStorage.setItem(
           "symbolExpiryData",
           JSON.stringify(data.objExpiryData)
         );
       }
       if (data.objTokenData != null) {
-        CookiesConfig.setCookie(
+        localStorage.setItem(
           "symbolSpotTokenList",
           JSON.stringify(data.objTokenData)
         );
@@ -202,14 +202,14 @@ const AdminHeader = () => {
 
   const getExpiryForSymbol = (symbolName) => {     
     let symbolExpiryData = JSON.parse(
-      CookiesConfig.getCookie("symbolExpiryData")
+      localStorage.getItem("symbolExpiryData")
     );
     if (symbolExpiryData != null) {
       const objExpiryList = symbolExpiryData.find(
         (expiry) => expiry.name === symbolName
       );
       let dsSpotTokenList = JSON.parse(
-        CookiesConfig.getCookie("symbolSpotTokenList")
+        localStorage.getItem("symbolSpotTokenList")
       );
       if (dsSpotTokenList != null) {
         if (channelName?.length == 0) {
@@ -377,41 +377,43 @@ const AdminHeader = () => {
     const fetchData = async () => {
         if (indexData?.length > 0 && symbolSelect) {
             let dsSpotTokenList = JSON.parse(
-                CookiesConfig.getCookie("symbolSpotTokenList")
+              localStorage.getItem("symbolSpotTokenList")
             );
+             
             let infoData = dsSpotTokenList.find(
                 (data) =>
                 data.underlying === symbolSelect.value && data.tokenType === "spot"
             );
-            const { instrumentToken } = infoData;         
-                  
-            let infoIndexData = indexData.find(
-                (data) =>
-                data.token === parseInt(instrumentToken) && data.tokenType === "spot"
-            );
-            if (infoIndexData != null) {                   
-                //Call your asynchronous function inside async function                           
-                let  lastDayClosing = stopLastAmt;
-                if(stopLastPrice===false){
-                  lastDayClosing = await callApiToHeadtocken(instrumentToken);
-                  setStopLastPrice(true);
-                  setStopLastAmt(lastDayClosing);
-                }  
-                const { lp } = infoIndexData;
-                setCurrentStockIndex(lp);
-                updateGlobleCurrentStockIndex(lp);
-                const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosing);
-                setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
-                const changePer =
-                    ((parseFloat(lp) - parseFloat(lastDayClosing)) /
-                        parseFloat(lastDayClosing)) *
-                    100;
-                setCurrentStockLTPPercent(
-                    (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
-                    parseFloat(changePer).toFixed(2)
-                );
-            }
-            calculateFuture();
+            if(infoData!=undefined){  
+              const { instrumentToken } = infoData;  
+              let infoIndexData = indexData.find(
+                  (data) =>
+                  data.token === parseInt(instrumentToken) && data.tokenType === "spot"
+              );
+              if (infoIndexData != null) {                   
+                  //Call your asynchronous function inside async function                           
+                  let  lastDayClosing = stopLastAmt;
+                  if(stopLastPrice===false){
+                    lastDayClosing = await callApiToHeadtocken(instrumentToken);
+                    setStopLastPrice(true);
+                    setStopLastAmt(lastDayClosing);
+                  }  
+                  const { lp } = infoIndexData;
+                  setCurrentStockIndex(lp);
+                  updateGlobleCurrentStockIndex(lp);
+                  const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosing);
+                  setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
+                  const changePer =
+                      ((parseFloat(lp) - parseFloat(lastDayClosing)) /
+                          parseFloat(lastDayClosing)) *
+                      100;
+                  setCurrentStockLTPPercent(
+                      (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
+                      parseFloat(changePer).toFixed(2)
+                  );
+              }
+              calculateFuture();
+           }
         }
     };
     fetchData(); // Call the async function inside useEffect
@@ -431,7 +433,7 @@ useEffect(() => {
   const calculateFuture = () => {
     const fetchDataFuture = async () => {
           let dsSpotTokenList = JSON.parse(
-            CookiesConfig.getCookie("symbolSpotTokenList")
+            localStorage.getItem("symbolSpotTokenList")
           );
           let infoFutureData = dsSpotTokenList.find(
             (data) =>
@@ -581,6 +583,17 @@ useEffect(() => {
     }
   }, [clientSelect, symbolSelect, expityvalue, tradingTypeSelect]);
 
+
+  useEffect(() => {
+    if (
+      clientSelect !== "" &&
+      symbolSelect !== ""     
+    ) {
+      getGeneralConfiguration();
+    }
+  }, [clientSelect, symbolSelect]);
+ 
+
   const getDefaultConfiguration = async () => {
     if (clientSelect !== "" && symbolSelect !== "" && expityvalue !== "") {
       let dataInfo = {
@@ -609,6 +622,20 @@ useEffect(() => {
       }
     }
   };
+
+  const getGeneralConfiguration=async ()=>{ 
+    let dataInfo={
+        clientId:sessionStorage.getItem("clienttoken") ,
+        brokername:sessionStorage.getItem("brokername")
+      }
+      let result = await PaperTradingAPI.getGeneralConfiguration(dataInfo); 
+      if(result!=null){
+            if(result.length>0){
+                sessionStorage.removeItem("generalConfig");
+                sessionStorage.setItem("generalConfig",JSON.stringify(result));                
+            } 
+      } 
+ }
 
 
   const isMarketHours = () => {   
