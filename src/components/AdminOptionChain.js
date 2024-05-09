@@ -264,7 +264,9 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       }else{
         temptype='PE'
       }      
-      let dataNewStrick=Constant.GetNewStrike(globleSymbol,chaindata.strikePrice,temptype);
+      
+      let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+      let dataNewStrick=Constant.GetNewStrike(globleSymbol,chaindata.strikePrice,temptype,strikePriceDiff);
       const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
       let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
       let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -320,7 +322,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               var stoplosspoint=0;
               var targetpoint=0;
               var newStoplosspoint=0
-              var newTargetpoint=0;
+              var newTargetpoint=0;             
               var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
               var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);   
               if(settingData!=undefined){         
@@ -466,8 +468,8 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       newFirstInInstrumentToken,newSecondInInstrumentToken,newFirstOutInstrumentToken,newSecondOutInstrumentToken,
       newFirstInExchangeToken,newSecondInExchangeToken,newFirstOutExchangeToken,newSecondOutExchangeToken,
       defaultProductName,defaultOrderType,defaultShowQty,defaultLMTPer,
-      defaultSliceQty,defaultLotSize,defaultQty)=>{
-      if(switchState===false){  
+      defaultSliceQty,defaultLotSize,defaultQty)=>{        
+        if(switchState===false){  
         debugger;        
         if(editBucketRow===false){
           
@@ -484,10 +486,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                 (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
                 (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
                 :parseFloat(chaindata.ltp));
-              var stoplosspoint=0;
+              
+                var stoplosspoint=0;
               var targetpoint=0;
               var newStoplosspoint=0
-              var newTargetpoint=0;
+              var newTargetpoint=0; 
               var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
               var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);            
               if(settingData!=undefined){       
@@ -495,11 +498,28 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                   stoplosspoint=settingData.stoplosspoint;
                   targetpoint=settingData.targetpoint;
                   if (side.toLowerCase()==="sell"){
-                    newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-                    newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                    if(parseFloat(stoplosspoint)>0){
+                        newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+
+                    }else{
+                      newStoplosspoint=0;
+                    } 
+                    if(parseFloat(targetpoint)>0){
+                        newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2));
+                    }else{
+                      newTargetpoint=0;
+                    } 
                   }else{
-                    newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-                    newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                    if(parseFloat(stoplosspoint)>0){
+                        newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                      }else{
+                        newStoplosspoint=0;
+                      } 
+                      if(parseFloat(targetpoint)>0){
+                        newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2));
+                      }else{
+                        newTargetpoint=0;
+                      } 
                   }
                 }
               }

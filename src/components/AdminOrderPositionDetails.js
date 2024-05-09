@@ -2858,12 +2858,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.firstOutExchangeToken.toString();
       currentltp = dataInfo.firstOutltp;
     }
-
+    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
       currentStrike,
-      temptype
+      temptype,
+      strikePriceDiff
     );
     //let dataNewTradingSymbol=Constant.GetNewTradingSymbol(dataInfo.positioninstrumentname,currentStrike,temptype);
 
@@ -3178,12 +3179,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.firstOutExchangeToken.toString();
       currentltp = dataInfo.firstOutltp;
     }
-
+    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
       currentStrike,
-      temptype
+      temptype,
+      strikePriceDiff
     );
     const {
       newFirstInStrike,
@@ -3496,12 +3498,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.secondOutExchangeToken.toString();
       currentltp = dataInfo.secondOutltp;
     }
-
+    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
       currentStrike,
-      temptype
+      temptype,
+      strikePriceDiff
     );
     const {
       newFirstInStrike,
@@ -3814,12 +3817,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.secondOutExchangeToken.toString();
       currentltp = dataInfo.secondOutltp;
     }
-
+    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
       currentStrike,
-      temptype
+      temptype,
+      strikePriceDiff
     );
     const {
       newFirstInStrike,

@@ -26,23 +26,23 @@ export const Constant = {
             }
         else    
             return (0).toFixed(2).toLocaleString('en-IN');
-     },GetNewStrike:(ordersymbol,currentString,orderType)=>{        
-        let strikeDiff=0;
+     },GetNewStrike:(ordersymbol,currentString,orderType,strikePriceDiff)=>{        
+        let strikeDiff=parseInt(strikePriceDiff);
         let newFirstInStrike=0;
         let newSecondInStrike=0;
         let newFirstOutStrike=0;
         let newSecondOutStrike=0;
-        if(ordersymbol==="NIFTY"){
-                strikeDiff=50;
-        }else  if(ordersymbol==="BANKNIFTY"){
-                strikeDiff=100;
-        }else  if(ordersymbol==="FINNIFTY"){
-                strikeDiff=50;
-        } else if(ordersymbol==="SENSEX"){
-                strikeDiff=100;
-        } else if(ordersymbol==="MIDCPNIFTY"){
-                strikeDiff=25;
-        }
+        // if(ordersymbol==="NIFTY"){
+        //         strikeDiff=50;
+        // }else  if(ordersymbol==="BANKNIFTY"){
+        //         strikeDiff=100;
+        // }else  if(ordersymbol==="FINNIFTY"){
+        //         strikeDiff=50;
+        // } else if(ordersymbol==="SENSEX"){
+        //         strikeDiff=100;
+        // } else if(ordersymbol==="MIDCPNIFTY"){
+        //         strikeDiff=25;
+        // }
         if(orderType==='CE'){
             newFirstInStrike=parseInt(currentString)-strikeDiff;
             newSecondInStrike=parseInt(currentString)-(2*strikeDiff);

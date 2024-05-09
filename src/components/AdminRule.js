@@ -38,6 +38,7 @@ const AdminRule = (height) => {
   });
   const [tableInformation, setTableInformation] = useState(true);
   const [previousRuleList, setPreviousRuleList] = useState([]);
+  const [editRule, setEditRule] = useState(true);
   const {      
     globleSelectedClientInfo,     
     globleSelectedTradingType
@@ -69,7 +70,11 @@ const AdminRule = (height) => {
     }
  },[globleSelectedClientInfo,globleSelectedTradingType])
 
- const getruledata = async(e) => {
+ const getruledata = (e) => {
+  getruledataList();
+};
+
+const getruledataList=async()=>{
   let objRequest={
     clientid:sessionStorage.getItem("clienttoken"),
     brokername:sessionStorage.getItem("brokername") ,
@@ -79,7 +84,7 @@ const AdminRule = (height) => {
   if(resultData!=null){ 
       setPreviousRuleList(resultData);
    }
-};
+}
 
 
   const addelementtoconditionarray=(identity)=>{
@@ -204,15 +209,20 @@ const handleRulesConfig = async(e) => {
         detailsrule:multipleCondition
     }
     const resultData = await ZerodaAPI.processInsertUpdateRuleData(objRequest);
-    if(resultData!=null){  
-      alertify.success("Rule information saved successfully.")
-      clearRuleData();
-
+    if(resultData!=null){        
+      if(editRule===false){
+        alertify.success("Rule information saved successfully.");
+        clearRuleData();
+      }else{
+        alertify.success("Rule information updated successfully.");
+        setTableInformation(true);
+        clearRuleData();
+        getruledataList();
+      }   
     }
 };
 
-const deleteRecord=(ruleid)=>{
-  debugger;
+const deleteRecord=(ruleid)=>{  
   alertify.confirm(
     "Information",
     "Do you want to delete selected rule ?",
@@ -236,13 +246,57 @@ const processDeleteRuleData=async(ruleid)=>{
   }
 }
 
-const editRecord=async(ruleid)=>{
+const editRecord=async(ruleid)=>{  
   let objRequest={
-    ruleid:ruleid     
-}
+    ruleid:ruleid.toString()     
+  }
   const resultData = await ZerodaAPI.getRuleDataById(objRequest);
   if(resultData!=null){  
-    setTableInformation(true);
+    setTableInformation(false);    
+    setEditRule(true);
+    let data={
+      ruleid:resultData.masterrule.ruleid,
+      instrumentname:resultData.masterrule.instrumentname,
+      stockattribute:resultData.masterrule.stockattribute,
+      stockattributevalue:resultData.masterrule.stockattributevalue, 
+      symbol:resultData.masterrule.symbol,
+      symbolvalue:resultData.masterrule.symbolvalue,
+      waittick:resultData.masterrule.waittick, 
+      rulestatus:resultData.masterrule.rulestatus==="1"?true:false,   
+      clientid:sessionStorage.getItem("clienttoken"),
+      brokername:sessionStorage.getItem("brokername"),
+      tradingmode:sessionStorage.getItem("tradingtype")
+    }
+    setCreateRuleConfig(data);
+
+    let dataInstrumentname=stockSymbolInformation.find((data)=>data.value===resultData.masterrule.instrumentname)
+    setSymbolSelect(dataInstrumentname);
+
+    let dataAtt=stockAttribute.find((data)=>data.value===resultData.masterrule.stockattribute)
+    setSelectedAttribute(dataAtt);
+
+    let dataSymbol=arthmaticSymbolList.find((data)=>data.value===resultData.masterrule.symbol)
+    setSelectedArthmaticSymbolList(dataSymbol);
+
+    if(resultData.masterrule.rulestatus==="1"){
+      setSwitchActiveState(true); 
+    }else{
+      setSwitchActiveState(false); 
+    }
+    
+
+    let multipleConditionArray=[];
+    for(var i=0;i<resultData.detailsrule.length;i++){
+      let model={};
+      model["ruledetailid"]=resultData.detailsrule[i].ruledetailid;
+      model["orderside"]=resultData.detailsrule[i].orderside;
+      model["orderqty"]=resultData.detailsrule[i].orderqty;
+      model["ordertype"]=resultData.detailsrule[i].ordertype;
+      model["ordertypevalue"]=resultData.detailsrule[i].ordertypevalue;
+      model["rowsrno"]=resultData.detailsrule[i].rowsrno;
+      multipleConditionArray.push(model);     
+    }       
+    setMultipleCondition(multipleConditionArray);
 
   }
 }
@@ -279,6 +333,7 @@ const clearRuleData=()=>{
   setSelectedAttribute("");
   setSelectedArthmaticSymbolList("");
   setSymbolSelect("");
+  setEditRule(false);
 }
 
 const handlerowchange = (e,reftype,index) => {
@@ -318,11 +373,11 @@ const handlerowchange = (e,reftype,index) => {
 const addNewRecord = (e) => {
   clearRuleData(); 
   setTableInformation(false);
-
 }
 
 const showListRecord = (e) => {
   clearRuleData();
+  getruledataList();
   setTableInformation(true);
 
 }
@@ -715,6 +770,7 @@ return (
                                                          className='font-10px btn-danger'                                                     
                                                          href="#pablo"                                                         
                                                          size="sm"
+                                                         disabled={ editRule}
                                                        >
                                                        Clear
                                                        </Button> 

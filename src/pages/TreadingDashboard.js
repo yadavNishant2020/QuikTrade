@@ -45,7 +45,9 @@ const TreadingDashboard = () => {
     const [totalRows,setTotalRows]=useState(0);
     const [initSocket,setInitSocket]=useState(false);
     const [centrifugeInstance, setCentrifugeInstance] = useState(null);
-    const [baseTable,setBaseTable]=useState(false);
+    const [baseTable,setBaseTable]=useState([]);
+    const [baseTableDisconnect,setBaseTableDisconnect]=useState([]);
+
     const [strickPrices,setStrickPrices]=useState(0);
     const [channelStatus,setChannelStatus]=useState(0);
     const [channelProcessStatus,setChannelProcessStatus]=useState(0);
@@ -119,26 +121,27 @@ const TreadingDashboard = () => {
       }
   }
   
+
+
+
     useEffect(() => {
-      if (globleSymbol.length > 0 && globleExpityvalue.length > 0) {
-        
+      if (globleSymbol.length > 0 && globleExpityvalue.length > 0) {     
+        let data= baseTable;
+        setBaseTableDisconnect(baseTable)  
         setBaseTable([]);
         setFilterOptionChainList([]);
         if (centrifugeInstance) {
           // Disconnect the existing WebSocket instance
           centrifugeInstance.disconnect();
-        }
-  
+        }  
         // Create a new Centrifuge instance
         const newCentrifugeInstance = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
-  
-        // Connect to the server
+          // Connect to the server
         newCentrifugeInstance.connect();
-  
-        // Save the new instance to state
+        
+          // Save the new instance to state
         setCentrifugeInstance(newCentrifugeInstance);
-  
-        // Cleanup on component unmount
+          // Cleanup on component unmount
         return () => {
           newCentrifugeInstance.disconnect();
         };
@@ -158,6 +161,12 @@ const TreadingDashboard = () => {
 
                 let infoOptionChain=getElementRange([...new Set(newoptionChainData)],strickPrices,10,"strikePrice");
                 const filteredArray = dataInfo.filter(item => infoOptionChain.includes(item.strikePrice));
+                if(infoOptionChain.length>0){
+                  let strikePriceDiff=parseInt(infoOptionChain[1])-parseInt(infoOptionChain[0]);                  
+                  sessionStorage.setItem("strikePriceDiff",strikePriceDiff);
+                }
+               
+                
                 setBaseTable(filteredArray);
                 setFilterOptionChainList(filteredArray);
       }else{
@@ -220,8 +229,7 @@ const TreadingDashboard = () => {
     }
 
 
-    const getOptionChainList=async ()=>{       
-      
+    const getOptionChainList=async ()=>{  
       let data = await ZerodaAPI.getOptionChainList();       
       if(data!=null){
         setTotalRows(data.length);
@@ -234,8 +242,7 @@ const TreadingDashboard = () => {
 
 
 
-    const processOptionChain = () => {
-         
+    const processOptionChain = () => {         
           // Initialize Centrifuge client
             const centrifugeInstanceNew = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
             // Connect to the server
@@ -246,8 +253,7 @@ const TreadingDashboard = () => {
                       if (cName.instrumentToken !== undefined) { 
                           const channel = centrifugeInstanceNew.subscribe(cName.instrumentToken);
                           // Event listener for messages on the channel
-                          channel.on('publish', (data) => {  
-                           
+                          channel.on('publish', (data) => {                             
                             setChannelStatus(1);                   
                             if (data.data !== null) {
                             //console.log(data.data)
@@ -397,7 +403,7 @@ const TreadingDashboard = () => {
 
 
 
-      useEffect(()=>{  
+  useEffect(()=>{  
       
       if(parseFloat(globleCurrentStockIndex)>0 && optionChainList.length>0){ 
         
@@ -410,8 +416,6 @@ const TreadingDashboard = () => {
                 setStrickPrices(parseInt(nearestValue));
                 updateGlobleCurrentATM(parseInt(nearestValue))
         }
-
-         
       }
   },[globleCurrentStockIndex,optionChainList,globleSymbol,globleExpityvalue,globleOptionChainType])
 

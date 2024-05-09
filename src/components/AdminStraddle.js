@@ -257,7 +257,8 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage);
      let temptype='CE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -327,7 +328,8 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
        }={...configInformation};
        let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage);
        let temptype='CE'
-       let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+       let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+       let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
        const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
        let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
        let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -410,7 +412,8 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
      let temptype='PE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -480,7 +483,8 @@ const AdminStraddle = ({filterOptionChainList, height}) => {
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
      let temptype='PE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -564,7 +568,8 @@ const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
      let temptype='CE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -622,8 +627,8 @@ const handdleOrderInformationForCombineLive=(e,data,pedata,side)=>{
         exchange:data.exchange,
         brokerName:globleBrokerName
   }
-  temptype='PE'
-  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+  temptype='PE';   
+  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
    
   let newFirstInStrike1=0;
   let newSecondInStrike1=0;
@@ -722,7 +727,8 @@ const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
      let temptype='CE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -786,7 +792,7 @@ const handdleOrderInformationForCombinePaper=(e,data,pedata,side)=>{
         brokerName:globleBrokerName
   }
   temptype='PE'
-  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
    
   let newFirstInStrike1=0;
   let newSecondInStrike1=0;

@@ -300,7 +300,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
             (parseFloat(parseFloat(data.ltp)-(parseFloat(data.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
             :parseFloat(data.ltp)) 
             let temptype='CE'
-            let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+            let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+            let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
             const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
             let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
             let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -371,7 +372,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
           (parseFloat(parseFloat(data.ltp)-(parseFloat(data.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
           :parseFloat(data.ltp)) 
           let temptype='CE'
-          let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+          let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+          let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
           const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
           let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
           let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -454,7 +456,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
        :parseFloat(pedata.ltp))
       
        let temptype='PE'
-       let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+       let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+       let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
        const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
        let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
        let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -525,7 +528,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
      :parseFloat(pedata.ltp))
     
      let temptype='PE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -605,8 +609,9 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
       defaultShowQty
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
-     let temptype='CE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+     let temptype='CE';
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -676,7 +681,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
   let newSecondInStrike1=0;
   let newFirstOutStrike1=0;
   let newSecondOutStrike1=0;
-  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+  
+  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
   if(dataNewStrick!=null){
     newFirstInStrike1=dataNewStrick.newFirstInStrike;
     newSecondInStrike1=dataNewStrick.newSecondInStrike;
@@ -763,7 +769,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
      }={...configInformation};
      let defaultLMTPer=(defaultLMTPerCentage===undefined?0: defaultLMTPerCentage); 
      let temptype='CE'
-     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype);
+     let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+     let dataNewStrick=Constant.GetNewStrike(globleSymbol,data.strikePrice,temptype,strikePriceDiff);
      const{newFirstInStrike,newSecondInStrike,newFirstOutStrike,newSecondOutStrike}=dataNewStrick;
      let newFirstInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newFirstInStrike,temptype);
      let newSecondInInstrumentToken=Constant.GetStrikeToken(globleOptionChainList,globleSymbol,globleExpityvalue,newSecondInStrike,temptype)
@@ -838,7 +845,8 @@ const AdminStrangle = ({filterOptionChainList, height }) => {
   let newSecondInStrike1=0;
   let newFirstOutStrike1=0;
   let newSecondOutStrike1=0;
-  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype);
+   
+  dataNewStrick=Constant.GetNewStrike(globleSymbol,pedata.strikePrice,temptype,strikePriceDiff);
   if(dataNewStrick!=null){
     newFirstInStrike1=dataNewStrick.newFirstInStrike;
     newSecondInStrike1=dataNewStrick.newSecondInStrike;
