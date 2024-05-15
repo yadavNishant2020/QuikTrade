@@ -332,7 +332,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           const currentltp=position.ltp;
           const positionStopLoss = positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)<parseFloat(currentltp)? selectedValue : 
                                     positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)>parseFloat(currentltp)?selectedValue:"" ;
-          const newPositionTrailling = (selectedValue === 0 || selectedValue==="") ? "0" : position.positiontrailling;
+          const newPositionTrailling = (parseFloat(selectedValue) === 0 || selectedValue==="") ? "0" : position.positiontrailling;
           return {
             ...position,
             positionstoploss: positionStopLoss,
@@ -4042,6 +4042,28 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       alertify.error("Target value is invalid.");       
       return;
     }
+
+    if(parseFloat(data.positiontarget)!=0 && parseFloat(data.positiontarget)<parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="buy"){
+      alertify.error("Target should not be less than ltp.");         
+      return;
+    }
+
+    if(parseFloat(data.positiontarget)!=0 && parseFloat(data.positiontarget)>parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="sell"){
+      alertify.error("Target should not be greater than ltp.");       
+      return;
+    }
+
+    if(parseFloat(data.positionstoploss)!=0 && parseFloat(data.positionstoploss)>parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="buy"){
+      alertify.error("Stoploss should not be greater than ltp.");         
+      return;
+    }
+
+    if(parseFloat(data.positionstoploss)!=0 && parseFloat(data.positionstoploss)<parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="sell"){
+      alertify.error("Stoploss should not be less than ltp.");       
+      return;
+    }
+
+
       setEditPositionRow(false);
       setEditPositionRow("-1");
       processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget,data.ltp);
