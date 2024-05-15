@@ -16,6 +16,8 @@ import AdminTrades from "../components/AdminTrades.js";
 import { ZerodaAPI } from "../api/ZerodaAPI";
 import Centrifuge from 'centrifuge';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import LoaderComponent from "../components/LoaderComponent.js";
+
  
 import { Container, Row, Col,   Button,
    Card,
@@ -75,12 +77,12 @@ const TreadingDashboard = () => {
       globleChangeDefaultSetting,
       updateGlobleConfigPostionData,
       globleSelectedTradingType,
-      globalServerTime
+      globalServerTime,
+      globalProcessRMS
    } = useContext(PostContext);
     
     useEffect(()=>{ 
-      getOptionChainList(); 
-
+      getOptionChainList();     
     },[]);
  
     useLayoutEffect(() => {
@@ -577,41 +579,39 @@ const getRandomFloat = (min, max) => {
        <>    
          <Container fluid style={{}}>
           <div style={{"width":"100%", height:"100%"}}>
-         
+
+                    {globalProcessRMS && <LoaderComponent />}
+
                     <div className={sideMenuTroggle?'full-open mainpanel':
                                     sideMenuSettingTroggle?'full-open mainpanel':
                                     sideMenuRMSTroggle?'full-open mainpanel':
-                                    'full-close mainpanel'} ref={divRef}>
-                                <Row className='dashboard mt-1 optionchaindashboard'  id="_optionchaindashboard_id">                                
-                                    <Col xl="12" className='firstDiv' >                                      
-                                                <Tabs style={{backgroundColor:"#FFFFFF"}}>
-                                                    <TabList>
-                                                    <Tab>Basket</Tab>
-                                                    <Tab>Straddle</Tab>
-                                                    <Tab>Strangle</Tab>                                                   
-                                                    <Tab>Rules</Tab>
-                                                    </TabList>
+                                    'full-close mainpanel'}   ref={divRef}>
+                                    <Row className='dashboard mt-1 optionchaindashboard'  id="_optionchaindashboard_id">                                
+                                        <Col xl="12" className='firstDiv'>
+                                                    <Tabs style={{backgroundColor:"#FFFFFF"}}>
+                                                        <TabList>
+                                                        <Tab>Basket</Tab>
+                                                        <Tab>Straddle</Tab>
+                                                        <Tab>Strangle</Tab>                                                   
+                                                        <Tab>Rules</Tab>
+                                                        </TabList>
 
-                                                    <TabPanel>
-                                                        <AdminOptionChain filterOptionChainList={filterOptionChainList} height={height}/>
-                                                    </TabPanel>
-                                                    <TabPanel>
-                                                        <AdminStraddle  filterOptionChainList={filterOptionChainList} height={height} /> 
-                                                    </TabPanel>
-                                                    <TabPanel>                                        
-                                                        <AdminStrangle filterOptionChainList={filterOptionChainList} height={height}/>                                         
-                                                    </TabPanel>
-                                                   
-                                                    <TabPanel>
-                                                          <AdminRule height={height}/>    
-                                                    </TabPanel>
-                                                </Tabs>
-                                            
-                                            
-                                      
-                                    </Col>
-                                  
-                                </Row>
+                                                        <TabPanel>
+                                                            <AdminOptionChain filterOptionChainList={filterOptionChainList} height={height}/>
+                                                        </TabPanel>
+                                                        <TabPanel>
+                                                            <AdminStraddle  filterOptionChainList={filterOptionChainList} height={height} /> 
+                                                        </TabPanel>
+                                                        <TabPanel>                                        
+                                                            <AdminStrangle filterOptionChainList={filterOptionChainList} height={height}/>                                         
+                                                        </TabPanel>
+                                                      
+                                                        <TabPanel>
+                                                              <AdminRule height={height}/>    
+                                                        </TabPanel>
+                                                    </Tabs>
+                                        </Col>                                      
+                                    </Row>
                                     <Row  className="dashboard mt-1 positiondashboardlist">
                                             <Col xl="12">
                                           
@@ -639,6 +639,7 @@ const getRandomFloat = (min, max) => {
                                               </Col>
                                     </Row>
                                     <AdminFooter />
+                           
                     </div>
                     <div className={sideMenuTroggle?'sidepanel':'hide sidepanel'}>
                       {sideMenuName?<AdminDefaultConfig/>: ''}
@@ -664,7 +665,7 @@ const getRandomFloat = (min, max) => {
                             <Col  xl="12" className='hide'>
                             <hr/>
                             </Col>
-                            <Col xl="12 pt-1 text-center text-theam hide" >
+                            <Col xl="12 pt-1 text-center text-theam" >
                                 <i className='fas fa-toolbox' onClick={() => handleSideMenuRMSSettingTroggle('RMSSetting')}></i>
                             </Col>
                             <Col  xl="12" className='hide'>

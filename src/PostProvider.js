@@ -32,6 +32,7 @@ const PostProvider = ({children}) => {
     const [globleLogList,setGlobleLogList]=useState([]);    
     const [globalServerTime,setServerTime]=useState('');
     const [globalTrades,setGlobleTrades]=useState([]);
+    const [globalProcessRMS,setGlobalProcessRMS]=useState(false);
 
     const [screenSize, setScreenSize] = useState({
         width: window.innerWidth,
@@ -47,6 +48,11 @@ const PostProvider = ({children}) => {
     const [globleFnotraderSecret,setGlobleFnotraderSecret]=useState('');
   
     
+    const updateGlobalProcessRMS = (newValue) => {
+        setGlobalProcessRMS(newValue);        
+    }
+
+
     const updateGlobleTrades = (newValue) => {
         setGlobleTrades(newValue);        
     }
@@ -339,6 +345,7 @@ const PostProvider = ({children}) => {
         globleLogList,
         globalServerTime,
         globalTrades,
+        globalProcessRMS,
         updateGlobleLogList,
         updateGloblemltRealized,
         updateGlobleSymbol,
@@ -374,7 +381,8 @@ const PostProvider = ({children}) => {
         updateGlobleFnotraderUserId,
         updateGlobleFnotraderSecret,
         updateGlobleServerTime,
-        updateGlobleTrades
+        updateGlobleTrades,
+        updateGlobalProcessRMS
       };
     return (
         <PostContext.Provider

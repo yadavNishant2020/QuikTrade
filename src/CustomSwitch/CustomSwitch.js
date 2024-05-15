@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './CustomSwitch.css'; // Create a CSS file for styling
 
-const CustomSwitch = ({ options, onChange }) => {
+const CustomSwitch = ({ options,disabled, onChange }) => {
   const [selectedOption, setSelectedOption] = useState(options[0].value);
 
   const handleSwitchChange = (value) => {

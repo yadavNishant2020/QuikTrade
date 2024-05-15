@@ -946,8 +946,8 @@ const processInsertUpdateOrderBulk=async(requestOrderList)=>{
                           
                           <CardBody>
                           <Row>
-                                            <Col className='Straddle' xl="12">
-                                            <div className="table-container" ref={tableRef} style={{height:height+41}}>
+                                            <Col className='Straddle' xl="12" >
+                                                    <div className="table-container" ref={tableRef} style={{height:height+41}}>
                                             <Table className="align-items-center" >
                                                   <thead className="thead-light">
                                                                                 <tr class="text-center">

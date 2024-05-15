@@ -15,8 +15,12 @@ import { Container, Row, Col,   Button,
    import { ZerodaAPI } from "../api/ZerodaAPI";
    import { PaperTradingAPI } from "../api/PaperTradingAPI";  
    import { Constant } from "../Config/Constant";
+   import { LiveTradingAPI } from "../api/LiveTradingAPI";   
+import alertify from 'alertifyjs';
 const AdminCompletedOrder = () => {
-
+  const [orderCompletedList, setOrderCompletedList] = useState([]);
+  const [completedOrderCount, setCompletedOrderCount] = useState([]);
+  
     const {  
         globleOrderList,
         globleSelectedClientInfo,
@@ -26,6 +30,127 @@ const AdminCompletedOrder = () => {
         updateGlobleClosedList
       } = useContext(PostContext); 
 
+
+      const handdleTextBoxEvent = (e, index,refType) => {   
+        let selectedValue = e.target.value;     
+        // Update the state for the selected row
+        setOrderCompletedList((prevRowData) => { 
+          if(selectedValue>0){ 
+                prevRowData[index][refType] =selectedValue;                    
+            }else{
+              prevRowData[index][refType] ="";
+            } 
+          return prevRowData;
+        });
+
+      }
+
+      useEffect(()=>{  
+        if(globleOrderList.length>0){           
+          setOrderCompletedList(globleOrderList);
+        }else{
+          setOrderCompletedList([]);
+        }
+       
+      },[globleOrderList])
+
+      useEffect(()=>{  
+        if(globleOrderList.length>0){
+          setCompletedOrderCount(globleOrderList?.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length)
+        }else{
+          setCompletedOrderCount(0);
+        }
+    },[orderCompletedList])
+
+
+ 
+
+
+      const handleKeyDown=(e,index,data)=>{
+        if (e.key === 'Enter') {  
+            if(globleSelectedTradingType.toLowerCase()==="paper"){
+              processorderupdatepaper(data.orderid,data.instrumentToken,data.orderprice,data.orderaction);    
+            }else{
+              processorderupdatelive(data.orderid,data.instrumentToken,data.orderidbybroker,data.orderprice,data.orderaction);    
+            }   
+        }  
+      }
+
+      const processorderupdatepaper=async(orderid,instrumentToken,orderprice,orderaction)=>{            
+            let requestData={
+              orderid:orderid.toString(),
+              instrumentToken:instrumentToken,
+              orderprice:orderprice.toString(),
+              orderaction:orderaction
+            }
+            const resultData = await PaperTradingAPI.processorderupdatepaper(requestData);
+            if (resultData != null) {
+                if(resultData.toString()==="true"){
+                    alertify.success("Order prices updated successfully.");
+                }else{
+                  alertify.error("Unable to process request now.Please try again.");
+                }
+            }else{
+              alertify.error("Unable to process request now.Please try again.");
+            }
+      }
+
+ 
+
+      const processorderupdatelive=async(orderid,instrumentToken,orderidbybroker,orderprice,orderaction)=>{
+            let requestData={
+              orderid:orderid.toString(),
+              instrumentToken:instrumentToken,
+              orderidbybroker:orderidbybroker,
+              orderprice:orderprice.toString(),
+              logintoken:sessionStorage.getItem("apiSecret"),
+              orderaction:orderaction
+            }
+            const resultData = await LiveTradingAPI.processorderupdatelive(requestData);
+            if (resultData != null) {
+              alertify.success(resultData);
+            }
+      }
+
+
+      const onexitpendingorder=(data)=>{
+        debugger;
+            if(globleSelectedTradingType.toLowerCase()==="paper"){
+              processexitpendingorderpaper(data.orderid);    
+            }else{
+              processexitpendingorderlive(data.orderid ,data.orderidbybroker);    
+            }   
+      }
+
+      const processexitpendingorderpaper=async(orderid)=>{            
+        let requestData={
+          orderid:orderid.toString(),           
+        }
+        const resultData = await PaperTradingAPI.processexitpendingorderpaper(requestData);
+        if (resultData != null) {
+            if(resultData.toString()==="true"){
+              alertify.success("Order cancelled successfully.");
+            }else{
+              alertify.error("Unable to process request now.Please try again.");
+            }
+        }else{
+          alertify.error("Unable to process request now.Please try again.");
+        }
+  }
+
+  const processexitpendingorderlive=async(orderid,orderidbybroker)=>{            
+    let requestData={
+      orderid:orderid.toString(),  
+      orderidbybroker:orderidbybroker ,
+      logintoken:sessionStorage.getItem("apiSecret"),        
+    }
+    const resultData = await LiveTradingAPI.processexitpendingorderlive(requestData);
+    if (resultData != null) {
+      alertify.success(resultData);
+    }else{
+      alertify.error("Unable to process request now.Please try again.");
+    }
+}
 
 
 
@@ -41,12 +166,12 @@ const AdminCompletedOrder = () => {
         <label className="form-control-label mr-1"  htmlFor="input-username" >
                                                                     Total Orders : 
                                                                     </label>
-                                                                     <span className='text-bold font-14px'>{globleOrderList?.length}
+                                                                     <span className='text-bold font-14px'>{orderCompletedList?.length}
                                                                     </span>
                                                                     <label className="form-control-label ml-1 mr-1"  htmlFor="input-username" >
                                                                     Completed : 
                                                                     </label>
-                                                                    <span className='text-bold text-success font-14px'>{globleOrderList.filter((data)=>data.orderstatus.toUpperCase()==='COMPLETED')?.length}
+                                                                    <span className='text-bold text-success font-14px'>{completedOrderCount}
                                                                     </span>
         </Col>
 </Row>
@@ -65,16 +190,16 @@ const AdminCompletedOrder = () => {
                                                                                                                                                                             
                                                                                         <th scope="col" >Type</th>       
                                                                                         <th scope="col" className="text-center" style={{width:"12%"}} >Lot</th>  
-                                                                                        <th scope="col" className="text-right">Price</th>  
+                                                                                        <th scope="col" className="text-right" style={{width:"8%"}}>Price</th>  
                                                                                         <th scope="col" >Status</th> 
-                                                                                                                        
+                                                                                        <th scope="col" ></th>                        
                                                                                     </tr>
 
                                                                         </thead>
                                                                         <tbody>
                                                                         {
-                                                                        globleOrderList !== undefined && globleOrderList !== null && globleOrderList.length > 0 && (
-                                                                            globleOrderList.map((data)=>
+                                                                        orderCompletedList !== undefined && orderCompletedList !== null && orderCompletedList.length > 0 && (
+                                                                          orderCompletedList?.map((data,index)=>
                                                                             <tr key={data.orderid}>
                                                                                 <td className='text-center'>{data.ordertimestamp}</td>
                                                                                 <td className='text-center'>{globleSelectedTradingType==='Live'?data.orderidbybroker:data.orderreferanceid}</td>
@@ -111,12 +236,42 @@ const AdminCompletedOrder = () => {
                                                                                     </fieldset>
                                                                                 
                                                                                 </td>
-                                                                                <td className='text-right'>{Constant.CurrencyFormat(data.orderprice)}</td>
+                                                                                <td className='text-right' style={{width:"8%"}}>
+                                                                                  {
+                                                                                   (data.orderstatus.toLowerCase() === 'pending' || data.orderstatus.toLowerCase() === 'open')?
+                                                                                   <Input
+                                                                                   className="form-control-alternative form-row-data text-right"
+                                                                                   id="input-postal-code"
+                                                                                   style={{marginTop:"3px"}}
+                                                                                   placeholder="Price"                                                                
+                                                                                   name="orderprice"   
+                                                                                   type="number"
+                                                                                   min="1"        
+                                                                                   inputMode="numeric"
+                                                                                   value={data.orderprice}  
+                                                                                   onKeyDown={(e)=>handleKeyDown(e,index,data)}
+                                                                                   onChange={(e) =>handdleTextBoxEvent(e,index,"orderprice")} 
+                                                                                   
+                                                                               />:
+                                                                                    Constant.CurrencyFormat(data.orderprice)
+                                                                                  }
+                                                                                </td>
                                                                                 <td className='text-center'>
                                                                                 <span style={{fontSize:"8px"}} className={`badge ${data.orderstatus.toLowerCase() === 'completed' ? 'badge-success' : (data.orderstatus.toLowerCase() === 'pending' || data.orderstatus.toLowerCase() === 'open')  ? 'badge-warning' : 'badge-cancel'}`}>
                                                                                         {data.orderstatus}
                                                                                         </span>
                                                                                 </td>
+                                                                                <td className='text-center'>
+                                                                                {(data.orderstatus.toLowerCase() === 'pending' || data.orderstatus.toLowerCase() === 'open')?
+                                                                                    (
+                                                                                    <span style={{fontWeight:"bold",padding:"5px", cursor:"pointer"}} className='text-danger' onClick={() => {
+                                                                                      onexitpendingorder(data);
+                                                                                    }}>                                                                                    
+                                                                                            <i className='fa fa-remove  font-13px' ></i> <span className='font-9px'>Exit </span>
+                                                                                    </span>
+                                                                                    ):""}
+                                                                                </td>
+
                                                                             </tr>
                                                                         ))}
                                                                         </tbody>

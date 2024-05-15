@@ -621,7 +621,7 @@ fieldset.border{
 
 
 .ccs-w2rpwu-menu {
-  z-index: 9999999999px !important;
+  z-index: 9999999999 !important;
   position: absolute;
 }
 
@@ -1319,4 +1319,24 @@ line-height: 0;
   .main-content {
     margin-top: 170px;
 }
+}
+
+
+
+.loader-overlay {
+  position: fixed;
+  top: 10;
+  left: 0;  
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+  z-index: 99; /* Ensure the loader is above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
 }

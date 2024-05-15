@@ -9,6 +9,7 @@ import { Container, Row, Col,   Button,
    import { PaperTradingAPI } from "../api/PaperTradingAPI.js";
    import { PostProvider,PostContext } from '../PostProvider.js';
    import alertify from 'alertifyjs';
+   
 
 const AdminRMSSetting = () => {  
     const [createRMSConfig, setCreateRMSConfig] = useState({          
@@ -87,6 +88,25 @@ const AdminRMSSetting = () => {
             });
           }  
      }
+
+     useEffect(() => {
+        // Function to check if the current time is greater than 9:15
+        const checkTime = () => {
+          const currentTime = new Date();
+          const targetTime = new Date();
+          targetTime.setHours(9);
+          targetTime.setMinutes(15);
+          targetTime.setSeconds(0);
+          targetTime.setMilliseconds(0);
+          setButtonDisabled(currentTime > targetTime);
+        };    
+        // Call the checkTime function when the component mounts
+        checkTime();    
+        // Update the button state every minute
+        const interval = setInterval(checkTime, 60000);    
+        // Clean up the interval on component unmount
+        return () => clearInterval(interval);
+      }, []);
 
      const AssignDataToFormControl=()=>{
         if(sessionStorage.getItem("RMSConfig").length>0){           

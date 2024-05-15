@@ -57,7 +57,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     updateGlobleLogList,
     updateGlobleServerTime,
     updateGlobleTrades,
-    globlemltRealized
+    globlemltRealized,
+    updateGlobalProcessRMS
   } = useContext(PostContext);
 
   
@@ -2703,7 +2704,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       tradermode: sessionStorage.getItem("tradingtype"),
     };
     const resultData = await PaperTradingAPI.getOrderCompletedList(requestData);
-    if (resultData != null) {
+    if (resultData != null) {       
       updateGlobleOrderList(resultData);
     }
   };
@@ -4053,6 +4054,17 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
 
   }
+
+  useEffect(() => {
+    debugger;
+    if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {        
+        let RMSConfig=JSON.parse(sessionStorage.getItem("RMSConfig"));
+        if(parseFloat(RMSConfig.rmslimit)!=0 && parseFloat(RMSConfig[0].rmslimit)>=(parseFloat(globlemltRealized)+parseFloat(mltUnrealized))){
+          updateGlobalProcessRMS(true);
+        }         
+    }
+  }, [globlemltRealized, mltUnrealized]);
+  
   
 
   return (

@@ -41,6 +41,7 @@ const AdminHeader = () => {
     updateGlobleBrokerName,
     globleBrokerClientList,
     globalServerTime,
+    updateGlobalProcessRMS
   } = useContext(PostContext);
   const [channelName, setChannelName] = useState([]);
   const [indexData, setIndexData] = useState([]);
@@ -497,6 +498,7 @@ useEffect(() => {
     setClientSelect(e);
     updateGlobleSelectedClientInfo(e.value);
     sessionStorage.setItem("clienttoken", e.value);
+    updateGlobalProcessRMS(false);
   };
 
   const handleBrokerData = (e) => {
@@ -504,6 +506,7 @@ useEffect(() => {
     setBrokerSelect(e);
     updateGlobleBrokerName(e.value);
     sessionStorage.setItem("brokername", e.value);
+    updateGlobalProcessRMS(false);
     if (e.value.length > 0) {
       const firstBrokerNameValue = e.value; // Assuming brokerName[0].value exists
       clientList = globleBrokerClientList
@@ -524,7 +527,7 @@ useEffect(() => {
   };
 
   const handleTradingTypeData = (e) => {
-
+    updateGlobalProcessRMS(false);
     if(brokerSelect.value == "ZERODHA" && CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase()==="false"){
       setShow(true);   
       return;           
@@ -580,6 +583,7 @@ useEffect(() => {
       tradingTypeSelect !== ""
     ) {
       getDefaultConfiguration();
+      getRMSConfiguration();
     }
   }, [clientSelect, symbolSelect, expityvalue, tradingTypeSelect]);
 
@@ -636,6 +640,28 @@ useEffect(() => {
             } 
       } 
  }
+
+
+ const getRMSConfiguration=async ()=>{ 
+  let dataInfo={
+      clientId:sessionStorage.getItem("clienttoken") ,
+      brokername:sessionStorage.getItem("brokername"),
+      tradingmode:sessionStorage.getItem("tradingtype")
+    }
+    let result = await PaperTradingAPI.getRMSConfiguration(dataInfo); 
+    debugger;
+    if(result!=null){
+          if(result.length>0){
+              sessionStorage.removeItem("RMSConfig");
+              sessionStorage.setItem("RMSConfig",JSON.stringify(result));
+               
+          }else{
+              
+          } 
+    }else{
+      
+    }  
+}
 
 
   const isMarketHours = () => {   
