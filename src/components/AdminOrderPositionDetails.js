@@ -4059,7 +4059,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     debugger;
     if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {        
         let RMSConfig=JSON.parse(sessionStorage.getItem("RMSConfig"));
-        if(parseFloat(RMSConfig.rmslimit)!=0 && parseFloat(RMSConfig[0].rmslimit)>=(parseFloat(globlemltRealized)+parseFloat(mltUnrealized))){
+        if(parseFloat(RMSConfig[0].rmslimit)!=0 && parseFloat(RMSConfig[0].rmslimit)>=(parseFloat(globlemltRealized)+parseFloat(mltUnrealized))){
           updateGlobalProcessRMS(true);
         }         
     }
