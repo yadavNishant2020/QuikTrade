@@ -1579,7 +1579,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                                         placeholder="STOPLOSS"                                                                
                                                                                         name="rowstoploss" 
                                                                                         type="number"
-                                                                                        min="1"        
+                                                                                        min="0"   
                                                                                         value={data.bucketSL}      
                                                                                         onKeyDown={(e)=>handleKeyDown(e,index)}
                                                                                         onChange={(e) =>handdleTextBoxEvent(e,index,"bucketSL")}                                      
@@ -1597,7 +1597,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                                                                         placeholder="TARGET"                                                                
                                                                                         name="rowTARGET"     
                                                                                         type="number"
-                                                                                        min="1"        
+                                                                                        min="0"        
                                                                                         value={data.bucketTarget}   
                                                                                         onKeyDown={(e)=>handleKeyDown(e,index)}
                                                                                         onChange={(e) =>handdleTextBoxEvent(e,index,"bucketTarget")}                                            

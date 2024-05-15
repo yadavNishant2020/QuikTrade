@@ -20,7 +20,7 @@ import alertify from 'alertifyjs';
 const AdminCompletedOrder = () => {
   const [orderCompletedList, setOrderCompletedList] = useState([]);
   const [completedOrderCount, setCompletedOrderCount] = useState([]);
-  
+  const [processOrder, setProcessOrder] = useState(false);
     const {  
         globleOrderList,
         globleSelectedClientInfo,
@@ -68,6 +68,7 @@ const AdminCompletedOrder = () => {
 
       const handleKeyDown=(e,index,data)=>{
         if (e.key === 'Enter') {  
+            setProcessOrder(true);
             if(globleSelectedTradingType.toLowerCase()==="paper"){
               processorderupdatepaper(data.orderid,data.instrumentToken,data.orderprice,data.orderaction);    
             }else{
@@ -85,12 +86,14 @@ const AdminCompletedOrder = () => {
             }
             const resultData = await PaperTradingAPI.processorderupdatepaper(requestData);
             if (resultData != null) {
+              setProcessOrder(false)
                 if(resultData.toString()==="true"){
                     alertify.success("Order prices updated successfully.");
                 }else{
                   alertify.error("Unable to process request now.Please try again.");
                 }
             }else{
+              setProcessOrder(false)
               alertify.error("Unable to process request now.Please try again.");
             }
       }
@@ -108,7 +111,10 @@ const AdminCompletedOrder = () => {
             }
             const resultData = await LiveTradingAPI.processorderupdatelive(requestData);
             if (resultData != null) {
+              setProcessOrder(false)
               alertify.success(resultData);
+            }else{
+              setProcessOrder(false)
             }
       }
 
@@ -251,6 +257,7 @@ const AdminCompletedOrder = () => {
                                                                                    value={data.orderprice}  
                                                                                    onKeyDown={(e)=>handleKeyDown(e,index,data)}
                                                                                    onChange={(e) =>handdleTextBoxEvent(e,index,"orderprice")} 
+                                                                                   disabled={processOrder}
                                                                                    
                                                                                />:
                                                                                     Constant.CurrencyFormat(data.orderprice)

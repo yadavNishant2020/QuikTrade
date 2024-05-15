@@ -175,7 +175,7 @@ const AdminRMSSetting = () => {
                                                 </FormGroup>
                                     </Col>
                                  </Row>
-                       
+                               
                                  <Row>
                                     <Col xl="12" style={{textAlign:"center"}}>
                                         <Button
@@ -190,7 +190,16 @@ const AdminRMSSetting = () => {
                                         </Button>  
                                     </Col>
                                  </Row>
-                                 
+                                 <Row>
+                                        <Col xl="12" className='font-10px' style={{padding:"10px 0px",textAlign:"center",color:"red",fontWeight:"bolder"}}>
+                                         <hr/>
+                                        </Col>
+                                 </Row>
+                                 <Row>
+                                        <Col xl="12" className='font-10px' style={{textAlign:"center",color:"red",fontWeight:"bolder"}}>
+                                        + The RMS value can be changed until 9:15 AM
+                                        </Col>
+                                 </Row>
                                  </CardBody>
             </Card>
         </>
