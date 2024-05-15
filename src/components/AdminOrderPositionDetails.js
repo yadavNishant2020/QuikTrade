@@ -4467,7 +4467,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                   onClick={(e) => handleRowClick(e, index)}
                                 >
                                   {editPositionRow === true &&
-                                  editPositionRowNo === index ? (
+                                  editPositionRowNo === index && (parseFloat(dataInfo.positionstoploss)>0 && dataInfo.positionstoploss!=="") ? (
                                     <Input
                                       className="form-control-alternative"
                                       id="input-position-trailling"
