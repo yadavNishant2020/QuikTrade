@@ -288,7 +288,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     //updatePositionByIndex(selectedValue,index)
     setOrderPosition((prevRowData) => {
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
-        if (i === index) {
+        if (i === index && parseFloat(prevRowData[i].positionstoploss)>0) {
           const positionTrailling = selectedValue;
           return {
             ...position,
@@ -304,9 +304,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const handdlePositionTarget = (e, index, data) => {
     let selectedValue = e.target.value;
     setOrderPosition((prevRowData) => {
+      
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {
-          const positionTargetValue = selectedValue;
+          const positionsidetype=position.positionsidetype;
+          const currentltp=position.ltp;
+          const positionTargetValue = positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)>parseFloat(currentltp)? selectedValue : 
+          positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)<parseFloat(currentltp)?selectedValue:"" ;
           return {
             ...position,
             positiontarget: positionTargetValue,
@@ -324,10 +328,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     setOrderPosition((prevRowData) => {
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {
-          const positionStopLoss = selectedValue;
+          const positionsidetype=position.positionsidetype;
+          const currentltp=position.ltp;
+          const positionStopLoss = positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)<parseFloat(currentltp)? selectedValue : 
+                                    positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)>parseFloat(currentltp)?selectedValue:"" ;
+          const newPositionTrailling = (selectedValue === 0 || selectedValue==="") ? "0" : position.positiontrailling;
           return {
             ...position,
             positionstoploss: positionStopLoss,
+            positiontrailling:newPositionTrailling
           };
         }
         return position;
@@ -4154,7 +4163,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                     onKeyDown={handleKeyDown}                   
                     onChange={(e) => {     
                           updateGlobalStopLoss(e.target.value);
-                       
+                          if(e.target.value==="" || parseFloat(e.target.value)===0){
+                            updateGlobalTP(0);
+                          }
                     }}
                   />
                 )}
@@ -4196,7 +4207,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               <fieldset
                 className="border"
                 onClick={() => {
-                  setTpEdit(true);
+                  if(globalStopLoss !== "" && parseFloat(globalStopLoss)!==0){
+                    setTpEdit(true);
+                  }
+                      
                 }}
               >
                 <legend align="right">Trail SL By</legend>
