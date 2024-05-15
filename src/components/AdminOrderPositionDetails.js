@@ -309,8 +309,8 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         if (i === index) {
           const positionsidetype=position.positionsidetype;
           const currentltp=position.ltp;
-          const positionTargetValue = positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)>parseFloat(currentltp)? selectedValue : 
-          positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)<parseFloat(currentltp)?selectedValue:"" ;
+          const positionTargetValue = selectedValue>9?positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)>parseFloat(currentltp)? selectedValue : 
+          positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)<parseFloat(currentltp)?selectedValue:"": selectedValue;
           return {
             ...position,
             positiontarget: positionTargetValue,
