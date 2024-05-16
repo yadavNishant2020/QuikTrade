@@ -309,8 +309,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         if (i === index) {
           const positionsidetype=position.positionsidetype;
           const currentltp=position.ltp;
-          const positionTargetValue = selectedValue>9?positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)>parseFloat(currentltp)? selectedValue : 
-          positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)<parseFloat(currentltp)?selectedValue:"": selectedValue;
+          const positionTargetValue = selectedValue;
           return {
             ...position,
             positiontarget: positionTargetValue,
@@ -330,8 +329,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         if (i === index) {
           const positionsidetype=position.positionsidetype;
           const currentltp=position.ltp;
-          const positionStopLoss = selectedValue>9?positionsidetype.toLowerCase()==='buy' && parseFloat(selectedValue)<parseFloat(currentltp)? selectedValue : 
-                                    positionsidetype.toLowerCase()==='sell' &&  parseFloat(selectedValue)>parseFloat(currentltp)?selectedValue:"" :selectedValue;
+          const positionStopLoss = selectedValue;
           const newPositionTrailling = (parseFloat(selectedValue) === 0 || selectedValue==="") ? "0" : position.positiontrailling;
           return {
             ...position,
