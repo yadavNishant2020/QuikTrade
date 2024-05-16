@@ -4021,6 +4021,50 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handleRowClick = (e, index) => {
+    debugger;
+    if(e.target.dataset.name==="positiontrailling"){
+      setOrderPosition((prevRowData) => {
+        const updatedTempOrderPosition = prevRowData.map((position, i) => {
+          if (i === index && parseFloat(prevRowData[i].positiontrailling)===0) {
+            const positionTrailling = "";
+            return {
+              ...position,
+              positiontrailling: positionTrailling,
+            };
+          }
+          return position;
+        });
+        return updatedTempOrderPosition;
+      });
+    }else if(e.target.dataset.name==="positiontarget"){
+      setOrderPosition((prevRowData) => {
+        const updatedTempOrderPosition = prevRowData.map((position, i) => {
+          if (i === index && parseFloat(prevRowData[i].positiontarget)===0) {
+            const positionTarget = "";
+            return {
+              ...position,
+              positiontarget: positionTarget,
+            };
+          }
+          return position;
+        });
+        return updatedTempOrderPosition;
+      });
+    }else{
+      setOrderPosition((prevRowData) => {
+        const updatedTempOrderPosition = prevRowData.map((position, i) => {
+          if (i === index && parseFloat(prevRowData[i].positionstoploss)===0) {
+            const positionStoploss = "";
+            return {
+              ...position,
+              positionstoploss: positionStoploss,
+            };
+          }
+          return position;
+        });
+        return updatedTempOrderPosition;
+      });
+    }
     setEditPositionRow(true);
     setEditPositionRowNo(index);
   };
@@ -4084,8 +4128,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   }
 
-  useEffect(() => {
-    debugger;
+  useEffect(() => {    
     if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {        
         let RMSConfig=JSON.parse(sessionStorage.getItem("RMSConfig"));
         if(RMSConfig!=null){
@@ -4161,6 +4204,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               <fieldset
                 className="border"
                 onClick={() => {
+                  if(parseFloat(globalStopLoss)===0){
+                    updateGlobalStopLoss("");
+                  }  
                   setSLEdit(true);
                 }}
               >
@@ -4195,6 +4241,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               <fieldset
                 className="border"
                 onClick={() => {
+                  if(parseFloat(globalTarget)===0){
+                    updateGlobalTarget("");
+                  }     
                   setTragetEdit(true);
                 }}
               >
@@ -4228,6 +4277,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 className="border"
                 onClick={() => {
                   if(globalStopLoss !== "" && parseFloat(globalStopLoss)!==0){
+                    if(parseFloat(globalTP)===0){
+                      updateGlobalTP("");
+                    }                    
                     setTpEdit(true);
                   }
                       
@@ -4462,6 +4514,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 </td>
                                 <td
                                   className="text-right"
+                                  data-name="positiontrailling"
                                   onClick={(e) => handleRowClick(e, index)}
                                 >
                                   {editPositionRow === true &&
@@ -4470,6 +4523,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       className="form-control-alternative"
                                       id="input-position-trailling"
                                       placeholder="Trailling"
+                                      data-name="positiontrailling"
                                       type="number"
                                       min="1"
                                       onKeyDown={(e) =>
@@ -4492,6 +4546,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 </td>
                                 <td
                                   className="text-right"
+                                  data-name="positiontarget"
                                   onClick={(e) => handleRowClick(e, index)}
                                 >
                                   {editPositionRow === true &&
@@ -4500,6 +4555,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                       className="form-control-alternative"
                                       id="input-position-target"
                                       placeholder="Target"
+                                      data-name="positiontarget"
                                       type="number"
                                       min="1"
                                       onKeyDown={(e) =>
@@ -4525,6 +4581,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 </td>
                                 <td
                                   className="text-right"
+                                  data-name="positionstoploss"
                                   onClick={(e) => handleRowClick(e, index)}
                                 >
                                   {editPositionRow === true &&
@@ -4532,6 +4589,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                     <Input
                                       className="form-control-alternative"
                                       id="input-position-stoploss"
+                                       data-name="positionstoploss"
                                       placeholder="StopLoss"
                                       type="number"
                                       min="1"

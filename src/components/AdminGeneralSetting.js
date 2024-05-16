@@ -98,9 +98,10 @@ const AdminGeneralSetting = () => {
      }
 
      const AssignDataToFormControl=()=>{
-        if(sessionStorage.getItem("generalConfig").length>0){           
+        if(sessionStorage.getItem("generalConfig").length>0){   
+            debugger;        
             var configData=JSON.parse(sessionStorage.getItem("generalConfig"));            
-            let configInformation=configData.find((data)=>data.instrumentname===globleSymbol  && data.clientid===globleSelectedClientInfo);
+            let configInformation=configData.filter((data)=>data.instrumentname===globleSymbol  && data.clientid===globleSelectedClientInfo);
             if(configInformation!=undefined){
                 if(configInformation!==null){
                     const updatedConfigInformation = configInformation.map((config) => ({
@@ -108,7 +109,7 @@ const AdminGeneralSetting = () => {
                         stoplosspoint: config.stoplosspoint.toString(),
                         stoplosspoint: config.stoplosspoint.toString()
                       }));
-                    setCreateGeneralConfig(updatedConfigInformation)
+                    setCreateGeneralConfig(updatedConfigInformation[0])
                 }
             }
         }
