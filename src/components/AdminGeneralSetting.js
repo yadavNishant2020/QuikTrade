@@ -103,7 +103,12 @@ const AdminGeneralSetting = () => {
             let configInformation=configData.find((data)=>data.instrumentname===globleSymbol  && data.clientid===globleSelectedClientInfo);
             if(configInformation!=undefined){
                 if(configInformation!==null){
-                    setCreateGeneralConfig(configInformation)
+                    const updatedConfigInformation = configInformation.map((config) => ({
+                        ...config,
+                        stoplosspoint: config.stoplosspoint.toString(),
+                        stoplosspoint: config.stoplosspoint.toString()
+                      }));
+                    setCreateGeneralConfig(updatedConfigInformation)
                 }
             }
         }
