@@ -110,9 +110,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   useEffect(() => {
   
-    if (optionChainDataForPosition.length > 0) {
-      setEditPositionRow(false);
-      setEditPositionRowNo("-1");
+    if (optionChainDataForPosition.length > 0) {     
       setOrderPosition((previousData) => {
         if (previousData !== undefined) {
           
