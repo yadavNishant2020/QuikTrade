@@ -109,7 +109,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [filterOrderPositionList, globlePositionChange]);
 
   useEffect(() => {
+  
     if (optionChainDataForPosition.length > 0) {
+      setEditPositionRow(false);
+      setEditPositionRowNo("-1");
       setOrderPosition((previousData) => {
         if (previousData !== undefined) {
           
@@ -137,7 +140,6 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
             position.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(defaultSaveedQty);
             position.newaddtotalqty=parseInt(data.newqty)*parseInt(defaultSaveedQty);
             position.exittotalqty=parseInt(data.exitqty)*parseInt(defaultSaveedQty);
-
             const matchingOptionFirstInStrick = optionChainDataForPosition.find((dataOrder) => dataOrder.instrumentToken === data.firstInInstrumentToken);
             if (matchingOptionFirstInStrick != null) {
               position.firstInltp = matchingOptionFirstInStrick.ltp;
@@ -151,18 +153,18 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 position.secondInltp=parseFloat(0).toFixed(2)
             }
 
-                   const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
-                   if(matchingOptionFirstOutStrick!=null){
-                    position.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
-                } else{
-                    position.firstOutltp=parseFloat(0).toFixed(2)
-                }
-                const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
-                if(matchingOptionSecondOutStrick!=null){
-                    position.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
-                } else{
-                    position.secondOutltp=parseFloat(0).toFixed(2)
-                }           
+            const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
+            if(matchingOptionFirstOutStrick!=null){
+                  position.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
+            } else{
+                  position.firstOutltp=parseFloat(0).toFixed(2)
+            }
+            const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
+            if(matchingOptionSecondOutStrick!=null){
+                 position.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
+            } else{
+                  position.secondOutltp=parseFloat(0).toFixed(2)
+            }           
 
             // Add similar logic for other properties here
           });
@@ -4259,7 +4261,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   <Input
                     className="form-control-alternative text-right"
                     id="input-postal-code"
-                    placeholder="Trailing"
+                    placeholder="Target"
                     type="number"
                     min="0"
                     name="globalTarget"
@@ -4296,7 +4298,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   <Input
                     className="form-control-alternative text-right"
                     id="input-postal-code"
-                    placeholder="TP"
+                    placeholder="Trail SL By"
                     type="number"
                     min="0"
                     name="globalTP"
