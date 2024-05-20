@@ -4510,7 +4510,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                     : parseFloat(dataInfo.unrealisedpnl) > 0
                                     ? "+" +
                                       Constant.CurrencyFormat(dataInfo.unrealisedpnl)
-                                    : Constant.CurrencyFormat(dataInfo.unrealisedpnl)}
+                                    : (Constant.CurrencyFormat(dataInfo.unrealisedpnl).includes('-')?Constant.CurrencyFormat(dataInfo.unrealisedpnl).replace('-', ''):Constant.CurrencyFormat(dataInfo.unrealisedpnl))}
                                 </td>
                                 <td
                                   className="text-right"
