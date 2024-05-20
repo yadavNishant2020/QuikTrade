@@ -487,8 +487,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                 side.toLowerCase()==='buy'?
                 (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
                 (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-                :parseFloat(chaindata.ltp));
-              
+                :parseFloat(chaindata.ltp));              
               var stoplosspoint=0;
               var targetpoint=0;
               var newStoplosspoint=0
@@ -597,13 +596,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                 const updatedLot = oldLot+(defaultLotSize===undefined?1:defaultLotSize)// Calculate the updated quantity
                 newData[indexOfBasket].bucketSliceQty=updatedLot
                 newData[indexOfBasket].updated = true; // Mark the item as updated to prevent multiple updates
-                
                 let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
                 var busketList=JSON.parse(CookiesConfig.getItemWithExpiry(basketName));
                 busketList[indexOfBasket].bucketSliceQty=updatedLot;
                 busketList[indexOfBasket].bucketLotTotalQty=updatedQty;                   
                 CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(busketList));
-                
                 return newData; // Return the updated data
             });
           }
