@@ -582,26 +582,38 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
               CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
           }else{
-            setBucketList((previousData) => {
-                // Check if the quantity has already been updated
-                if (previousData[indexOfBasket].updated) {
-                    previousData[indexOfBasket].updated = false;
-                    return previousData; // If already updated, return previous data without modification
-                }            
-                const newData = [...previousData]; // Create a copy of the previous data to avoid mutation
-                const oldQty = newData[indexOfBasket].bucketLotTotalQty; // Retrieve the old quantity from the previous data
-                const updatedQty = oldQty + (defaultShowQty === undefined ? chaindata.lotSize : defaultShowQty); // Calculate the updated quantity
-                newData[indexOfBasket].bucketLotTotalQty = updatedQty; // Update the quantity in the new data
-                const oldLot = newData[indexOfBasket].bucketSliceQty; 
-                const updatedLot = oldLot+(defaultLotSize===undefined?1:defaultLotSize)// Calculate the updated quantity
-                newData[indexOfBasket].bucketSliceQty=updatedLot
-                newData[indexOfBasket].updated = true; // Mark the item as updated to prevent multiple updates
-                let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;      
-                var busketList=JSON.parse(CookiesConfig.getItemWithExpiry(basketName));
-                busketList[indexOfBasket].bucketSliceQty=updatedLot;
-                busketList[indexOfBasket].bucketLotTotalQty=updatedQty;                   
-                CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(busketList));
-                return newData; // Return the updated data
+            setBucketList(previousData => {
+              const newData = previousData.map((item, index) => {
+                if (index !== indexOfBasket) return item;
+          
+                if (item.updated) {
+                  item.updated = false;
+                  return item;
+                }
+          
+                const updatedQty = item.bucketLotTotalQty + (defaultShowQty ?? chaindata.lotSize);
+                const updatedLot = item.bucketSliceQty + (defaultLotSize ?? 1);
+          
+                const updatedItem = {
+                  ...item,
+                  bucketLotTotalQty: updatedQty,
+                  bucketSliceQty: updatedLot,
+                  updated: true
+                };
+          
+                const basketName = `basketName_${globleSelectedTradingType}${globleSelectedClientInfo}`;
+                const busketList = JSON.parse(CookiesConfig.getItemWithExpiry(basketName)) || [];
+                busketList[index] = {
+                  ...busketList[index],
+                  bucketSliceQty: updatedLot,
+                  bucketLotTotalQty: updatedQty
+                };
+                CookiesConfig.setItemWithExpiry(basketName, JSON.stringify(busketList));
+          
+                return updatedItem;
+              });
+          
+              return newData;
             });
           }
           setEditBucketRow(false);
