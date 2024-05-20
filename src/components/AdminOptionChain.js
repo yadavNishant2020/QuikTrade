@@ -583,6 +583,11 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
           }else{
             setBucketList(previousData => {
+              let indexOfBasket=previousData.findIndex((data)=>data.baskettradingSymbol===chaindata.tradingSymbol
+                                &&  data.bucketProduct===(defaultProductName===undefined?'MIS': defaultProductName)
+                                &&  data.bucketOrderType===(defaultOrderType===undefined?'MKT': defaultOrderType)
+                                && data.bucketSide===side.toUpperCase())
+
               const newData = previousData.map((item, index) => {
                 if (index !== indexOfBasket) return item;
           
