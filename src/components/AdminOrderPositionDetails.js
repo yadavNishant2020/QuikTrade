@@ -4483,7 +4483,6 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                     {dataInfo.positionnetlot}
                                   </fieldset>
                                 </td>
-
                                 <td className="text-right">
                                   {parseFloat(dataInfo.positionavgprice) < 0
                                     ? Constant.CurrencyFormat(

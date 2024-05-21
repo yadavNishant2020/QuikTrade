@@ -594,18 +594,15 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                 if (item.updated) {
                   item.updated = false;
                   return item;
-                }
-          
+                }          
                 const updatedQty = item.bucketLotTotalQty + (defaultShowQty ?? chaindata.lotSize);
                 const updatedLot = item.bucketSliceQty + (defaultLotSize ?? 1);
-          
                 const updatedItem = {
                   ...item,
                   bucketLotTotalQty: updatedQty,
                   bucketSliceQty: updatedLot,
                   updated: true
-                };
-          
+                };          
                 const basketName = `basketName_${globleSelectedTradingType}${globleSelectedClientInfo}`;
                 const busketList = JSON.parse(CookiesConfig.getItemWithExpiry(basketName)) || [];
                 busketList[index] = {
