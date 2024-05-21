@@ -591,10 +591,10 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
               const newData = previousData.map((item, index) => {
                 if (index !== indexOfBasket) return item;
           
-                if (item.updated) {
-                  item.updated = false;
-                  return item;
-                }          
+                // if (item.updated) {
+                //   item.updated = false;
+                //   return item;
+                // }          
                 const updatedQty = item.bucketLotTotalQty + (defaultShowQty ?? chaindata.lotSize);
                 const updatedLot = item.bucketSliceQty + (defaultLotSize ?? 1);
                 const updatedItem = {
