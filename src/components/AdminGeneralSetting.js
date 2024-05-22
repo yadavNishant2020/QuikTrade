@@ -164,7 +164,7 @@ const AdminGeneralSetting = () => {
                                                                 type="number"
                                                                 min="1"  
                                                                 onChange={handleChange}
-                                                                value={createGeneralConfig.stoplosspoint}
+                                                                value={createGeneralConfig?.stoplosspoint}
                                                                 onKeyPress={(e) => {
                                                                   // Prevents non-numeric characters from being entered
                                                                   if (isNaN(Number(e.key))) {
@@ -196,7 +196,7 @@ const AdminGeneralSetting = () => {
                                                                 type="number"
                                                                 min="1"  
                                                                 onChange={handleChange}
-                                                                value={createGeneralConfig.targetpoint}
+                                                                value={createGeneralConfig?.targetpoint}
                                                                 onKeyPress={(e) => {
                                                                   // Prevents non-numeric characters from being entered
                                                                   if (isNaN(Number(e.key))) {
