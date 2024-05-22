@@ -107,7 +107,7 @@ const AdminGeneralSetting = () => {
                     const updatedConfigInformation = configInformation.map((config) => ({
                         ...config,
                         stoplosspoint: config.stoplosspoint.toString(),
-                        stoplosspoint: config.stoplosspoint.toString()
+                        targetpoint: config.targetpoint.toString()
                       }));
                     setCreateGeneralConfig(updatedConfigInformation[0])
                 }
