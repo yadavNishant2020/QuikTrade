@@ -312,89 +312,126 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
       defaultSliceQty,defaultLotSize,defaultQty)=>{
         if(switchState===false){          
           if(editBucketRow===false){
-            let basketPriceAmt= (
-              defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'? chaindata.ltp:
-                (parseFloat(defaultLMTPer)>0?
-                side.toLowerCase()==='buy'?
-                (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
-                (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
-                :parseFloat(chaindata.ltp));
-              var stoplosspoint=0;
-              var targetpoint=0;
-              var newStoplosspoint=0
-              var newTargetpoint=0;     
-              if(sessionStorage.getItem("generalConfig")!=null){        
-              var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
-                var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);   
-                if(settingData!=undefined){         
-                    if(settingData!==null){
-                      stoplosspoint=settingData.stoplosspoint;
-                      targetpoint=settingData.targetpoint;
-                      if (side.toLowerCase()==="sell"){
-                        newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
-                        newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
-                      }else{
-                        newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
-                        newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+            let indexOfBasket=bucketList.findIndex((data)=>data.baskettradingSymbol===chaindata.tradingSymbol
+            &&  data.bucketProduct===(defaultProductName===undefined?'MIS': defaultProductName)
+            &&  data.bucketOrderType===(defaultOrderType===undefined?'MKT': defaultOrderType)
+            && data.bucketSide===side.toUpperCase())
+            if(indexOfBasket===-1){
+                    let basketPriceAmt= (
+                      defaultOrderType===undefined?'MKT': defaultOrderType)==='MKT'? chaindata.ltp:
+                        (parseFloat(defaultLMTPer)>0?
+                        side.toLowerCase()==='buy'?
+                        (parseFloat(parseFloat(chaindata.ltp)+(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2)):
+                        (parseFloat(parseFloat(chaindata.ltp)-(parseFloat(chaindata.ltp)*parseFloat(defaultLMTPer)/100)).toFixed(2))
+                        :parseFloat(chaindata.ltp));
+                      var stoplosspoint=0;
+                      var targetpoint=0;
+                      var newStoplosspoint=0
+                      var newTargetpoint=0;     
+                      if(sessionStorage.getItem("generalConfig")!=null){        
+                      var dataSetting=JSON.parse(sessionStorage.getItem("generalConfig"));
+                        var settingData=dataSetting.find((data)=>data.instrumentname===chaindata.name);   
+                        if(settingData!=undefined){         
+                            if(settingData!==null){
+                              stoplosspoint=settingData.stoplosspoint;
+                              targetpoint=settingData.targetpoint;
+                              if (side.toLowerCase()==="sell"){
+                                newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)+parseFloat(stoplosspoint)).toFixed(2))
+                                newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)-parseFloat(targetpoint)).toFixed(2))
+                              }else{
+                                newStoplosspoint= (parseFloat(parseFloat(basketPriceAmt)-parseFloat(stoplosspoint)).toFixed(2))
+                                newTargetpoint=(parseFloat(parseFloat(basketPriceAmt)+parseFloat(targetpoint)).toFixed(2))
+                              }
+                            }
+                        }
                       }
-                    }
-                }
-              }
-            let newdata={
-              bucketSide:side.toUpperCase(),
-              bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
-              bucketStrike:chaindata.strikePrice,
-              bucketExpiry:expiryNewDate,
-              bucketType:(globleOptionChainType==='opt'? temptype:'FUT'),
-              bucketProduct:(defaultProductName===undefined?'MIS': defaultProductName),
-              bucketOrderType:(defaultOrderType===undefined?'MKT': defaultOrderType),
-              bucketSliceQty:(defaultLotSize===undefined?1:defaultLotSize),
-              bucketDefaultQty:(defaultQty===undefined?chaindata.lotSize:defaultQty),
-              bucketLotTotalQty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty),
-              bucketMaxQty:(defaultSliceQty===undefined?chaindata.volumeFreeze:defaultSliceQty),
-              bucketStickePrice:basketPriceAmt , 
-              bucketSL:newStoplosspoint.toString(),
-              bucketTarget:newTargetpoint.toString(),
-              bucketMargin:0,
-              instrumentToken:chaindata.instrumentToken,
-              exchangeToken:chaindata.exchangeToken,
-              bucketltp:chaindata.ltp,
-              basketFirstInInstrumentToken:(globleOptionChainType==='opt'?
-              newFirstInInstrumentToken.toString():""),
-              basketSecondInInstrumentToken:(globleOptionChainType==='opt'?
-              newSecondInInstrumentToken.toString():""),
-              basketFirstOutInstrumentToken:(globleOptionChainType==='opt'?
-              newFirstOutInstrumentToken.toString():""),
-              basketSecondOutInstrumentToken:(globleOptionChainType==='opt'?
-              newSecondOutInstrumentToken.toString():""),
-              basketFirstInStrike:(globleOptionChainType==='opt'?
-              newFirstInStrike.toString():""),
-              basketSecondInStrike:(globleOptionChainType==='opt'?
-              newSecondInStrike.toString():""),
-              basketFirstOutStrike:(globleOptionChainType==='opt'?
-              newFirstOutStrike.toString():""),
-              basketSecondOutStrike:(globleOptionChainType==='opt'?
-              newSecondOutStrike.toString():""),
-              basketFirstInExchangeToken:(globleOptionChainType==='opt'?
-              newFirstInExchangeToken.toString():""),
-              basketSecondInExchangeToken:(globleOptionChainType==='opt'?
-              newSecondInExchangeToken.toString():""),
-              basketFirstOutExchangeToken:(globleOptionChainType==='opt'?
-              newFirstOutExchangeToken.toString():""),
-              basketSecondOutExchangeToken:(globleOptionChainType==='opt'?
-              newSecondOutExchangeToken.toString() :""),
-              baskettradingSymbol:chaindata.tradingSymbol,
-              basketexchange:chaindata.exchange,
-              basketBrokerName:globleBrokerName,
-              basketTraderMode:globleSelectedTradingType,
-              basketClient: globleSelectedClientInfo
-            };
+                    let newdata={
+                      bucketSide:side.toUpperCase(),
+                      bucketSymbol:(globleOptionChainType==='opt'? globleSymbol: chaindata?.name+' '+(new Date(chaindata.expiryDate)).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()+' '+ chaindata?.instrumentType),
+                      bucketStrike:chaindata.strikePrice,
+                      bucketExpiry:expiryNewDate,
+                      bucketType:(globleOptionChainType==='opt'? temptype:'FUT'),
+                      bucketProduct:(defaultProductName===undefined?'MIS': defaultProductName),
+                      bucketOrderType:(defaultOrderType===undefined?'MKT': defaultOrderType),
+                      bucketSliceQty:(defaultLotSize===undefined?1:defaultLotSize),
+                      bucketDefaultQty:(defaultQty===undefined?chaindata.lotSize:defaultQty),
+                      bucketLotTotalQty:(defaultShowQty===undefined?chaindata.lotSize:defaultShowQty),
+                      bucketMaxQty:(defaultSliceQty===undefined?chaindata.volumeFreeze:defaultSliceQty),
+                      bucketStickePrice:basketPriceAmt , 
+                      bucketSL:newStoplosspoint.toString(),
+                      bucketTarget:newTargetpoint.toString(),
+                      bucketMargin:0,
+                      instrumentToken:chaindata.instrumentToken,
+                      exchangeToken:chaindata.exchangeToken,
+                      bucketltp:chaindata.ltp,
+                      basketFirstInInstrumentToken:(globleOptionChainType==='opt'?
+                      newFirstInInstrumentToken.toString():""),
+                      basketSecondInInstrumentToken:(globleOptionChainType==='opt'?
+                      newSecondInInstrumentToken.toString():""),
+                      basketFirstOutInstrumentToken:(globleOptionChainType==='opt'?
+                      newFirstOutInstrumentToken.toString():""),
+                      basketSecondOutInstrumentToken:(globleOptionChainType==='opt'?
+                      newSecondOutInstrumentToken.toString():""),
+                      basketFirstInStrike:(globleOptionChainType==='opt'?
+                      newFirstInStrike.toString():""),
+                      basketSecondInStrike:(globleOptionChainType==='opt'?
+                      newSecondInStrike.toString():""),
+                      basketFirstOutStrike:(globleOptionChainType==='opt'?
+                      newFirstOutStrike.toString():""),
+                      basketSecondOutStrike:(globleOptionChainType==='opt'?
+                      newSecondOutStrike.toString():""),
+                      basketFirstInExchangeToken:(globleOptionChainType==='opt'?
+                      newFirstInExchangeToken.toString():""),
+                      basketSecondInExchangeToken:(globleOptionChainType==='opt'?
+                      newSecondInExchangeToken.toString():""),
+                      basketFirstOutExchangeToken:(globleOptionChainType==='opt'?
+                      newFirstOutExchangeToken.toString():""),
+                      basketSecondOutExchangeToken:(globleOptionChainType==='opt'?
+                      newSecondOutExchangeToken.toString() :""),
+                      baskettradingSymbol:chaindata.tradingSymbol,
+                      basketexchange:chaindata.exchange,
+                      basketBrokerName:globleBrokerName,
+                      basketTraderMode:globleSelectedTradingType,
+                      basketClient: globleSelectedClientInfo
+                    };
+          
+                    const updatedList=[...bucketList,newdata];  
+                    let sortdata=sortBasketList(updatedList);         
+                    setBucketList(sortdata);   
+                    let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;       
+                    CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
+            }else{
+              setBucketList(previousData => {
+                let indexOfBasket=previousData.findIndex((data)=>data.baskettradingSymbol===chaindata.tradingSymbol
+                                  &&  data.bucketProduct===(defaultProductName===undefined?'MIS': defaultProductName)
+                                  &&  data.bucketOrderType===(defaultOrderType===undefined?'MKT': defaultOrderType)
+                                  && data.bucketSide===side.toUpperCase())
   
-            const updatedList=[...bucketList,newdata];  
-            let sortdata=sortBasketList(updatedList);         
-            setBucketList(sortdata);   
-            let basketName="basketName_"+globleSelectedTradingType+globleSelectedClientInfo;       
-            CookiesConfig.setItemWithExpiry(basketName,JSON.stringify(sortdata));
+                const newData = previousData.map((item, index) => {
+                  if (index !== indexOfBasket) return item;                  
+                  const updatedQty = item.bucketLotTotalQty + (defaultShowQty ?? chaindata.lotSize);
+                  const updatedLot = item.bucketSliceQty + (defaultLotSize ?? 1);
+                  const updatedItem = {
+                    ...item,
+                    bucketLotTotalQty: updatedQty,
+                    bucketSliceQty: updatedLot,
+                    updated: true
+                  };          
+                  const basketName = `basketName_${globleSelectedTradingType}${globleSelectedClientInfo}`;
+                  const busketList = JSON.parse(CookiesConfig.getItemWithExpiry(basketName)) || [];
+                  busketList[index] = {
+                    ...busketList[index],
+                    bucketSliceQty: updatedLot,
+                    bucketLotTotalQty: updatedQty
+                  };
+                  CookiesConfig.setItemWithExpiry(basketName, JSON.stringify(busketList));
+            
+                  return updatedItem;
+                });
+            
+                return newData;
+              });
+            }
             setEditBucketRow(false);
             setEditBucketRowNo('-1');
             //processBasketMargin(sortdata);
@@ -589,12 +626,7 @@ const AdminOptionChain = ({filterOptionChainList, height}) => {
                                 && data.bucketSide===side.toUpperCase())
 
               const newData = previousData.map((item, index) => {
-                if (index !== indexOfBasket) return item;
-          
-                // if (item.updated) {
-                //   item.updated = false;
-                //   return item;
-                // }          
+                if (index !== indexOfBasket) return item;                  
                 const updatedQty = item.bucketLotTotalQty + (defaultShowQty ?? chaindata.lotSize);
                 const updatedLot = item.bucketSliceQty + (defaultLotSize ?? 1);
                 const updatedItem = {
