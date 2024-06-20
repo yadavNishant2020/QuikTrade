@@ -21,8 +21,10 @@ const Login = () => {
       return params.get(name);
     };
     // Example: Get the value of the 'paramName' query string parameter     
-    const fnotraderUserid = getQueryStringValue('Fnotrader-Userid');     
-    const fnotraderSecret = getQueryStringValue('Fnotrader-Secret');    
+    // const fnotraderUserid = getQueryStringValue('Fnotrader-Userid');     
+    // const fnotraderSecret = getQueryStringValue('Fnotrader-Secret');    
+    const fnotraderUserid = 'FT8507';     
+    const fnotraderSecret = 'b768e14a-3738-45f9-9849-a40346a25cfe';   
     if(fnotraderUserid!==null && fnotraderSecret!==null){
       sessionStorage.setItem("fnotraderUserid",fnotraderUserid);
       sessionStorage.setItem("fnotraderSecret",fnotraderSecret);  

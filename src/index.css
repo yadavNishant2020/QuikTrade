@@ -714,7 +714,7 @@ fieldset.border{
 
 .optionchaindashboard,.positiondashboardlist,.orderdashboardlist{   
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .optionchaindashboard .firstDiv,.positiondashboardlist .firstDiv,.orderdashboardlist .firstDiv{
@@ -952,10 +952,10 @@ fieldset.border{
     height: 31% !important;    
   }
    */
-  .orderdashboardlist{
+  /* .orderdashboardlist{
     height: 20% !important;
     
-  }
+  } */
 
   .orderposition  .table-container {
     height : 120px;
@@ -992,6 +992,22 @@ fieldset.border{
   }
 
 }
+
+.button-no-style {
+  margin: 0 5px;
+  background: none;
+  border: none;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.button-no-style:hover {
+  cursor: pointer !important;
+  letter-spacing: 0px;
+  box-shadow: none;
+  transform: none;
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -1117,10 +1133,10 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     font-size: 11px !important;
   }  
 
-  .orderdashboardlist{
+  /* .orderdashboardlist{
     height: 25% !important;  
     
-  }
+  } */
 
   .completeorderlist .table-container {
     height : 185px;
