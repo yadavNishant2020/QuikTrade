@@ -39,6 +39,7 @@ import { CookiesConfig } from "../Config/CookiesConfig.js";
 import AdminClosedOrder from "../components/AdminClosedOrder.js";
 import AdminLogs from "../components/AdminLogs.js";
 import AdminFunds from "../components/AdminFunds.js";
+import SplitPane from "react-split-pane";
 
 const TreadingDashboard = () => {
   const divRef = useRef(null);
@@ -65,9 +66,6 @@ const TreadingDashboard = () => {
   const [sideMenuRMSTroggle, setSideMenuRMSTroggle] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
-  };
   const centrifugeInstanceNew = new Centrifuge(
     "wss://stock-api2.fnotrader.com/connection/websocket"
   );
@@ -152,6 +150,7 @@ const TreadingDashboard = () => {
       );
       // Connect to the server
       newCentrifugeInstance.connect();
+      console.log(newCentrifugeInstance);
 
       // Save the new instance to state
       setCentrifugeInstance(newCentrifugeInstance);
@@ -664,7 +663,7 @@ const TreadingDashboard = () => {
       <Container fluid style={{}}>
         <div style={{ width: "100%", height: "100%" }}>
           {globalProcessRMS && <LoaderComponent />}
-
+          
           <div
             className={
               sideMenuTroggle
@@ -677,6 +676,14 @@ const TreadingDashboard = () => {
             }
             ref={divRef}
           >
+            <SplitPane
+                split="horizontal"
+                defaultSize={300}
+                maxSize={300}
+                minSize={150}
+                style={{ position: "relative", zIndex:"99", overflowY: "auto", scrollbarWidth:"none"}}
+                primary="first"
+              >
             <Row
               className="dashboard mt-1 optionchaindashboard"
               id="_optionchaindashboard_id"
@@ -689,7 +696,6 @@ const TreadingDashboard = () => {
                     <Tab>Strangle</Tab>
                     <Tab>Rules</Tab>
                   </TabList>
-
                   <TabPanel>
                     <AdminOptionChain
                       filterOptionChainList={filterOptionChainList}
@@ -709,12 +715,13 @@ const TreadingDashboard = () => {
                     />
                   </TabPanel>
 
-                  <TabPanel>
+                  <TabPanel style={{position: "relative"}}>
                     <AdminRule height={height} />
                   </TabPanel>
                 </Tabs>
               </Col>
             </Row>
+
             <Row className="dashboard mt-1 positiondashboardlist">
               <Col xl="12">
                 <AdminOrderPositionDetails
@@ -722,8 +729,6 @@ const TreadingDashboard = () => {
                   height={height}
                 />
               </Col>
-            </Row>
-            <Row className="dashboard mt-1 orderdashboardlist">
               <Col xl="6">
                 <Tabs style={{ backgroundColor: "#FFFFFF" }}>
                   <TabList>
@@ -766,19 +771,13 @@ const TreadingDashboard = () => {
                     >
                       <Button
                         onClick={() => setIsMinimized(false)}
-                        disabled={!isMinimized}
                         className="button-no-style"
                       >
                         <i className="fas fa-window-maximize"></i>
                       </Button>
                       <Button
                         onClick={() => setIsMinimized(true)}
-                        disabled={isMinimized}
-                        style={{
-                          marginRight: "5px",
-                          backgroundColor: "white",
-                          border: "0px",
-                        }}
+                        className="button-no-style"
                       >
                         <i className="fas fa-window-minimize"></i>
                       </Button>
@@ -799,6 +798,11 @@ const TreadingDashboard = () => {
                   )}
                 </Tabs>
               </Col>
+            </Row>
+            </SplitPane>
+
+            <Row className="dashboard mt-1 orderdashboardlist">
+     
             </Row>
             <AdminFooter />
           </div>

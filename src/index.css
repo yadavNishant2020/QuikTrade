@@ -100,6 +100,7 @@ label {
   display: none !important;
 }
 
+
 .optionChain .btn,.straddle .btn, .strangle .btn{
   padding: 0.2rem 0.3rem !important;
   font-size: 9px !important;
@@ -710,8 +711,6 @@ fieldset.border{
   background-color: #8888887d;
   color: #000000;
 }
-
-
 .optionchaindashboard,.positiondashboardlist,.orderdashboardlist{   
   display: flex;
   /* flex-direction: column; */
@@ -878,6 +877,10 @@ fieldset.border{
     height: 25px;
     line-height: 14px;
   }
+  .chainSplitPane{
+    flex-direction: column !important;
+  }
+ 
 }
 
 /* Styles for devices with a minimum width of 769 pixels (typical for tablets) up to 1024 pixels */
@@ -890,7 +893,9 @@ fieldset.border{
     font-size: 10px  !important;
     padding: 0.2rem !important;
   }
-
+  .chainSplitPane{
+    flex-direction: column !important;
+  }
  
   
 }
@@ -902,6 +907,7 @@ fieldset.border{
     height: 42% !important; 
      
   } */
+  
   .optionChain .table-container {
     height : 170px;
     overflow-y: auto;
@@ -948,10 +954,10 @@ fieldset.border{
     padding: 0.2rem !important;
   }
 
-  /* .positiondashboardlist{
+   .positiondashboardlist{
     height: 31% !important;    
-  }
-   */
+  } 
+   
   /* .orderdashboardlist{
     height: 20% !important;
     
@@ -1077,6 +1083,56 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 .table-container {
   overflow-y: auto;
 }
+
+.Resizer {
+  background: #000;
+  opacity: 0.2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+ 
+.Resizer:hover {
+  -webkit-transition: all 2s ease;
+  transition: all 2s ease;
+}
+ 
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%;
+}
+ 
+.Resizer.horizontal:hover {
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+}
+ 
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+ 
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+.Resizer.disabled {
+  cursor: not-allowed;
+}
+.Resizer.disabled:hover {
+  border-color: transparent;
+}
 /* Styles for devices with a minimum width of 1441 pixels (typical for desktops) */
 @media only screen and (min-width: 1441px) {
   /* Styles for extra-large screens (e.g., desktops) */
@@ -1169,6 +1225,9 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 
 }
 
+/* .Pane2 {
+  height: 20vh !important;
+} */
 
 
 .css-1ldvbk6-control {
@@ -1187,8 +1246,10 @@ box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 5px;
 }
  .orderposition .table-container {
-  height: 285px !important;
-  overflow-y: auto;
+  /* height: 285px !important; */
+  min-height:150px !important;
+  max-height:300px !important;
+  /* overflow-y: auto; */
  }
 .optionchaindashboard{
   margin-bottom: 5px;
