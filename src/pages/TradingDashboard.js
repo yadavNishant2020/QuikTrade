@@ -12,11 +12,10 @@ import AdminOrderFooter from "../components/AdminOrderFooter.js";
 import AdminRule from "../components/AdminRule.js";
 import AdminCompletedOrder from "../components/AdminCompletedOrder.js";
 import AdminTrades from "../components/AdminTrades.js";
-import { ZerodaAPI } from "../api/ZerodaAPI";
+import { ZerodaAPI } from "../api/ZerodaAPI.js";
 import Centrifuge from "centrifuge";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import LoaderComponent from "../components/LoaderComponent.js";
-
 import {
   Container,
   Row,
@@ -40,6 +39,8 @@ import AdminClosedOrder from "../components/AdminClosedOrder.js";
 import AdminLogs from "../components/AdminLogs.js";
 import AdminFunds from "../components/AdminFunds.js";
 import SplitPane from "react-split-pane";
+import ModalComponent from "../components/modal.js";
+
 
 const TreadingDashboard = () => {
   const divRef = useRef(null);
@@ -65,6 +66,7 @@ const TreadingDashboard = () => {
   const [sideMenuSettingTroggle, setSideMenuSettingTroggle] = useState(false);
   const [sideMenuRMSTroggle, setSideMenuRMSTroggle] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [displayPopUp, setDisplayPopUp] = useState(true);
 
   const centrifugeInstanceNew = new Centrifuge(
     "wss://stock-api2.fnotrader.com/connection/websocket"
@@ -657,13 +659,40 @@ const TreadingDashboard = () => {
     setSideMenuTroggle(false);
     setSideMenuRMSTroggle((sideMenuRMSTroggle) => !sideMenuRMSTroggle);
   };
+  
+  // when pop-up is closed this function triggers
+  const closePopUp = () => {
+    // setting key "seenPopUp" with value true into localStorage
+    localStorage.setItem("seenPopUp", true);
+    // setting state to false to not display pop-up
+    setDisplayPopUp(false);
+  };
+
+  const modalContent = [
+    "9 out of 10 individual traders in Equity, Futures & Options segment incurred net losses.",
+    "On an average, loss makers registered net trading loss close to ₹ 50,000.",
+    "Over and above the net trading losses incurred, loss makers expended an additional 28% of net trading losses at transaction costs.",
+    "Those making net trading profits, incurred between 15% to 50% of such profits as transaction cost."
+  ];
+
+  const additionalInfo = "SEBI study dated January 25, 2023, on “Analysis of Profit and Loss of Individual Traders dealing in equity Futures and Options (F&O) Segment”, wherein Aggregate Level findings are based on annual Profit/Loss incurred by individual traders in equity F&O during FY 2021-22.";
 
   return (
     <>
+      <div>
+        {displayPopUp && (
+        <ModalComponent
+          open={displayPopUp}
+          onClose={closePopUp}
+          title="Risk Disclosures on Derivatives"
+          content={modalContent}
+          additionalInfo={additionalInfo}
+        />
+      )}
+      </div>
       <Container fluid style={{}}>
         <div style={{ width: "100%", height: "100%" }}>
           {globalProcessRMS && <LoaderComponent />}
-          
           <div
             className={
               sideMenuTroggle
@@ -677,133 +706,136 @@ const TreadingDashboard = () => {
             ref={divRef}
           >
             <SplitPane
-                split="horizontal"
-                defaultSize={300}
-                maxSize={300}
-                minSize={150}
-                style={{ position: "relative", zIndex:"99", overflowY: "auto", scrollbarWidth:"none"}}
-                primary="first"
-              >
-            <Row
-              className="dashboard mt-1 optionchaindashboard"
-              id="_optionchaindashboard_id"
+              split="horizontal"
+              defaultSize={300}
+              maxSize={300}
+              minSize={150}
+              style={{
+                position: "relative",
+                zIndex: "99",
+                overflowY: "auto",
+                scrollbarWidth: "none",
+              }}
+              primary="first"
             >
-              <Col xl="12" className="firstDiv">
-                <Tabs style={{ backgroundColor: "#FFFFFF" }}>
-                  <TabList>
-                    <Tab>Basket</Tab>
-                    <Tab>Straddle</Tab>
-                    <Tab>Strangle</Tab>
-                    <Tab>Rules</Tab>
-                  </TabList>
-                  <TabPanel>
-                    <AdminOptionChain
-                      filterOptionChainList={filterOptionChainList}
-                      height={height}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <AdminStraddle
-                      filterOptionChainList={filterOptionChainList}
-                      height={height}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <AdminStrangle
-                      filterOptionChainList={filterOptionChainList}
-                      height={height}
-                    />
-                  </TabPanel>
+              <Row
+                className="dashboard mt-1 optionchaindashboard"
+                id="_optionchaindashboard_id"
+              >
+                <Col xl="12" className="firstDiv">
+                  <Tabs style={{ backgroundColor: "#FFFFFF" }}>
+                    <TabList>
+                      <Tab>Basket</Tab>
+                      <Tab>Straddle</Tab>
+                      <Tab>Strangle</Tab>
+                      <Tab>Rules</Tab>
+                    </TabList>
+                    <TabPanel>
+                      <AdminOptionChain
+                        filterOptionChainList={filterOptionChainList}
+                        height={height}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <AdminStraddle
+                        filterOptionChainList={filterOptionChainList}
+                        height={height}
+                      />
+                    </TabPanel>
+                    <TabPanel>
+                      <AdminStrangle
+                        filterOptionChainList={filterOptionChainList}
+                        height={height}
+                      />
+                    </TabPanel>
 
-                  <TabPanel style={{position: "relative"}}>
-                    <AdminRule height={height} />
-                  </TabPanel>
-                </Tabs>
-              </Col>
-            </Row>
+                    <TabPanel style={{ position: "relative" }}>
+                      <AdminRule height={height} />
+                    </TabPanel>
+                  </Tabs>
+                </Col>
+              </Row>
 
-            <Row className="dashboard mt-1 positiondashboardlist">
-              <Col xl="12">
-                <AdminOrderPositionDetails
-                  filterOrderPositionList={filterOrderPositionList}
-                  height={height}
-                />
-              </Col>
-              <Col xl="6">
-                <Tabs style={{ backgroundColor: "#FFFFFF" }}>
-                  <TabList>
-                    <Tab>Orders</Tab>
-                    <Tab>Trades</Tab>
-                  </TabList>
-                  {!isMinimized && (
-                    <>
-                      <TabPanel>
-                        <AdminCompletedOrder />
-                      </TabPanel>
-                      <TabPanel>
-                        <AdminTrades />
-                      </TabPanel>
-                    </>
-                  )}
-                </Tabs>
-              </Col>
-              <Col xl="6">
-                <Tabs style={{ backgroundColor: "#FFFFFF" }}>
-                  <TabList
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div>
-                      <Tab>CLOSED POSITION</Tab>
-                      <Tab>LOGS</Tab>
-                      <Tab>FUNDS</Tab>
-                    </div>
-
-                    <div
+              <Row className="dashboard mt-1 positiondashboardlist">
+                <Col xl="12">
+                  <AdminOrderPositionDetails
+                    filterOrderPositionList={filterOrderPositionList}
+                    height={height}
+                  />
+                </Col>
+                <Col xl="6">
+                  <Tabs style={{ backgroundColor: "#FFFFFF" }}>
+                    <TabList>
+                      <Tab>Orders</Tab>
+                      <Tab>Trades</Tab>
+                    </TabList>
+                    {!isMinimized && (
+                      <>
+                        <TabPanel>
+                          <AdminCompletedOrder />
+                        </TabPanel>
+                        <TabPanel>
+                          <AdminTrades />
+                        </TabPanel>
+                      </>
+                    )}
+                  </Tabs>
+                </Col>
+                <Col xl="6">
+                  <Tabs style={{ backgroundColor: "#FFFFFF" }}>
+                    <TabList
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        padding: "1px",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <Button
-                        onClick={() => setIsMinimized(false)}
-                        className="button-no-style"
+                      <div>
+                        <Tab>CLOSED POSITION</Tab>
+                        <Tab>LOGS</Tab>
+                        <Tab>FUNDS</Tab>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          padding: "1px",
+                        }}
                       >
-                        <i className="fas fa-window-maximize"></i>
-                      </Button>
-                      <Button
-                        onClick={() => setIsMinimized(true)}
-                        className="button-no-style"
-                      >
-                        <i className="fas fa-window-minimize"></i>
-                      </Button>
-                    </div>
-                  </TabList>
-                  {!isMinimized && (
-                    <>
-                      <TabPanel>
-                        <AdminClosedOrder />
-                      </TabPanel>
-                      <TabPanel>
-                        <AdminLogs />
-                      </TabPanel>
-                      <TabPanel>
-                        <AdminFunds />
-                      </TabPanel>
-                    </>
-                  )}
-                </Tabs>
-              </Col>
-            </Row>
+                        <Button
+                          onClick={() => setIsMinimized(false)}
+                          className="button-no-style"
+                        >
+                          <i className="fas fa-window-maximize"></i>
+                        </Button>
+                        <Button
+                          onClick={() => setIsMinimized(true)}
+                          className="button-no-style"
+                        >
+                          <i className="fas fa-window-minimize"></i>
+                        </Button>
+                      </div>
+                    </TabList>
+                    {!isMinimized && (
+                      <>
+                        <TabPanel>
+                          <AdminClosedOrder />
+                        </TabPanel>
+                        <TabPanel>
+                          <AdminLogs />
+                        </TabPanel>
+                        <TabPanel>
+                          <AdminFunds />
+                        </TabPanel>
+                      </>
+                    )}
+                  </Tabs>
+                </Col>
+              </Row>
             </SplitPane>
 
-            <Row className="dashboard mt-1 orderdashboardlist">
-     
-            </Row>
+            <Row className="dashboard mt-1 orderdashboardlist"></Row>
             <AdminFooter />
           </div>
           <div className={sideMenuTroggle ? "sidepanel" : "hide sidepanel"}>

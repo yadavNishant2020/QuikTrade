@@ -37,13 +37,14 @@ const AuthLogin = () => {
              CookiesConfig.setCookie("Fnotrader-Userid",fnotraderUserid);
              CookiesConfig.setCookie("User-ActiveSubscription",data.activeSubscription);
              CookiesConfig.setCookie("User-BrokerLoggedIn",data.brokerLoggedIn);
-             alertify.alert(
-               'Information',
-               'Login successfully.',
-               () => {
-                 debugger;
-                 getexchangeholidays();                
-               });
+            //  alertify.alert(
+            //    'Information',
+            //    'Login successfully.',
+            //    () => {
+            //      debugger;
+            //      getexchangeholidays();                
+            //    });
+               window.open("/admin/dashboard", '_self');
            }
        }else{
          alertify.alert(
