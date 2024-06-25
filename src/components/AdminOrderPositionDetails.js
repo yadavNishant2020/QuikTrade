@@ -88,8 +88,40 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const [centrifugePositionInstance, setCentrifugePositionInstance] = useState(null);
   const [editPositionRow, setEditPositionRow] = useState(false);
   const [editPositionRowNo, setEditPositionRowNo] = useState(0);
+  const [selectAll, setSelectAll] = useState(false);
+
   //const positionCentrifugeInstance = new Centrifuge('wss://stock-api2.fnotrader.com/connection/websocket');
 
+  const handleCheckboxClick = (positionId, index) => {
+    setOrderPosition((prevRowData) => {
+      const updatedTempOrderPosition = prevRowData.map((position, i) => {
+        if (i === index) {
+          return {
+            ...position,
+            checkPositionRow: !position.checkPositionRow,
+          };
+        }
+        return position;
+      });
+
+      // Check if all rows are selected after the click
+      const allChecked = updatedTempOrderPosition.every(position => position.checkPositionRow);
+      setSelectAll(allChecked);
+
+      return updatedTempOrderPosition;
+    });
+  };
+
+  const handleSelectAllClick = () => {
+    setOrderPosition((prevRowData) => {
+      const updatedTempOrderPosition = prevRowData.map((position) => ({
+        ...position,
+        checkPositionRow: !selectAll,
+      }));
+      return updatedTempOrderPosition;
+    });
+    setSelectAll(!selectAll);
+  }
   const handleSLEdit = () => {
     setSLEdit((slEdit) => !slEdit);
   };
@@ -4112,21 +4144,21 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     }
   };
 
-  const handleclieckevent=(positionid,index)=>{
-    setOrderPosition((prevRowData) => {
-      const updatedTempOrderPosition = prevRowData.map((position, i) => {
-        if (i === index) {          
-          return {
-            ...position,
-            checkPositionRow: !position.checkPositionRow,
-          };
-        }
-        return position;
-      });
-      return updatedTempOrderPosition;
-    });
+  // const handleclieckevent=(positionid,index)=>{
+  //   setOrderPosition((prevRowData) => {
+  //     const updatedTempOrderPosition = prevRowData.map((position, i) => {
+  //       if (i === index) {          
+  //         return {
+  //           ...position,
+  //           checkPositionRow: !position.checkPositionRow,
+  //         };
+  //       }
+  //       return position;
+  //     });
+  //     return updatedTempOrderPosition;
+  //   });
 
-  }
+  // }
 
   useEffect(() => {    
     if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {        
@@ -4369,7 +4401,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   <thead className="thead-light">
                     <tr className="text-center">
                       <th scope="col" style={{width:"3%"}}>
-
+                      <input 
+                                    type="checkbox" 
+                                    
+                                    checked={selectAll}
+                                    onChange={handleSelectAllClick}
+                                  />
                       </th>
                       <th scope="col" style={{ width: "3%" }}>
                         Side
@@ -4426,8 +4463,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                                 <td>
                                 <input 
                                     type="checkbox" 
-                                    checked={dataInfo.checkPositionRow} 
-                                    onClick={() => handleclieckevent(dataInfo.positionid,index)} 
+                                    checked={dataInfo.checkPositionRow}
+                                    onClick={() => handleCheckboxClick(dataInfo.positionid, index)}
+                                    // checked={dataInfo.checkPositionRow} 
+                                    // onClick={() => handleclieckevent(dataInfo.positionid,index)} 
                                   />
                                 </td>
                                 <td className="text-center">

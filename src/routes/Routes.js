@@ -1,15 +1,14 @@
 import React from "react";
 import WebSocketComponent from "../components/WebSocketComponent.js";
-import TreadingDashboard from "../pages/TreadingDashboard.js";
+import TradingDashboard from "../pages/TradingDashboard.js";
 import Login from "../pages/Login.js";
 import AuthLogin from "../pages/AuthLogin.js";
 import UserProfile from "../pages/UserProfile.js";
 
 
 const adminRoutes = [     
-    { path: "/dashboard", component: <TreadingDashboard /> ,layout: "/Admin"},  
+    { path: "/dashboard", component: <TradingDashboard /> ,layout: "/Admin"},  
     { path: "/userprofile", component: <UserProfile /> ,layout: "/Admin"},  
-          
   ];
 
 
