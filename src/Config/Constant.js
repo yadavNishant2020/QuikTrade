@@ -1,37 +1,37 @@
 export const Constant = {
-    ConvertShortDate : (datestring) => {
+    ConvertShortDate: (datestring) => {
         if (datestring) {
-        const dateObject = new Date(datestring);
-        const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(dateObject);
-        const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObject);
-        const formattedDate = `${day} ${month}`;
-        return formattedDate;
-        }else{
+            const dateObject = new Date(datestring);
+            const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(dateObject);
+            const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(dateObject);
+            const formattedDate = `${day} ${month}`;
+            return formattedDate;
+        } else {
             return false;
         }
-    },CurrencyFormat:(num)=>{          
-        if(num!=undefined)
-            if(num !=null){
-                    if(num==='NaN'){
-                        return (0).toLocaleString('en-IN');
-                    }else{                 
-                        //const floatValue = (num / 100).toFixed(2)
-                    return   (num).toLocaleString('en-IN',{
+    }, CurrencyFormat: (num) => {
+        if (num != undefined)
+            if (num != null) {
+                if (num === 'NaN') {
+                    return (0).toLocaleString('en-IN');
+                } else {
+                    //const floatValue = (num / 100).toFixed(2)
+                    return (num).toLocaleString('en-IN', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
-                      });
-                    }
-            }else{
+                    });
+                }
+            } else {
                 return (0).toFixed(2).toLocaleString('en-IN');
             }
-        else    
+        else
             return (0).toFixed(2).toLocaleString('en-IN');
-     },GetNewStrike:(ordersymbol,currentString,orderType,strikePriceDiff)=>{        
-        let strikeDiff=parseInt(strikePriceDiff);
-        let newFirstInStrike=0;
-        let newSecondInStrike=0;
-        let newFirstOutStrike=0;
-        let newSecondOutStrike=0;
+    }, GetNewStrike: (ordersymbol, currentString, orderType, strikePriceDiff) => {
+        let strikeDiff = parseInt(strikePriceDiff);
+        let newFirstInStrike = 0;
+        let newSecondInStrike = 0;
+        let newFirstOutStrike = 0;
+        let newSecondOutStrike = 0;
         // if(ordersymbol==="NIFTY"){
         //         strikeDiff=50;
         // }else  if(ordersymbol==="BANKNIFTY"){
@@ -43,57 +43,57 @@ export const Constant = {
         // } else if(ordersymbol==="MIDCPNIFTY"){
         //         strikeDiff=25;
         // }
-        if(orderType==='CE'){
-            newFirstInStrike=parseInt(currentString)-strikeDiff;
-            newSecondInStrike=parseInt(currentString)-(2*strikeDiff);
-            newFirstOutStrike=parseInt(currentString)+strikeDiff;
-            newSecondOutStrike=parseInt(currentString)+(2*strikeDiff);
-        }else{
-            newFirstOutStrike=parseInt(currentString)-strikeDiff;
-            newSecondOutStrike=parseInt(currentString)-(2*strikeDiff);
-            newFirstInStrike=parseInt(currentString)+strikeDiff;
-            newSecondInStrike=parseInt(currentString)+(2*strikeDiff);
+        if (orderType === 'CE') {
+            newFirstInStrike = parseInt(currentString) - strikeDiff;
+            newSecondInStrike = parseInt(currentString) - (2 * strikeDiff);
+            newFirstOutStrike = parseInt(currentString) + strikeDiff;
+            newSecondOutStrike = parseInt(currentString) + (2 * strikeDiff);
+        } else {
+            newFirstOutStrike = parseInt(currentString) - strikeDiff;
+            newSecondOutStrike = parseInt(currentString) - (2 * strikeDiff);
+            newFirstInStrike = parseInt(currentString) + strikeDiff;
+            newSecondInStrike = parseInt(currentString) + (2 * strikeDiff);
         }
-        let data={};
-        data["newFirstInStrike"]=newFirstInStrike;
-        data["newSecondInStrike"]=newSecondInStrike;
-        data["newFirstOutStrike"]=newFirstOutStrike;
-        data["newSecondOutStrike"]=newSecondOutStrike;
+        let data = {};
+        data["newFirstInStrike"] = newFirstInStrike;
+        data["newSecondInStrike"] = newSecondInStrike;
+        data["newFirstOutStrike"] = newFirstOutStrike;
+        data["newSecondOutStrike"] = newSecondOutStrike;
         return data;
 
 
-},GetStrikeToken:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{
-    debugger;
-    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
-                            && dataInfo.expiryDate===orderexpiry
-                            && dataInfo.strikePrice===currentStrikePrice.toString()
-                            && dataInfo.instrumentType===orderType)
-    return filterData?.instrumentToken;
+    }, GetStrikeToken: (data, ordersymbol, orderexpiry, currentStrikePrice, orderType) => {
 
-},GetStrikeExchangeToken:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{     
-    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
-                            && dataInfo.expiryDate===orderexpiry
-                            && dataInfo.strikePrice===currentStrikePrice.toString()
-                            && dataInfo.instrumentType===orderType)
-    return filterData?.exchangeToken;
+        let filterData = data.find((dataInfo) => dataInfo.name === ordersymbol
+            && dataInfo.expiryDate === orderexpiry
+            && dataInfo.strikePrice === currentStrikePrice.toString()
+            && dataInfo.instrumentType === orderType)
+        return filterData?.instrumentToken;
 
-},GetTradaingSymbol:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{
-    debugger;
-    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
-                            && dataInfo.expiryDate===orderexpiry
-                            && dataInfo.strikePrice===currentStrikePrice.toString()
-                            && dataInfo.instrumentType===orderType)
-    return filterData?.tradingSymbol;
+    }, GetStrikeExchangeToken: (data, ordersymbol, orderexpiry, currentStrikePrice, orderType) => {
+        let filterData = data.find((dataInfo) => dataInfo.name === ordersymbol
+            && dataInfo.expiryDate === orderexpiry
+            && dataInfo.strikePrice === currentStrikePrice.toString()
+            && dataInfo.instrumentType === orderType)
+        return filterData?.exchangeToken;
 
-},GetStrikeExchange:(data,ordersymbol,orderexpiry,currentStrikePrice,orderType)=>{
-    debugger;
-    let filterData=data.find((dataInfo)=>dataInfo.name===ordersymbol 
-                            && dataInfo.expiryDate===orderexpiry
-                            && dataInfo.strikePrice===currentStrikePrice.toString()
-                            && dataInfo.instrumentType===orderType)
-    return filterData?.exchange;
+    }, GetTradaingSymbol: (data, ordersymbol, orderexpiry, currentStrikePrice, orderType) => {
 
-}
+        let filterData = data.find((dataInfo) => dataInfo.name === ordersymbol
+            && dataInfo.expiryDate === orderexpiry
+            && dataInfo.strikePrice === currentStrikePrice.toString()
+            && dataInfo.instrumentType === orderType)
+        return filterData?.tradingSymbol;
 
-      
+    }, GetStrikeExchange: (data, ordersymbol, orderexpiry, currentStrikePrice, orderType) => {
+
+        let filterData = data.find((dataInfo) => dataInfo.name === ordersymbol
+            && dataInfo.expiryDate === orderexpiry
+            && dataInfo.strikePrice === currentStrikePrice.toString()
+            && dataInfo.instrumentType === orderType)
+        return filterData?.exchange;
+
+    }
+
+
 }
