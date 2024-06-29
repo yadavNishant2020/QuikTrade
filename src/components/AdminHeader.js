@@ -8,8 +8,8 @@ import Moment from "moment";
 import Centrifuge from "centrifuge";
 import { Container, DropdownMenu, DropdownItem, Row, Col } from "reactstrap";
 import { useContext } from "react";
-import {  PostContext } from "../PostProvider.js";
-import { PaperTradingAPI } from "../api/PaperTradingAPI"; 
+import { PostContext } from "../PostProvider.js";
+import { PaperTradingAPI } from "../api/PaperTradingAPI";
 import alertify from "alertifyjs";
 import { Nav, UncontrolledDropdown, DropdownToggle } from "reactstrap";
 import StaticPopup from "./Static-Popup.js";
@@ -33,6 +33,7 @@ const AdminHeader = () => {
   const [futureLastAmt, setFutureLastAmt] = useState(0);
   const {
     updateGlobleSymbol,
+    updateGlobleOptionChainList,
     updateGlobleExpityValue,
     updateGlobleCurrentStockIndex,
     updateGlobleCurrentStockIndexFuture,
@@ -60,8 +61,8 @@ const AdminHeader = () => {
   ];
 
   useEffect(() => {
-    if (globleBrokerClientList != null) {      
-      if (globleBrokerClientList.length > 0) {         
+    if (globleBrokerClientList != null) {
+      if (globleBrokerClientList.length > 0) {
         let brokerName = [];
         let clientList = [];
         globleBrokerClientList.map((dataClient) => {
@@ -77,26 +78,26 @@ const AdminHeader = () => {
           }
         });
         setOptionsBroker(brokerName);
-        if(sessionStorage.getItem("brokername") !== null && sessionStorage.getItem("brokername")!==""){         
-          let currentBrokerName=sessionStorage.getItem("brokername");
-          var currentBrokerList=brokerName.find((data)=>data.value===currentBrokerName);          
-          setBrokerSelect(currentBrokerList); 
-          updateGlobleBrokerName(currentBrokerName);          
-        }else{
-            if (brokerSelect === "") {
-              setBrokerSelect(brokerName[0]);           
-              let indexClient = globleBrokerClientList.findIndex(
-                (dataClient) => dataClient.userName === brokerName[0].value
-              );
-              updateGlobleBrokerName(brokerName[0].value);
-              sessionStorage.setItem("brokername", brokerName[0].value);
-            }
+        if (sessionStorage.getItem("brokername") !== null && sessionStorage.getItem("brokername") !== "") {
+          let currentBrokerName = sessionStorage.getItem("brokername");
+          var currentBrokerList = brokerName.find((data) => data.value === currentBrokerName);
+          setBrokerSelect(currentBrokerList);
+          updateGlobleBrokerName(currentBrokerName);
+        } else {
+          if (brokerSelect === "") {
+            setBrokerSelect(brokerName[0]);
+            let indexClient = globleBrokerClientList.findIndex(
+              (dataClient) => dataClient.userName === brokerName[0].value
+            );
+            updateGlobleBrokerName(brokerName[0].value);
+            sessionStorage.setItem("brokername", brokerName[0].value);
+          }
         }
         sessionStorage.setItem(
           "apiSecret",
           globleBrokerClientList[0].apiKey +
-            ":" +
-            globleBrokerClientList[0].apiToken
+          ":" +
+          globleBrokerClientList[0].apiToken
         );
         if (brokerName.length > 0) {
           const firstBrokerNameValue = sessionStorage.getItem("brokername"); // Assuming brokerName[0].value exists
@@ -113,16 +114,16 @@ const AdminHeader = () => {
           clientList = []; // Provide a default value if brokerName is empty
         }
         setOptionsClient(clientList);
-        if(sessionStorage.getItem("clienttoken") !== null && sessionStorage.getItem("clienttoken")!==""){
+        if (sessionStorage.getItem("clienttoken") !== null && sessionStorage.getItem("clienttoken") !== "") {
           setClientSelect(clientList[0]);
           updateGlobleSelectedClientInfo(sessionStorage.getItem("clienttoken"));
-        }else{
+        } else {
           if (clientSelect === "") {
             setClientSelect(clientList[0]);
             updateGlobleSelectedClientInfo(clientList[0].value);
             sessionStorage.setItem("clienttoken", clientList[0].value);
           }
-        }        
+        }
       }
     }
   }, [globleBrokerClientList]);
@@ -140,33 +141,33 @@ const AdminHeader = () => {
       getSymbolExpiry();
     }
 
-    if(sessionStorage.getItem("tradingtype") !== null && sessionStorage.getItem("tradingtype")!==""){
+    if (sessionStorage.getItem("tradingtype") !== null && sessionStorage.getItem("tradingtype") !== "") {
       updateGlobleSelectedTradingType(sessionStorage.getItem("tradingtype"));
-      let dataTraderType=optionsTradingType.find((data)=>data.label===sessionStorage.getItem("tradingtype"));
-      if(dataTraderType!==null){
+      let dataTraderType = optionsTradingType.find((data) => data.label === sessionStorage.getItem("tradingtype"));
+      if (dataTraderType !== null) {
         setTradingTypeSelect(dataTraderType);
       }
-    }else{
+    } else {
       if (tradingTypeSelect === "") {
         setTradingTypeSelect(optionsTradingType[0]);
         sessionStorage.setItem("tradingtype", optionsTradingType[0].value);
         updateGlobleSelectedTradingType(optionsTradingType[0].value);
       }
     }
-    
-    
+
+
   }, []);
 
 
   useEffect(() => {
-    if( sessionStorage.getItem("clienttoken")!==null 
-      && sessionStorage.getItem("clienttoken")!==""
-      && sessionStorage.getItem("tradingtype")!==null 
-      && sessionStorage.getItem("tradingtype")!==""
-      )
-    document.title = sessionStorage.getItem("clienttoken")+" ("+sessionStorage.getItem("tradingtype")+") - QuikTrade - FNOTrader.com"; // Set the title when the component mounts
+    if (sessionStorage.getItem("clienttoken") !== null
+      && sessionStorage.getItem("clienttoken") !== ""
+      && sessionStorage.getItem("tradingtype") !== null
+      && sessionStorage.getItem("tradingtype") !== ""
+    )
+      document.title = sessionStorage.getItem("clienttoken") + " (" + sessionStorage.getItem("tradingtype") + ") - QuikTrade - FNOTrader.com"; // Set the title when the component mounts
   }, [sessionStorage.getItem("clienttoken"),
-      sessionStorage.getItem("tradingtype")]); // Empty dependency array to ensure it only runs once on mount
+  sessionStorage.getItem("tradingtype")]); // Empty dependency array to ensure it only runs once on mount
 
   const setSymbolData = () => {
     let stockSymbols = JSON.parse(CookiesConfig.getCookie("symbolList"));
@@ -179,7 +180,7 @@ const AdminHeader = () => {
     setStockSymbolInformation(StockSymbolList);
   };
 
-  const getSymbolExpiry = async () => { 
+  const getSymbolExpiry = async () => {
     let symbol = [];
     let data = await ZerodaAPI.getSymbolExpiry();
     if (data != null) {
@@ -201,7 +202,7 @@ const AdminHeader = () => {
     }
   };
 
-  const getExpiryForSymbol = (symbolName) => {     
+  const getExpiryForSymbol = (symbolName) => {
     let symbolExpiryData = JSON.parse(
       localStorage.getItem("symbolExpiryData")
     );
@@ -233,34 +234,34 @@ const AdminHeader = () => {
   };
 
   useEffect(() => {
-    if (expityData.length > 0) {       
-      if(sessionStorage.getItem("currentExpityData") !== null && sessionStorage.getItem("currentExpityData")!==""){
-        let currentExpityData=sessionStorage.getItem("currentExpityData");
-        let expiryCurrentData=expityData.find((data)=>data.value===currentExpityData);
-        if(expiryCurrentData!=null){
+    if (expityData.length > 0) {
+      if (sessionStorage.getItem("currentExpityData") !== null && sessionStorage.getItem("currentExpityData") !== "") {
+        let currentExpityData = sessionStorage.getItem("currentExpityData");
+        let expiryCurrentData = expityData.find((data) => data.value === currentExpityData);
+        if (expiryCurrentData != null) {
           setExpityValue(expiryCurrentData);
-          updateGlobleExpityValue(currentExpityData);           
+          updateGlobleExpityValue(currentExpityData);
         }
-      }else{
-          setExpityValue(expityData[0]);
-          updateGlobleExpityValue(expityData[0].value);
-          sessionStorage.setItem("currentExpityData",expityData[0].value);
+      } else {
+        setExpityValue(expityData[0]);
+        updateGlobleExpityValue(expityData[0].value);
+        sessionStorage.setItem("currentExpityData", expityData[0].value);
       }
     }
   }, [expityData]);
 
   useEffect(() => {
-    if (channelName != "") {     
+    if (channelName != "") {
       setStopLastPrice(false);
       setStopLastAmt(0);
       setFutureLastPrice(false);
       setFutureLastAmt(0);
-      if (!isMarketHours()) { 
+      if (!isMarketHours()) {
         callApiToGetPreviosDayData();
-      }else{
+      } else {
         getStockIndex();
       }
-      
+
     }
   }, [channelName]);
 
@@ -272,7 +273,7 @@ const AdminHeader = () => {
     // Set up event listeners for connection state
     centrifugeInstance.on("connect", () => {
       //console.log('Connected to Centrifuge');    
-      channelName.map((cName) => {      
+      channelName.map((cName) => {
         const channel = centrifugeInstance.subscribe(cName.instrumentToken);
         channel.on("publish", (data) => {
           if (data.data != null) {
@@ -310,7 +311,7 @@ const AdminHeader = () => {
         });
         channel.on("unsubscribe", (data) => {
           setChannelStatus(0);
-           
+
         });
         channel.on("error", (err) => {
           //console.error('Channel error:', err);
@@ -327,13 +328,13 @@ const AdminHeader = () => {
 
     // Cleanup on component unmount
     return () => {
-       
+
       centrifugeInstance.disconnect();
     };
   };
 
   const callApiToGetPreviosDayData = async () => {
-    if (channelName?.length > 0) {      
+    if (channelName?.length > 0) {
       channelName.map(async (cName) => {
         const result = await ZerodaAPI.callApiToGetPreviosDayDataForChannel(
           cName.instrumentToken
@@ -362,134 +363,134 @@ const AdminHeader = () => {
     }
   };
 
-  const callApiToHeadtocken = async (instrumentToken) => {        
-        const result = await ZerodaAPI.callApiToGetPreviosDayDataForChannel(
-          instrumentToken
-        );
-        if(result!==null){
-            const { code, data } = result;
-            let infodata = data[instrumentToken];   
-            return infodata.prev.p;
-        }else{
-            return 0;
-        }
+  const callApiToHeadtocken = async (instrumentToken) => {
+    const result = await ZerodaAPI.callApiToGetPreviosDayDataForChannel(
+      instrumentToken
+    );
+    if (result !== null) {
+      const { code, data } = result;
+      let infodata = data[instrumentToken];
+      return infodata.prev.p;
+    } else {
+      return 0;
+    }
   };
   useEffect(() => {
     const fetchData = async () => {
-        if (indexData?.length > 0 && symbolSelect) {
-            let dsSpotTokenList = JSON.parse(
-              localStorage.getItem("symbolSpotTokenList")
+      if (indexData?.length > 0 && symbolSelect) {
+        let dsSpotTokenList = JSON.parse(
+          localStorage.getItem("symbolSpotTokenList")
+        );
+
+        let infoData = dsSpotTokenList.find(
+          (data) =>
+            data.underlying === symbolSelect.value && data.tokenType === "spot"
+        );
+        if (infoData != undefined) {
+          const { instrumentToken } = infoData;
+          let infoIndexData = indexData.find(
+            (data) =>
+              data.token === parseInt(instrumentToken) && data.tokenType === "spot"
+          );
+          if (infoIndexData != null) {
+            //Call your asynchronous function inside async function                           
+            let lastDayClosing = stopLastAmt;
+            if (stopLastPrice === false) {
+              lastDayClosing = await callApiToHeadtocken(instrumentToken);
+              setStopLastPrice(true);
+              setStopLastAmt(lastDayClosing);
+            }
+            const { lp } = infoIndexData;
+            setCurrentStockIndex(lp);
+            updateGlobleCurrentStockIndex(lp);
+            const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosing);
+            setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
+            const changePer =
+              ((parseFloat(lp) - parseFloat(lastDayClosing)) /
+                parseFloat(lastDayClosing)) *
+              100;
+            setCurrentStockLTPPercent(
+              (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
+              parseFloat(changePer).toFixed(2)
             );
-             
-            let infoData = dsSpotTokenList.find(
-                (data) =>
-                data.underlying === symbolSelect.value && data.tokenType === "spot"
-            );
-            if(infoData!=undefined){  
-              const { instrumentToken } = infoData;  
-              let infoIndexData = indexData.find(
-                  (data) =>
-                  data.token === parseInt(instrumentToken) && data.tokenType === "spot"
-              );
-              if (infoIndexData != null) {                   
-                  //Call your asynchronous function inside async function                           
-                  let  lastDayClosing = stopLastAmt;
-                  if(stopLastPrice===false){
-                    lastDayClosing = await callApiToHeadtocken(instrumentToken);
-                    setStopLastPrice(true);
-                    setStopLastAmt(lastDayClosing);
-                  }  
-                  const { lp } = infoIndexData;
-                  setCurrentStockIndex(lp);
-                  updateGlobleCurrentStockIndex(lp);
-                  const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosing);
-                  setCurrentStockLTP(parseFloat(dataStockLTP).toFixed(2));
-                  const changePer =
-                      ((parseFloat(lp) - parseFloat(lastDayClosing)) /
-                          parseFloat(lastDayClosing)) *
-                      100;
-                  setCurrentStockLTPPercent(
-                      (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
-                      parseFloat(changePer).toFixed(2)
-                  );
-              }
-              calculateFuture();
-           }
+          }
+          calculateFuture();
         }
+      }
     };
     fetchData(); // Call the async function inside useEffect
-      
-}, [indexData, symbolSelect,stopLastAmt,futureLastAmt]);
 
-useEffect(() => { 
-  if(symbolSelect!=="" && expityvalue!==""){
+  }, [indexData, symbolSelect, stopLastAmt, futureLastAmt]);
+
+  useEffect(() => {
+    if (symbolSelect !== "" && expityvalue !== "") {
       setStopLastPrice(false);
       setStopLastAmt(0);
       setFutureLastPrice(false);
-      setFutureLastAmt(0);    
-  }
-}, [symbolSelect, expityvalue]);
+      setFutureLastAmt(0);
+    }
+  }, [symbolSelect, expityvalue]);
 
 
   const calculateFuture = () => {
     const fetchDataFuture = async () => {
-          let dsSpotTokenList = JSON.parse(
-            localStorage.getItem("symbolSpotTokenList")
-          );
-          let infoFutureData = dsSpotTokenList.find(
-            (data) =>
-              data.underlying === symbolSelect.value && data.tokenType === "future"
-          );
-          const { instrumentToken} = infoFutureData;           
-          let   lastDayClosinglp =  futureLastAmt;
-          if(futureLastPrice===false){
-            lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
-            setFutureLastPrice(true);
-            setFutureLastAmt(lastDayClosinglp);
-          } 
-           
-          let infoFutureIndexData = indexData.find(
-            (data) =>
-              data.token === parseInt(instrumentToken) && data.tokenType === "future"
-          );
-          if (infoFutureIndexData != null) {
-            const { lp } = infoFutureIndexData;
-            const dayOpen = infoFutureIndexData?.do;
-            setCurrentStockIndexFuture(lp);
-            updateGlobleCurrentStockIndexFuture(lp);
-            const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosinglp);
-            setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2));
-            const changePer =
-              ((parseFloat(lp) - parseFloat(lastDayClosinglp)) /
-                parseFloat(lastDayClosinglp)) *
-              100;
-            setCurrentStockLTPPercentFuture(
-              (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
-                parseFloat(changePer).toFixed(2)
-            );
-          }
+      let dsSpotTokenList = JSON.parse(
+        localStorage.getItem("symbolSpotTokenList")
+      );
+      let infoFutureData = dsSpotTokenList.find(
+        (data) =>
+          data.underlying === symbolSelect.value && data.tokenType === "future"
+      );
+      const { instrumentToken } = infoFutureData;
+      let lastDayClosinglp = futureLastAmt;
+      if (futureLastPrice === false) {
+        lastDayClosinglp = await callApiToHeadtocken(instrumentToken);
+        setFutureLastPrice(true);
+        setFutureLastAmt(lastDayClosinglp);
+      }
+
+      let infoFutureIndexData = indexData.find(
+        (data) =>
+          data.token === parseInt(instrumentToken) && data.tokenType === "future"
+      );
+      if (infoFutureIndexData != null) {
+        const { lp } = infoFutureIndexData;
+        const dayOpen = infoFutureIndexData?.do;
+        setCurrentStockIndexFuture(lp);
+        updateGlobleCurrentStockIndexFuture(lp);
+        const dataStockLTP = parseFloat(lp) - parseFloat(lastDayClosinglp);
+        setCurrentStockLTPFuture(parseFloat(dataStockLTP).toFixed(2));
+        const changePer =
+          ((parseFloat(lp) - parseFloat(lastDayClosinglp)) /
+            parseFloat(lastDayClosinglp)) *
+          100;
+        setCurrentStockLTPPercentFuture(
+          (parseFloat(changePer).toFixed(2) < 0 ? -1 : 1) *
+          parseFloat(changePer).toFixed(2)
+        );
+      }
     }
     fetchDataFuture(); // Call the async function inside useEffect
   };
 
   useEffect(() => {
-    if (stockSymbolInformation.length > 0) {       
-      if (symbolSelect === "") {        
-        if(sessionStorage.getItem("currentStockSymbol") !== null && sessionStorage.getItem("currentStockSymbol")!==null){
-          let currentStockSymbol=sessionStorage.getItem("currentStockSymbol")
-          let stockSymbolData=stockSymbolInformation.find((data)=>data.label===currentStockSymbol);
+    if (stockSymbolInformation.length > 0) {
+      if (symbolSelect === "") {
+        if (sessionStorage.getItem("currentStockSymbol") !== null && sessionStorage.getItem("currentStockSymbol") !== null) {
+          let currentStockSymbol = sessionStorage.getItem("currentStockSymbol")
+          let stockSymbolData = stockSymbolInformation.find((data) => data.label === currentStockSymbol);
           setSymbolSelect(stockSymbolData);
           getExpiryForSymbol(currentStockSymbol);
           updateGlobleSymbol(currentStockSymbol);
-        }else{
+        } else {
           setSymbolSelect(stockSymbolInformation[0]);
           sessionStorage.setItem(
             "currentStockSymbol",
-             stockSymbolInformation[0].value
+            stockSymbolInformation[0].value
           );
           getExpiryForSymbol(stockSymbolInformation[0].value);
           updateGlobleSymbol(stockSymbolInformation[0].value);
-        }       
+        }
       }
     }
   }, [stockSymbolInformation]);
@@ -528,37 +529,53 @@ useEffect(() => {
 
   const handleTradingTypeData = (e) => {
     updateGlobalProcessRMS(false);
-    if(brokerSelect.value == "ZERODHA" && CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase()==="false"){
-      setShow(true);   
-      return;           
-   } else if (brokerSelect.value != "ZERODHA" && CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase()==="false") {
-     alertify.alert(
-       'Information',
-       'Only paper trading is enabled for '+brokerSelect.value,
-       () => {
-          
-       });     
-       return; 
-   }
+    if (brokerSelect.value == "ZERODHA" && CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase() === "false") {
+      setShow(true);
+      return;
+    } else if (brokerSelect.value != "ZERODHA" && CookiesConfig.getCookie("User-ActiveSubscription").toString().toLowerCase() === "false") {
+      alertify.alert(
+        'Information',
+        'Only paper trading is enabled for ' + brokerSelect.value,
+        () => {
+
+        });
+      return;
+    }
 
     setTradingTypeSelect(e);
     sessionStorage.setItem("tradingtype", e.value);
     updateGlobleSelectedTradingType(e.value);
- 
+
   };
 
   const handleExpityData = (e) => {
     setExpityValue(e);
     updateGlobleExpityValue(e.value);
     sessionStorage.setItem("currentExpityData", e.value);
+    debugger;
+    localStorage.setItem("currentExpityData", e.value);
+    const currentStockSymbol = localStorage.getItem("currentStockSymbol");
+    getOptionChainList(currentStockSymbol, e.value);
+
   };
 
   const handleSymbolChange = (e) => {
     setSymbolSelect(e);
     sessionStorage.setItem("currentStockSymbol", e.value);
-    sessionStorage.setItem("currentExpityData","");
+    sessionStorage.setItem("currentExpityData", "");
+    localStorage.setItem("currentStockSymbol", e.value);
+    localStorage.setItem("currentExpityData", "");
     getExpiryForSymbol(e.value);
     updateGlobleSymbol(e.value);
+    getOptionChainList(e.value);
+  };
+
+  const getOptionChainList = async (name, expiryDate) => {
+    let data = await ZerodaAPI.getOptionChainList(name, expiryDate);
+
+    if (data != null) {
+      updateGlobleOptionChainList(data);
+    }
   };
   const customStyles = {
     control: (provided) => ({
@@ -591,12 +608,12 @@ useEffect(() => {
   useEffect(() => {
     if (
       clientSelect !== "" &&
-      symbolSelect !== ""     
+      symbolSelect !== ""
     ) {
       getGeneralConfiguration();
     }
   }, [clientSelect, symbolSelect]);
- 
+
 
   const getDefaultConfiguration = async () => {
     if (clientSelect !== "" && symbolSelect !== "" && expityvalue !== "") {
@@ -616,93 +633,92 @@ useEffect(() => {
             symbolSelect.value != undefined &&
             expityvalue.value != undefined
           ) {
-            getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value,tradingTypeSelect.value);
+            getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value, tradingTypeSelect.value);
           }
         }
-      } else {        
+      } else {
         if (symbolSelect.value != undefined && expityvalue.value != undefined) {
-          getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value,tradingTypeSelect.value);
+          getDefaultConfigFromBroker(symbolSelect.value, expityvalue.value, tradingTypeSelect.value);
         }
       }
     }
   };
 
-  const getGeneralConfiguration=async ()=>{ 
-    let dataInfo={
-        clientId:sessionStorage.getItem("clienttoken") ,
-        brokername:sessionStorage.getItem("brokername")
-      }
-      let result = await PaperTradingAPI.getGeneralConfiguration(dataInfo); 
-      if(result!=null){
-            if(result.length>0){
-                sessionStorage.removeItem("generalConfig");
-                sessionStorage.setItem("generalConfig",JSON.stringify(result));                
-            } 
-      } 
- }
-
-
- const getRMSConfiguration=async ()=>{ 
-  let dataInfo={
-      clientId:sessionStorage.getItem("clienttoken") ,
-      brokername:sessionStorage.getItem("brokername"),
-      tradingmode:sessionStorage.getItem("tradingtype")
+  const getGeneralConfiguration = async () => {
+    let dataInfo = {
+      clientId: sessionStorage.getItem("clienttoken"),
+      brokername: sessionStorage.getItem("brokername")
     }
-    let result = await PaperTradingAPI.getRMSConfiguration(dataInfo); 
-    debugger;
-    if(result!=null){
-          if(result.length>0){
-              sessionStorage.removeItem("RMSConfig");
-              sessionStorage.setItem("RMSConfig",JSON.stringify(result));
-               
-          }else{
-              
-          } 
-    }else{
-      
-    }  
-}
-
-
-  const isMarketHours = () => {   
-    if(globalServerTime!==""){
-      const receivedTime = new Date(globalServerTime);
-      const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
-      let holidays=JSON.parse(CookiesConfig.getCookie("holidaylist"));        
-      const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);         
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM  
-      const dayOfWeek = receivedTime.getDay();      
-      if(dayOfWeek===0 || dayOfWeek===6 || isHoliday)
-      {
-        return false;
-      }else{
-        return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
-      }       
-    }else{
-      const receivedTime = new Date();
-      const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
-      let holidays=JSON.parse(CookiesConfig.getCookie("holidaylist"));        
-      const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-      const dayOfWeek = receivedTime.getDay();
-      
-      if(dayOfWeek===0 || dayOfWeek===6 || isHoliday)
-      {
-        return false;
-      }else{
-        return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+    let result = await PaperTradingAPI.getGeneralConfiguration(dataInfo);
+    if (result != null) {
+      if (result.length > 0) {
+        sessionStorage.removeItem("generalConfig");
+        sessionStorage.setItem("generalConfig", JSON.stringify(result));
       }
-    }      
-};
+    }
+  }
 
 
-  const getDefaultConfigFromBroker = async (instrumentName, expiryDate,tradingTypeSelect) => {
+  const getRMSConfiguration = async () => {
+    let dataInfo = {
+      clientId: sessionStorage.getItem("clienttoken"),
+      brokername: sessionStorage.getItem("brokername"),
+      tradingmode: sessionStorage.getItem("tradingtype"),
+      instrumentName: symbolSelect.value,
+      expiryDate: expityvalue.value,
+    }
+    let result = await PaperTradingAPI.getRMSConfiguration(dataInfo);
+    if (result != null) {
+      if (result.length > 0) {
+        sessionStorage.removeItem("RMSConfig");
+        sessionStorage.setItem("RMSConfig", JSON.stringify(result));
+
+      } else {
+
+      }
+    } else {
+
+    }
+  }
+
+
+  const isMarketHours = () => {
+    // if (globalServerTime !== "") {
+    //   const receivedTime = new Date(globalServerTime);
+    //   const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
+    //   let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
+    //   const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);
+    //   const marketOpenTime = new Date();
+    //   marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+    //   const marketCloseTime = new Date();
+    //   marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM  
+    //   const dayOfWeek = receivedTime.getDay();
+    //   if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
+    //     return false;
+    //   } else {
+    //     return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+    //   }
+    // } else {
+    //   const receivedTime = new Date();
+    //   const formattedCurrentDate = `${receivedTime.getFullYear()}-${(receivedTime.getMonth() + 1).toString().padStart(2, '0')}-${receivedTime.getDate().toString().padStart(2, '0')}`;
+    //   let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
+    //   const isHoliday = holidays.some(holiday => holiday.formattedDate === formattedCurrentDate);
+    //   const marketOpenTime = new Date();
+    //   marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+    //   const marketCloseTime = new Date();
+    //   marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+    //   const dayOfWeek = receivedTime.getDay();
+
+    //   if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
+    //     return false;
+    //   } else {
+    //     return receivedTime >= marketOpenTime && receivedTime <= marketCloseTime;
+    //   }
+    // }
+  };
+
+
+  const getDefaultConfigFromBroker = async (instrumentName, expiryDate, tradingTypeSelect) => {
     const result = await ZerodaAPI.callOptionChain(instrumentName, expiryDate);
     if (result != null) {
       const { code, data } = result;
@@ -726,7 +742,7 @@ useEffect(() => {
             defaultBrokerType: "Buy First",
             defaultShowQty: data["opt"][expiryDate][0].lotSize,
             defaultLMTPerCentage: 0,
-            defaultTradingMode:tradingTypeSelect
+            defaultTradingMode: tradingTypeSelect
           };
           defaultArray.push(dataInfo);
           sessionStorage.removeItem("defaultConfig");
@@ -757,11 +773,11 @@ useEffect(() => {
           "_self"
         );
       },
-      () => {}
+      () => { }
     );
   };
 
-  const handleClosePopup =()=>{
+  const handleClosePopup = () => {
     setShow(false);
   }
 
@@ -935,15 +951,15 @@ useEffect(() => {
           </div>
         </Container>
       </div>
-      <StaticPopup 
-        message={["Please buy a valid subscription to trade with the Broker Account."]} 
+      <StaticPopup
+        message={["Please buy a valid subscription to trade with the Broker Account."]}
         title={"Upgrade Now"}
         isShow={show}
         link={"/quiktrade/pricing"}
         btnText_1={"Upgrade Now"}
         btnText_2={"Cancel"}
         handleClosePopup={handleClosePopup}
-      /> 
+      />
     </>
   );
 };

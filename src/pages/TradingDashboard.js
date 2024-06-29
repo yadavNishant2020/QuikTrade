@@ -41,9 +41,12 @@ import AdminFunds from "../components/AdminFunds.js";
 import SplitPane from "react-split-pane";
 import ModalComponent from "../components/modal.js";
 
-
 const TreadingDashboard = () => {
   const divRef = useRef(null);
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState("default");
+  const handleDropdownChange = (event) => {
+    setSelectedDropdownValue(event.target.value);
+  };
 
   const [configOpenSlider, setConfigOpenSlider] = useState(false);
   const [ruleOpenSlider, setRuleOpenSlider] = useState(false);
@@ -67,6 +70,7 @@ const TreadingDashboard = () => {
   const [sideMenuRMSTroggle, setSideMenuRMSTroggle] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [displayPopUp, setDisplayPopUp] = useState(true);
+  const [expiryDate, setExpiryDate] = useState(null);
 
   const centrifugeInstanceNew = new Centrifuge(
     "wss://stock-api2.fnotrader.com/connection/websocket"
@@ -92,9 +96,33 @@ const TreadingDashboard = () => {
     globalProcessRMS,
   } = useContext(PostContext);
 
+
   useEffect(() => {
-    getOptionChainList();
-  }, []);
+    const fetchExpiryData = async () => {
+      const currentStockSymbol = localStorage.getItem("currentStockSymbol");
+      const currentExpiryData = localStorage.getItem("currentExpityData");
+      const result = await ZerodaAPI.fetchExpiryData(currentStockSymbol);
+
+      if (result && result.data && result.data.expiries) {
+        const expiries = result.data.expiries;
+        if (expiries.length > 0) {
+          const firstExpiryDate = expiries[0];
+          if (currentExpiryData === globleExpityvalue) {
+            setExpiryDate(globleExpityvalue);
+          } 
+          else if (currentExpiryData.length > 0) {
+            setExpiryDate(firstExpiryDate);
+          } 
+          else {
+            setExpiryDate(firstExpiryDate);
+          }
+          getOptionChainList(currentStockSymbol, globleExpityvalue);
+        }
+      }
+    };
+
+    fetchExpiryData();
+  }, [globleSymbol, globleExpityvalue]);
 
   useLayoutEffect(() => {
     const handleResize = () => {
@@ -131,7 +159,6 @@ const TreadingDashboard = () => {
     );
 
     if (resultData != null) {
-      //console.log(resultData);
       updateGlobleConfigPostionData(resultData);
     }
   };
@@ -152,7 +179,6 @@ const TreadingDashboard = () => {
       );
       // Connect to the server
       newCentrifugeInstance.connect();
-      console.log(newCentrifugeInstance);
 
       // Save the new instance to state
       setCentrifugeInstance(newCentrifugeInstance);
@@ -263,8 +289,8 @@ const TreadingDashboard = () => {
     setRuleOpenSlider((ruleOpenSlider) => !ruleOpenSlider);
   };
 
-  const getOptionChainList = async () => {
-    let data = await ZerodaAPI.getOptionChainList();
+  const getOptionChainList = async (name, expiryDate) => {
+    let data = await ZerodaAPI.getOptionChainList(name, expiryDate);
     if (data != null) {
       setTotalRows(data.length);
       setOptionChainList(data);
@@ -347,65 +373,64 @@ const TreadingDashboard = () => {
 
     // Cleanup on component unmount
     return () => {
-      console.log("Cleaning up Centrifuge");
       centrifugeInstanceNew.disconnect();
     };
   };
 
   const isMarketHours = () => {
-    if (globalServerTime !== "") {
-      const receivedTime = new Date(globalServerTime);
-      const formattedCurrentDate = `${receivedTime.getFullYear()}-${(
-        receivedTime.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${receivedTime
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
-      let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
-      const isHoliday = holidays.some(
-        (holiday) => holiday.formattedDate === formattedCurrentDate
-      );
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-      const dayOfWeek = receivedTime.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
-        return false;
-      } else {
-        return (
-          receivedTime >= marketOpenTime && receivedTime <= marketCloseTime
-        );
-      }
-    } else {
-      const receivedTime = new Date();
-      const formattedCurrentDate = `${receivedTime.getFullYear()}-${(
-        receivedTime.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${receivedTime
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
-      let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
-      const isHoliday = holidays.some(
-        (holiday) => holiday.formattedDate === formattedCurrentDate
-      );
-      const marketOpenTime = new Date();
-      marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
-      const marketCloseTime = new Date();
-      marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
-      const dayOfWeek = receivedTime.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
-        return false;
-      } else {
-        return (
-          receivedTime >= marketOpenTime && receivedTime <= marketCloseTime
-        );
-      }
-    }
+    // if (globalServerTime !== "") {
+    //   const receivedTime = new Date(globalServerTime);
+    //   const formattedCurrentDate = `${receivedTime.getFullYear()}-${(
+    //     receivedTime.getMonth() + 1
+    //   )
+    //     .toString()
+    //     .padStart(2, "0")}-${receivedTime
+    //       .getDate()
+    //       .toString()
+    //       .padStart(2, "0")}`;
+    //   let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
+    //   const isHoliday = holidays.some(
+    //     (holiday) => holiday.formattedDate === formattedCurrentDate
+    //   );
+    //   const marketOpenTime = new Date();
+    //   marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+    //   const marketCloseTime = new Date();
+    //   marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+    //   const dayOfWeek = receivedTime.getDay();
+    //   if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
+    //     return false;
+    //   } else {
+    //     return (
+    //       receivedTime >= marketOpenTime && receivedTime <= marketCloseTime
+    //     );
+    //   }
+    // } else {
+    //   const receivedTime = new Date();
+    //   const formattedCurrentDate = `${receivedTime.getFullYear()}-${(
+    //     receivedTime.getMonth() + 1
+    //   )
+    //     .toString()
+    //     .padStart(2, "0")}-${receivedTime
+    //       .getDate()
+    //       .toString()
+    //       .padStart(2, "0")}`;
+    //   let holidays = JSON.parse(CookiesConfig.getCookie("holidaylist"));
+    //   const isHoliday = holidays.some(
+    //     (holiday) => holiday.formattedDate === formattedCurrentDate
+    //   );
+    //   const marketOpenTime = new Date();
+    //   marketOpenTime.setHours(9, 15, 0, 0); // 9:15 AM
+    //   const marketCloseTime = new Date();
+    //   marketCloseTime.setHours(15, 30, 0, 0); // 3:30 PM
+    //   const dayOfWeek = receivedTime.getDay();
+    //   if (dayOfWeek === 0 || dayOfWeek === 6 || isHoliday) {
+    //     return false;
+    //   } else {
+    //     return (
+    //       receivedTime >= marketOpenTime && receivedTime <= marketCloseTime
+    //     );
+    //   }
+    // }
   };
 
   const callApiToGetPreviosDayData = async () => {
@@ -606,7 +631,7 @@ const TreadingDashboard = () => {
 
     // Cleanup on component unmount
     return () => {
-      console.log("Cleaning up Centrifuge");
+      // console.log("Cleaning up Centrifuge");
       centrifugePositionInstanceNew.disconnect();
     };
   };
@@ -659,7 +684,7 @@ const TreadingDashboard = () => {
     setSideMenuTroggle(false);
     setSideMenuRMSTroggle((sideMenuRMSTroggle) => !sideMenuRMSTroggle);
   };
-  
+
   // when pop-up is closed this function triggers
   const closePopUp = () => {
     // setting key "seenPopUp" with value true into localStorage
@@ -672,23 +697,24 @@ const TreadingDashboard = () => {
     "9 out of 10 individual traders in Equity, Futures & Options segment incurred net losses.",
     "On an average, loss makers registered net trading loss close to ₹ 50,000.",
     "Over and above the net trading losses incurred, loss makers expended an additional 28% of net trading losses at transaction costs.",
-    "Those making net trading profits, incurred between 15% to 50% of such profits as transaction cost."
+    "Those making net trading profits, incurred between 15% to 50% of such profits as transaction cost.",
   ];
 
-  const additionalInfo = "SEBI study dated January 25, 2023, on “Analysis of Profit and Loss of Individual Traders dealing in equity Futures and Options (F&O) Segment”, wherein Aggregate Level findings are based on annual Profit/Loss incurred by individual traders in equity F&O during FY 2021-22.";
+  const additionalInfo =
+    "SEBI study dated January 25, 2023, on “Analysis of Profit and Loss of Individual Traders dealing in equity Futures and Options (F&O) Segment”, wherein Aggregate Level findings are based on annual Profit/Loss incurred by individual traders in equity F&O during FY 2021-22.";
 
   return (
     <>
       <div>
         {displayPopUp && (
-        <ModalComponent
-          open={displayPopUp}
-          onClose={closePopUp}
-          title="Risk Disclosures on Derivatives"
-          content={modalContent}
-          additionalInfo={additionalInfo}
-        />
-      )}
+          <ModalComponent
+            open={displayPopUp}
+            onClose={closePopUp}
+            title="Risk Disclosures on Derivatives"
+            content={modalContent}
+            additionalInfo={additionalInfo}
+          />
+        )}
       </div>
       <Container fluid style={{}}>
         <div style={{ width: "100%", height: "100%" }}>

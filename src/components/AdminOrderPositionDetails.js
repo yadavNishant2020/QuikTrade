@@ -61,12 +61,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     updateGlobalProcessRMS
   } = useContext(PostContext);
 
-  
+
   const [searchValue, setSearchValue] = useState("");
   const [mtmchange, setMTMChange] = useState(0);
 
 
-   const [isexecuteProcess, setIsExecuteProcess] = useState(false);
+  const [isexecuteProcess, setIsExecuteProcess] = useState(false);
 
 
   const [optionChainDataForPosition, setOptionChainDataForPosition] = useState(
@@ -141,11 +141,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [filterOrderPositionList, globlePositionChange]);
 
   useEffect(() => {
-  
-    if (optionChainDataForPosition.length > 0) {     
+
+    if (optionChainDataForPosition.length > 0) {
       setOrderPosition((previousData) => {
         if (previousData !== undefined) {
-          
+
           const updatedOrderPosition = previousData.map((position) => {
             const matchingOption = optionChainDataForPosition.find((item) => item.instrumentToken === position.instrumentToken.toString());
             if (matchingOption) {
@@ -162,46 +162,46 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               };
             }
           });
-  
+
           // Update other properties outside the map function
-          updatedOrderPosition.forEach((position, index) => {                
+          updatedOrderPosition.forEach((position, index) => {
             const data = position;
-            let defaultSaveedQty=getSetting(data.positioninstrumentname,data.positionexpirydate)?.defaultQty;
-            position.moveinouttotalqty=parseInt(data.moveinoutqty)*parseInt(defaultSaveedQty);
-            position.newaddtotalqty=parseInt(data.newqty)*parseInt(defaultSaveedQty);
-            position.exittotalqty=parseInt(data.exitqty)*parseInt(defaultSaveedQty);
+            let defaultSaveedQty = getSetting(data.positioninstrumentname, data.positionexpirydate)?.defaultQty;
+            position.moveinouttotalqty = parseInt(data.moveinoutqty) * parseInt(defaultSaveedQty);
+            position.newaddtotalqty = parseInt(data.newqty) * parseInt(defaultSaveedQty);
+            position.exittotalqty = parseInt(data.exitqty) * parseInt(defaultSaveedQty);
             const matchingOptionFirstInStrick = optionChainDataForPosition.find((dataOrder) => dataOrder.instrumentToken === data.firstInInstrumentToken);
             if (matchingOptionFirstInStrick != null) {
               position.firstInltp = matchingOptionFirstInStrick.ltp;
             } else {
               position.firstInltp = parseFloat(0).toFixed(2);
             }
-            const matchingOptionSecondInStrick=optionChainDataForPosition.find((dataOrder)=>dataOrder.instrumentToken===data.secondInInstrumentToken);
-            if(matchingOptionSecondInStrick!=null){
-                position.secondInltp=matchingOptionSecondInStrick.ltp ;                         
-            } else{
-                position.secondInltp=parseFloat(0).toFixed(2)
+            const matchingOptionSecondInStrick = optionChainDataForPosition.find((dataOrder) => dataOrder.instrumentToken === data.secondInInstrumentToken);
+            if (matchingOptionSecondInStrick != null) {
+              position.secondInltp = matchingOptionSecondInStrick.ltp;
+            } else {
+              position.secondInltp = parseFloat(0).toFixed(2)
             }
 
-            const matchingOptionFirstOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.firstOutInstrumentToken);
-            if(matchingOptionFirstOutStrick!=null){
-                  position.firstOutltp=matchingOptionFirstOutStrick.ltp ;                         
-            } else{
-                  position.firstOutltp=parseFloat(0).toFixed(2)
+            const matchingOptionFirstOutStrick = filterOrderPositionList.find((dataOrder) => dataOrder.instrumentToken === data.firstOutInstrumentToken);
+            if (matchingOptionFirstOutStrick != null) {
+              position.firstOutltp = matchingOptionFirstOutStrick.ltp;
+            } else {
+              position.firstOutltp = parseFloat(0).toFixed(2)
             }
-            const matchingOptionSecondOutStrick=filterOrderPositionList.find((dataOrder)=>dataOrder.instrumentToken===data.secondOutInstrumentToken);
-            if(matchingOptionSecondOutStrick!=null){
-                 position.secondOutltp=matchingOptionSecondOutStrick.ltp ;                         
-            } else{
-                  position.secondOutltp=parseFloat(0).toFixed(2)
-            }           
+            const matchingOptionSecondOutStrick = filterOrderPositionList.find((dataOrder) => dataOrder.instrumentToken === data.secondOutInstrumentToken);
+            if (matchingOptionSecondOutStrick != null) {
+              position.secondOutltp = matchingOptionSecondOutStrick.ltp;
+            } else {
+              position.secondOutltp = parseFloat(0).toFixed(2)
+            }
 
             // Add similar logic for other properties here
           });
-  
+
           return updatedOrderPosition;
         }
-  
+
         // If previousData is undefined, return it unchanged
         return previousData;
       });
@@ -240,7 +240,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               position?.strikeprice
                 ?.toLowerCase()
                 .includes(searchValue.toLowerCase()) ||
-                position?.positionordertype
+              position?.positionordertype
                 ?.toLowerCase()
                 .includes(searchValue.toLowerCase())
             );
@@ -266,11 +266,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   }, [globleOrderPosition]);
 
   const calculateUnrealisedPnl = (position, infodata) => {
-    return  (parseFloat(infodata.ltp) -parseFloat(position.positionavgprice))*parseFloat(position.positionnetqty);
-     
+    return (parseFloat(infodata.ltp) - parseFloat(position.positionavgprice)) * parseFloat(position.positionnetqty);
+
   };
 
-  const handdleMoveInOutQtyChange = (e, index, data) => {    
+  const handdleMoveInOutQtyChange = (e, index, data) => {
     let defaultSaveedQty = getSetting(
       data.positioninstrumentname,
       data.positionexpirydate
@@ -289,7 +289,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
             if (!position.alertDisplayed) {
               alertify.error(
                 "Maximum allowed lot size is " +
-                  parseInt(positionnetlot).toString()
+                parseInt(positionnetlot).toString()
               );
             }
             updatedExtqty = parseInt(positionnetlot);
@@ -315,12 +315,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     });
   };
 
-  const handdlePositionTrailling = (e, index, data) => {     
+  const handdlePositionTrailling = (e, index, data) => {
     let selectedValue = e.target.value;
     //updatePositionByIndex(selectedValue,index)
     setOrderPosition((prevRowData) => {
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
-        if (i === index && parseFloat(prevRowData[i].positionstoploss)>0) {
+        if (i === index && parseFloat(prevRowData[i].positionstoploss) > 0) {
           const positionTrailling = selectedValue;
           return {
             ...position,
@@ -336,11 +336,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   const handdlePositionTarget = (e, index, data) => {
     let selectedValue = e.target.value;
     setOrderPosition((prevRowData) => {
-      
+
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {
-          const positionsidetype=position.positionsidetype;
-          const currentltp=position.ltp;
+          const positionsidetype = position.positionsidetype;
+          const currentltp = position.ltp;
           const positionTargetValue = selectedValue;
           return {
             ...position,
@@ -355,18 +355,18 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdlePositionStopLoss = (e, index, data) => {
-    let selectedValue = e.target.value;  
+    let selectedValue = e.target.value;
     setOrderPosition((prevRowData) => {
       const updatedTempOrderPosition = prevRowData.map((position, i) => {
         if (i === index) {
-          const positionsidetype=position.positionsidetype;
-          const currentltp=position.ltp;
+          const positionsidetype = position.positionsidetype;
+          const currentltp = position.ltp;
           const positionStopLoss = selectedValue;
-          const newPositionTrailling = (parseFloat(selectedValue) === 0 || selectedValue==="") ? "0" : position.positiontrailling;
+          const newPositionTrailling = (parseFloat(selectedValue) === 0 || selectedValue === "") ? "0" : position.positiontrailling;
           return {
             ...position,
             positionstoploss: positionStopLoss,
-            positiontrailling:newPositionTrailling
+            positiontrailling: newPositionTrailling
           };
         }
         return position;
@@ -388,14 +388,14 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       stopLoss: stoploss.toString() === "" ? "0" : stoploss.toString(),
       trailingpoint: trailing.toString() === "" ? "0" : trailing.toString(),
       target: taget.toString() === "" ? "0" : taget.toString(),
-      starttrailing:ltp.toString()
+      starttrailing: ltp.toString()
     };
     const resultData = await PaperTradingAPI.processpositiontrailingData(
       requestData
     );
     if (resultData != null) {
       alertify.success("Stoploss Target updated successfully.");
-    }else{
+    } else {
       alertify.error("Unable to process request now.Please try again.");
     }
   };
@@ -458,15 +458,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   const handdleReverseOrderExist = (dataInfo) => {
     setIsExecuteProcess(true);
-    const logmessege="Reverse Position "+dataInfo.tradingSymbol+" from "+dataInfo.positionsidetype.toUpperCase()+" to "+(dataInfo.positionsidetype.toLowerCase()==='buy'?'SELL':'BUY');
+    const logmessege = "Reverse Position " + dataInfo.tradingSymbol + " from " + dataInfo.positionsidetype.toUpperCase() + " to " + (dataInfo.positionsidetype.toLowerCase() === 'buy' ? 'SELL' : 'BUY');
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      ProcessReverseOrderExistPaper(dataInfo,logmessege);
+      ProcessReverseOrderExistPaper(dataInfo, logmessege);
     } else {
-      ProcessReverseOrderExistLive(dataInfo,logmessege);
+      ProcessReverseOrderExistLive(dataInfo, logmessege);
     }
   };
 
-  const ProcessReverseOrderExistLive = (dataInfo,logmessege) => {
+  const ProcessReverseOrderExistLive = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -496,19 +496,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let currentLotQty =
       parseInt(dataInfo.positionnetlot) < 0
@@ -564,9 +564,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
-  const ProcessReverseOrderExistPaper = (dataInfo,logmessege) => {
+  const ProcessReverseOrderExistPaper = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -596,19 +596,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let currentLotQty =
       parseInt(dataInfo.positionnetlot) < 0
@@ -634,15 +634,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? dataInfo.ltp.toString()
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? dataInfo.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? dataInfo.ltp.toString()
-          : orderprice.toString(),
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -660,15 +660,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? "Completed"
-          : "Pending",
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: dataInfo.firstInInstrumentToken.toString(),
       secondInInstrumentToken: dataInfo.secondInInstrumentToken.toString(),
       firstOutInstrumentToken: dataInfo.firstOutInstrumentToken.toString(),
@@ -685,16 +685,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
   const handdleAddExistQty = (dataInfo, processType) => {
     setIsExecuteProcess(true);
-    const logmessege="Added "+dataInfo.newqty.toString()+" lot to "+dataInfo.tradingSymbol;   
+    const logmessege = "Added " + dataInfo.newqty.toString() + " lot to " + dataInfo.tradingSymbol;
     if (processType === "add") {
       if (globleSelectedTradingType.toLowerCase() === "paper") {
-        processAddOrderPaper(dataInfo,logmessege);
+        processAddOrderPaper(dataInfo, logmessege);
       } else {
-        processAddOrderLive(dataInfo,logmessege);
+        processAddOrderLive(dataInfo, logmessege);
       }
     }
 
@@ -702,7 +702,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     //     processExistOrder(dataInfo);
     // }
   };
-  const processAddOrderLive = (dataInfo,logmessege) => {
+  const processAddOrderLive = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -731,16 +731,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -755,11 +755,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.newqty)
       ).toString(),
       nooforderlot: dataInfo.newqty.toString(),
@@ -801,9 +801,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
-  const processAddOrderPaper = (dataInfo,logmessege) => {
+  const processAddOrderPaper = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -832,16 +832,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -856,11 +856,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.newqty)
       ).toString(),
       nooforderlot: dataInfo.newqty.toString(),
@@ -872,15 +872,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? dataInfo.ltp.toString()
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? dataInfo.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? dataInfo.ltp.toString()
-          : orderprice.toString(),
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -898,12 +898,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: dataInfo.firstInInstrumentToken.toString(),
       secondInInstrumentToken: dataInfo.secondInInstrumentToken.toString(),
       firstOutInstrumentToken: dataInfo.firstOutInstrumentToken.toString(),
@@ -920,18 +920,18 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
   const handdleOrderExist = (dataInfo) => {
     setIsExecuteProcess(true);
-    const logmessege="EXIT Position "+dataInfo.exitqty.toString()+" lot to "+dataInfo.tradingSymbol;   
+    const logmessege = "EXIT Position " + dataInfo.exitqty.toString() + " lot to " + dataInfo.tradingSymbol;
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      processExitOrderPaper(dataInfo,logmessege);
+      processExitOrderPaper(dataInfo, logmessege);
     } else {
-      processExitOrderLive(dataInfo,logmessege);
+      processExitOrderLive(dataInfo, logmessege);
     }
   };
-  const processExitOrderLive = (dataInfo,logmessege) => {
+  const processExitOrderLive = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -960,19 +960,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -987,11 +987,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.exitqty)
       ).toString(),
       nooforderlot: dataInfo.exitqty.toString(),
@@ -1033,10 +1033,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
 
-  const processExitOrderPaper = (dataInfo,logmessege) => {
+  const processExitOrderPaper = (dataInfo, logmessege) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1065,19 +1065,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -1092,11 +1092,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.exitqty)
       ).toString(),
       nooforderlot: dataInfo.exitqty.toString(),
@@ -1108,15 +1108,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? dataInfo.ltp.toString()
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? dataInfo.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? dataInfo.ltp.toString()
-          : orderprice.toString(),
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -1134,15 +1134,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? "Completed"
-          : "Pending",
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: dataInfo.firstInInstrumentToken.toString(),
       secondInInstrumentToken: dataInfo.secondInInstrumentToken.toString(),
       firstOutInstrumentToken: dataInfo.firstOutInstrumentToken.toString(),
@@ -1159,13 +1159,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       exchange: dataInfo.exchange,
       brokerName: globleBrokerName,
     };
-    processInsertUpdateOrder(data,logmessege);
+    processInsertUpdateOrder(data, logmessege);
   };
 
-  const processInsertUpdateOrder = async (requestOrderList,logmessege) => {
-    const objData={
-      orderitems:requestOrderList,
-      logmessage:logmessege
+  const processInsertUpdateOrder = async (requestOrderList, logmessege) => {
+    const objData = {
+      orderitems: requestOrderList,
+      logmessage: logmessege
     }
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       const resultData = await PaperTradingAPI.processInsertUpdateOrderPaper(
@@ -1175,14 +1175,14 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         //setIsExecuteProcess(false);
         alertify.success("Order added successfully.");
         setChangeOrderPosition((data) => data + 1);
-      }else{
+      } else {
         setIsExecuteProcess(false);
       }
     } else {
       let requestData = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestOrderList,
-        logmessage:logmessege
+        logmessage: logmessege
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderLive(
         requestData
@@ -1190,13 +1190,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       if (resultData != null) {
         //setIsExecuteProcess(false);
         alertify.message(resultData);
-      }else{
+      } else {
         setIsExecuteProcess(false);
       }
     }
   };
 
-  const handleKeyDown = (e) => { 
+  const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === "Tab") {
       if (e.target.name === "globalTP") {
         setTpEdit(false);
@@ -1213,66 +1213,66 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     return /^-?\d*\.?\d+$/.test(value);
   };
 
-  const processtrailingvalues = async () => {   
-    
-        if(!isValidDecimal(globalStopLoss) && globalStopLoss!==""){
-            alertify.error("Stoploss value is invalid.");
-            updateGlobalStopLoss("0.00");
-            return;
-        }
-        if(!isValidDecimal(globalTP) && globalTP!==""){
-          alertify.error("Trail SL By value is invalid.");
-          updateGlobalTP("0.00");
-          return;
-        }
-        if(!isValidDecimal(globalTarget) && globalTarget!==""){
-          alertify.error("Target value is invalid.");
-          updateGlobalTarget("0.00");
-          return;
-        }
-        let requestData = {
-          clientid: globleSelectedClientInfo,
-          tradermode: globleSelectedTradingType,
-          brockername: globleBrokerName,
-          stopLoss: globalStopLoss.toString()===""?"0":globalStopLoss.toString(),
-          trailingpoint: globalTP.toString()===""?"0":globalTP.toString(),
-          target: globalTarget.toString()===""?"0":globalTarget.toString(),
-          currentmtm:mltUnrealized.toString(),
-        };
-        const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
-        if (resultData != null) {
-          alertify.success("Stoploss Target updated successfully.");
-        }else{
-          alertify.error("Unable to process request now.Please try again.");
-          gettrailingvalues();      
-        }
-     
+  const processtrailingvalues = async () => {
+
+    if (!isValidDecimal(globalStopLoss) && globalStopLoss !== "") {
+      alertify.error("Stoploss value is invalid.");
+      updateGlobalStopLoss("0.00");
+      return;
+    }
+    if (!isValidDecimal(globalTP) && globalTP !== "") {
+      alertify.error("Trail SL By value is invalid.");
+      updateGlobalTP("0.00");
+      return;
+    }
+    if (!isValidDecimal(globalTarget) && globalTarget !== "") {
+      alertify.error("Target value is invalid.");
+      updateGlobalTarget("0.00");
+      return;
+    }
+    let requestData = {
+      clientid: globleSelectedClientInfo,
+      tradermode: globleSelectedTradingType,
+      brockername: globleBrokerName,
+      stopLoss: globalStopLoss.toString() === "" ? "0" : globalStopLoss.toString(),
+      trailingpoint: globalTP.toString() === "" ? "0" : globalTP.toString(),
+      target: globalTarget.toString() === "" ? "0" : globalTarget.toString(),
+      currentmtm: mltUnrealized.toString(),
+    };
+    const resultData = await PaperTradingAPI.processtrailingvalues(requestData);
+    if (resultData != null) {
+      alertify.success("Stoploss Target updated successfully.");
+    } else {
+      alertify.error("Unable to process request now.Please try again.");
+      gettrailingvalues();
+    }
+
   };
 
   const handleExitPEPosition = (e) => {
     setIsExecuteProcess(true);
-    const msgtext="EXIT ALL PE Positions";
+    const msgtext = "EXIT ALL PE Positions";
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       processExitPEPositionPaper(msgtext);
     } else {
       processExitPEPositionLive(msgtext);
     }
   };
-  
+
   const handleExitCEPosition = (e) => {
     setIsExecuteProcess(true);
-        const msgtext="EXIT ALL CE Positions";
-        if (globleSelectedTradingType.toLowerCase() === "paper") {
-          processExitCEPositionPaper(msgtext);
-        } else {
-          processExitCEPositionLive(msgtext);
-        }
+    const msgtext = "EXIT ALL CE Positions";
+    if (globleSelectedTradingType.toLowerCase() === "paper") {
+      processExitCEPositionPaper(msgtext);
+    } else {
+      processExitCEPositionLive(msgtext);
+    }
   };
 
 
   const handleExitAllPosition = (e) => {
     setIsExecuteProcess(true);
-    const msgtext="EXIT ALL Positions";         
+    const msgtext = "EXIT ALL Positions";
     if (globleSelectedTradingType.toLowerCase() === "paper") {
       processExitAllPositionPaper(msgtext);
     } else {
@@ -1287,12 +1287,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       () => {
         processAllPendingOrder();
       },
-      () => {}
+      () => { }
     );
   };
 
   const processExitAllPositionLive = (logmessage) => {
-    
+
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1311,61 +1311,61 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true)
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true)
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : parseFloat(
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
+            ? ltp
+            : parseFloat(
               calculateOrderPrice(
                 getSetting(positioninstrumentname, positionexpirydate)
                   ?.defaultLMTPerCentage,
@@ -1374,46 +1374,46 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 ltp
               )
             ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus: "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+              ? ltp
+              : calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus: "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -1439,7 +1439,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
   const processExitAllPositionPaper = (logmessage) => {
@@ -1450,7 +1450,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         data.expirydate === globleExpityvalue &&
         data.clientId === globleSelectedClientInfo
     );
-   
+
     const {
       defaultProductName,
       defaultSliceQty,
@@ -1462,116 +1462,63 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true)
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true)
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
-            "buy"
-          ? parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) >= parseFloat(ltp)
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
             ? ltp
-            : calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              ).toString()
-          : parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus:
-          (positiontype === undefined ? "MKT" : positiontype) === "MKT"
-            ? "Completed"
             : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
               "buy"
-            ? parseFloat(
+              ? parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -1580,9 +1527,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) >= parseFloat(ltp)
-              ? "Completed"
-              : "Pending"
-            : parseFloat(
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+              : parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -1591,25 +1544,72 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) <= parseFloat(ltp)
-            ? "Completed"
-            : "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus:
+            (positiontype === undefined ? "MKT" : positiontype) === "MKT"
+              ? "Completed"
+              : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+                "buy"
+                ? parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) >= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending"
+                : parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) <= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -1635,10 +1635,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
-  const processExitPEPositionLive = (logmessage) => {    
+  const processExitPEPositionLive = (logmessage) => {
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -1657,61 +1657,61 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="PE")
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "PE")
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : parseFloat(
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
+            ? ltp
+            : parseFloat(
               calculateOrderPrice(
                 getSetting(positioninstrumentname, positionexpirydate)
                   ?.defaultLMTPerCentage,
@@ -1720,46 +1720,46 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 ltp
               )
             ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus: "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+              ? ltp
+              : calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus: "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -1785,7 +1785,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
   const processExitPEPositionPaper = (logmessage) => {
@@ -1807,116 +1807,63 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="PE")
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "PE")
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
-            "buy"
-          ? parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) >= parseFloat(ltp)
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
             ? ltp
-            : calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              ).toString()
-          : parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus:
-          (positiontype === undefined ? "MKT" : positiontype) === "MKT"
-            ? "Completed"
             : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
               "buy"
-            ? parseFloat(
+              ? parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -1925,9 +1872,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) >= parseFloat(ltp)
-              ? "Completed"
-              : "Pending"
-            : parseFloat(
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+              : parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -1936,25 +1889,72 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) <= parseFloat(ltp)
-            ? "Completed"
-            : "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus:
+            (positiontype === undefined ? "MKT" : positiontype) === "MKT"
+              ? "Completed"
+              : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+                "buy"
+                ? parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) >= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending"
+                : parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) <= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -1980,12 +1980,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
 
   const processExitCEPositionLive = (logmessage) => {
-    
+
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
       (data) =>
@@ -2004,61 +2004,61 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="CE")
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "CE")
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : parseFloat(
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
+            ? ltp
+            : parseFloat(
               calculateOrderPrice(
                 getSetting(positioninstrumentname, positionexpirydate)
                   ?.defaultLMTPerCentage,
@@ -2067,46 +2067,46 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 ltp
               )
             ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus: "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+              ? ltp
+              : calculateOrderPrice(
+                getSetting(positioninstrumentname, positionexpirydate)
+                  ?.defaultLMTPerCentage,
+                positiontype,
+                positionsidetype,
+                ltp
+              ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus: "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -2132,7 +2132,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
   const processExitCEPositionPaper = (logmessage) => {
@@ -2154,116 +2154,63 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     } = { ...configInformation };
     //let defaultLMTPer=getSetting(dataInfo.positioninstrumentname, dataInfo.positionexpirydate)?.defaultLMTPerCentage;
     const newOrderPosition = filterOrderPosition
-    .filter((dataPosition)=>dataPosition.checkPositionRow===true  && dataPosition.positionordertype==="CE")
-    .map(
-      ({
-        strikeprice,
-        positionproductname,
-        positiontype,
-        positioninstrumentname,
-        positionexpirydate,
-        positionordertype,
-        exitqty,
-        maxorderqty,
-        defaultlotqty,
-        positionsidetype,
-        instrumentToken,
-        positionexchangetoken,
-        ltp,
-        firstInInstrumentToken,
-        secondInInstrumentToken,
-        firstOutInstrumentToken,
-        secondOutInstrumentToken,
-        firstInStrike,
-        secondInStrike,
-        firstOutStrike,
-        secondOutStrike,
-        firstInExchangeToken,
-        secondInExchangeToken,
-        firstOutExchangeToken,
-        secondOutExchangeToken,
-        tradingSymbol,
-        exchange,
-      }) => ({
-        strikePrice: strikeprice,
-        productname: positionproductname,
-        ordertype: positiontype,
-        expirydate: positionexpirydate,
-        instrumentname: positioninstrumentname,
-        orderside: positionordertype,
-        orderqty: "0",
-        totalorderqty: (
-          (getSetting(positioninstrumentname, positionexpirydate) != null
-            ? parseInt(
+      .filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "CE")
+      .map(
+        ({
+          strikeprice,
+          positionproductname,
+          positiontype,
+          positioninstrumentname,
+          positionexpirydate,
+          positionordertype,
+          exitqty,
+          maxorderqty,
+          defaultlotqty,
+          positionsidetype,
+          instrumentToken,
+          positionexchangetoken,
+          ltp,
+          firstInInstrumentToken,
+          secondInInstrumentToken,
+          firstOutInstrumentToken,
+          secondOutInstrumentToken,
+          firstInStrike,
+          secondInStrike,
+          firstOutStrike,
+          secondOutStrike,
+          firstInExchangeToken,
+          secondInExchangeToken,
+          firstOutExchangeToken,
+          secondOutExchangeToken,
+          tradingSymbol,
+          exchange,
+        }) => ({
+          strikePrice: strikeprice,
+          productname: positionproductname,
+          ordertype: positiontype,
+          expirydate: positionexpirydate,
+          instrumentname: positioninstrumentname,
+          orderside: positionordertype,
+          orderqty: "0",
+          totalorderqty: (
+            (getSetting(positioninstrumentname, positionexpirydate) != null
+              ? parseInt(
                 getSetting(positioninstrumentname, positionexpirydate)
                   .defaultQty
               )
-            : defaultlotqty) * parseInt(exitqty)
-        ).toString(),
-        nooforderlot: exitqty.toString(),
-        maxorderqty: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultSliceQty.toString(),
-        orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
-        "MKT"
-          ? ltp
-          : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
-            "buy"
-          ? parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) >= parseFloat(ltp)
+              : defaultlotqty) * parseInt(exitqty)
+          ).toString(),
+          nooforderlot: exitqty.toString(),
+          maxorderqty: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultSliceQty.toString(),
+          orderprice: ((positiontype === undefined ? "MKT" : positiontype) ===
+            "MKT"
             ? ltp
-            : calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              ).toString()
-          : parseFloat(
-              calculateOrderPrice(
-                getSetting(positioninstrumentname, positionexpirydate)
-                  ?.defaultLMTPerCentage,
-                positiontype,
-                positionsidetype,
-                ltp
-              )
-            ) <= parseFloat(ltp)
-          ? ltp
-          : calculateOrderPrice(
-              getSetting(positioninstrumentname, positionexpirydate)
-                ?.defaultLMTPerCentage,
-              positiontype,
-              positionsidetype,
-              ltp
-            ).toString()
-        ).toString(),
-        tradermode: globleSelectedTradingType,
-        orderidbybroker: "",
-        clientid: globleSelectedClientInfo,
-        lotsize: getSetting(
-          positioninstrumentname,
-          positionexpirydate
-        ).defaultQty.toString(),
-        instrumentToken: instrumentToken,
-        orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
-        stoploss: globalStopLoss.toString(),
-        target: globalTarget.toString(),
-        trailling: globalTP.toString(),
-        orderexchangetoken: positionexchangetoken,
-        orderstatus:
-          (positiontype === undefined ? "MKT" : positiontype) === "MKT"
-            ? "Completed"
             : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
               "buy"
-            ? parseFloat(
+              ? parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -2272,9 +2219,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) >= parseFloat(ltp)
-              ? "Completed"
-              : "Pending"
-            : parseFloat(
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+              : parseFloat(
                 calculateOrderPrice(
                   getSetting(positioninstrumentname, positionexpirydate)
                     ?.defaultLMTPerCentage,
@@ -2283,25 +2236,72 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                   ltp
                 )
               ) <= parseFloat(ltp)
-            ? "Completed"
-            : "Pending",
-        firstInInstrumentToken: firstInInstrumentToken.toString(),
-        secondInInstrumentToken: secondInInstrumentToken.toString(),
-        firstOutInstrumentToken: firstOutInstrumentToken.toString(),
-        secondOutInstrumentToken: secondOutInstrumentToken.toString(),
-        firstInStrike: firstInStrike.toString(),
-        secondInStrike: secondInStrike.toString(),
-        firstOutStrike: firstOutStrike.toString(),
-        secondOutStrike: secondOutStrike.toString(),
-        firstInExchangeToken: firstInExchangeToken.toString(),
-        secondInExchangeToken: secondInExchangeToken.toString(),
-        firstOutExchangeToken: firstOutExchangeToken.toString(),
-        secondOutExchangeToken: secondOutExchangeToken.toString(),
-        tradingSymbol: tradingSymbol,
-        exchange: exchange,
-        brokerName: globleBrokerName,
-      })
-    );
+                ? ltp
+                : calculateOrderPrice(
+                  getSetting(positioninstrumentname, positionexpirydate)
+                    ?.defaultLMTPerCentage,
+                  positiontype,
+                  positionsidetype,
+                  ltp
+                ).toString()
+          ).toString(),
+          tradermode: globleSelectedTradingType,
+          orderidbybroker: "",
+          clientid: globleSelectedClientInfo,
+          lotsize: getSetting(
+            positioninstrumentname,
+            positionexpirydate
+          ).defaultQty.toString(),
+          instrumentToken: instrumentToken,
+          orderaction: positionsidetype === "BUY" ? "SELL" : "BUY",
+          stoploss: globalStopLoss.toString(),
+          target: globalTarget.toString(),
+          trailling: globalTP.toString(),
+          orderexchangetoken: positionexchangetoken,
+          orderstatus:
+            (positiontype === undefined ? "MKT" : positiontype) === "MKT"
+              ? "Completed"
+              : (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() ===
+                "buy"
+                ? parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) >= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending"
+                : parseFloat(
+                  calculateOrderPrice(
+                    getSetting(positioninstrumentname, positionexpirydate)
+                      ?.defaultLMTPerCentage,
+                    positiontype,
+                    positionsidetype,
+                    ltp
+                  )
+                ) <= parseFloat(ltp)
+                  ? "Completed"
+                  : "Pending",
+          firstInInstrumentToken: firstInInstrumentToken.toString(),
+          secondInInstrumentToken: secondInInstrumentToken.toString(),
+          firstOutInstrumentToken: firstOutInstrumentToken.toString(),
+          secondOutInstrumentToken: secondOutInstrumentToken.toString(),
+          firstInStrike: firstInStrike.toString(),
+          secondInStrike: secondInStrike.toString(),
+          firstOutStrike: firstOutStrike.toString(),
+          secondOutStrike: secondOutStrike.toString(),
+          firstInExchangeToken: firstInExchangeToken.toString(),
+          secondInExchangeToken: secondInExchangeToken.toString(),
+          firstOutExchangeToken: firstOutExchangeToken.toString(),
+          secondOutExchangeToken: secondOutExchangeToken.toString(),
+          tradingSymbol: tradingSymbol,
+          exchange: exchange,
+          brokerName: globleBrokerName,
+        })
+      );
     const scopedUpdatedRowsArray = [];
     const updatedRows = [...newOrderPosition];
     while (updatedRows.some((row) => row.totalorderqty > 0)) {
@@ -2327,13 +2327,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         );
       });
     }
-    processExitAllPositionInBulk(scopedUpdatedRowsArray,logmessage);
+    processExitAllPositionInBulk(scopedUpdatedRowsArray, logmessage);
   };
 
 
 
 
-  const getSetting = (instrumentname, expiryDate) => {    
+  const getSetting = (instrumentname, expiryDate) => {
     const dataSetting = globalConfigPostionData.find(
       (data) =>
         data.instrumentname === instrumentname && data.expirydate === expiryDate
@@ -2351,25 +2351,25 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() === "buy"
-          ? parseFloat(
+          ? (positionsidetype === "BUY" ? "SELL" : "BUY").toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(ltp) +
-                (parseFloat(ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(ltp) -
-                (parseFloat(ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(ltp);
+          : parseFloat(ltp);
     return Math.round(Number(orderprice) * 20) / 20;
   };
 
-  const processExitAllPositionInBulk = async (requestData,logmessage) => {
-    
+  const processExitAllPositionInBulk = async (requestData, logmessage) => {
+
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      const objReq={
+      const objReq = {
         orderitems: requestData,
-        logmessage:logmessage
+        logmessage: logmessage
       }
       const resultData =
         await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objReq);
@@ -2381,7 +2381,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let dataInfo = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestData,
-        logmessage:logmessage
+        logmessage: logmessage
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderBulkLive(
         dataInfo
@@ -2398,9 +2398,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     message
   ) => {
     if (globleSelectedTradingType.toLowerCase() === "paper") {
-      const objRequest={
-        orderitems:requestData,
-        logmessage:message
+      const objRequest = {
+        orderitems: requestData,
+        logmessage: message
       }
       const resultData =
         await PaperTradingAPI.processInsertUpdateOrderBulkPaper(objRequest);
@@ -2412,7 +2412,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       let dataInfo = {
         logintoken: sessionStorage.getItem("apiSecret"),
         orderitems: requestData,
-        logmessage:message
+        logmessage: message
       };
       const resultData = await LiveTradingAPI.processInsertUpdateOrderBulkLive(
         dataInfo
@@ -2434,7 +2434,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         clientid: globleSelectedClientInfo,
         tradermode: globleSelectedTradingType,
         brokerName: globleBrokerName,
-        logmessage:"EXIT ALL Pending Orders."
+        logmessage: "EXIT ALL Pending Orders."
       };
       const resultData = await PaperTradingAPI.processAllPendingOrderForClient(
         requestData
@@ -2449,12 +2449,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         tradermode: globleSelectedTradingType,
         logintoken: sessionStorage.getItem("apiSecret"),
         brokerName: globleBrokerName,
-        logmessage:"EXIT ALL Pending Orders."
+        logmessage: "EXIT ALL Pending Orders."
       };
       const resultData = await LiveTradingAPI.processAllPendingOrderForClient(
         requestData
       );
-      if (resultData != null) {        
+      if (resultData != null) {
         alertify.success(resultData);
         setChangeOrderPosition((data) => data + 1);
       }
@@ -2470,12 +2470,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       getOrderCompletedList();
       getOrderClosedList();
       getLogList();
-      gettrailingvalues();  
-      if(sessionStorage.getItem("tradingtype")==="Live"){
+      gettrailingvalues();
+      if (sessionStorage.getItem("tradingtype") === "Live") {
         getTradesForClient();
-      }else{
+      } else {
         updateGlobleTrades([]);
-      }     
+      }
     }
   }, [globleSelectedTradingType, globleSelectedClientInfo]);
 
@@ -2497,103 +2497,103 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         });
       })
       .catch((err) => console.log(err));
- 
+
     connectionData.on("ReceiveData", (receivedData) => {
       getAllOpenPositionList();
       getOrderCompletedList();
       getOrderClosedList();
       getLogList();
       gettrailingvalues();
-      if(sessionStorage.getItem("tradingtype")==="Live"){
+      if (sessionStorage.getItem("tradingtype") === "Live") {
         getTradesForClient();
-      }else{
+      } else {
         updateGlobleTrades([]);
-      }        
-       
-    });    
-    connectionData.on('ReceiveLogDataToClients', (receivedData) => {        
-      getLogList();           
+      }
+
     });
-    connectionData.on('ReceiveDataForPosition', (receivedData) => {           
-      getPositionStoplossList();         
-      console.log("getPositionStoplossList")  
+    connectionData.on('ReceiveLogDataToClients', (receivedData) => {
+      getLogList();
+    });
+    connectionData.on('ReceiveDataForPosition', (receivedData) => {
+      getPositionStoplossList();
+      console.log("getPositionStoplossList")
     });
     connectionData.on('ReceiveDataForPositionProfile', (receivedData) => {
-      gettrailingvaluesfromtrailing();           
+      gettrailingvaluesfromtrailing();
     });
     connectionData.on('ReceiveServerTime', (receivedData) => {
-      const receivedTime = new Date(receivedData);      
-      updateGlobleServerTime(receivedTime);        
+      const receivedTime = new Date(receivedData);
+      updateGlobleServerTime(receivedTime);
     });
-    
+
     connectionData.on('ReceiveOrderDataToClients', (receivedData) => {
-        getOrderCompletedList();   
-        if(sessionStorage.getItem("tradingtype")==="Live"){
-          getTradesForClient();
-        }else{
-          updateGlobleTrades([]);
-        }                 
+      getOrderCompletedList();
+      if (sessionStorage.getItem("tradingtype") === "Live") {
+        getTradesForClient();
+      } else {
+        updateGlobleTrades([]);
+      }
     });
-    return () => {    
+    return () => {
       console.log("Dis-Connected to SignalR Hub");
       connectionData.stop();
     };
   }, []);
 
-  const getTradesForClient=async()=>{  
-      let requestData = {
-        logintoken:sessionStorage.getItem("apiSecret")       
-      };
-      const resultData=await ZerodaAPI.getTradesForClient(requestData);        
-      if(resultData!=null){ 
-        const {status,data}=resultData;
-        if(status==="success"){
-          debugger;
-         let sortedData= data.sort((a, b) => {
-            // Convert times to Date objects for comparison
-            const timeA = new Date("1970-01-01T" + a.order_timestamp);
-            const timeB = new Date("1970-01-01T" + b.order_timestamp);
-            return timeB-timeA ;
-          });
-           
-          updateGlobleTrades(sortedData);
-        }else{
-          updateGlobleTrades([]);
-        }             
-      }else{
+  const getTradesForClient = async () => {
+    let requestData = {
+      logintoken: sessionStorage.getItem("apiSecret")
+    };
+    const resultData = await ZerodaAPI.getTradesForClient(requestData);
+    if (resultData != null) {
+      const { status, data } = resultData;
+      if (status === "success") {
+
+        let sortedData = data.sort((a, b) => {
+          // Convert times to Date objects for comparison
+          const timeA = new Date("1970-01-01T" + a.order_timestamp);
+          const timeB = new Date("1970-01-01T" + b.order_timestamp);
+          return timeB - timeA;
+        });
+
+        updateGlobleTrades(sortedData);
+      } else {
         updateGlobleTrades([]);
-      }   
+      }
+    } else {
+      updateGlobleTrades([]);
+    }
   }
 
 
-  const getPositionStoplossList=async()=>{         
-    let requestData={
-        clientid:sessionStorage.getItem("clienttoken"),
-        tradermode:sessionStorage.getItem("tradingtype")  
+  const getPositionStoplossList = async () => {
+    let requestData = {
+      clientid: sessionStorage.getItem("clienttoken"),
+      tradermode: sessionStorage.getItem("tradingtype")
     }
-     const resultData=await PaperTradingAPI.getPositionStoplossList(requestData);        
-    if(resultData!=null){   
+    const resultData = await PaperTradingAPI.getPositionStoplossList(requestData);
+    if (resultData != null) {
       setOrderPosition((previousData) => {
-            if (previousData !== undefined) {  
-               
-                if(previousData!=null){
-                const updatedOrderPosition = previousData.map((position) => {
-                  const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
-                  if (matchingOption) {
-                    return {
-                      ...position,
-                      positionstoploss: matchingOption.positionstoploss        
-                    };
-                  }else{
-                    return {
-                      ...position
-                    }
-                  }  
-                });     
-                return updatedOrderPosition;
-            }
-        }    
-      });                          
+        if (previousData !== undefined) {
+
+          if (previousData != null) {
+            const updatedOrderPosition = previousData.map((position) => {
+              const matchingOption = resultData.find((item) => item?.positionid.toString() === position?.positionid.toString());
+              if (matchingOption) {
+                return {
+                  ...position,
+                  positionstoploss: matchingOption.positionstoploss
+                };
+              } else {
+                return {
+                  ...position
+                }
+              }
+            });
+            return updatedOrderPosition;
+          }
+        }
+      });
     }
   }
 
@@ -2601,19 +2601,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
-      brockername:sessionStorage.getItem("brokername")  ,
+      brockername: sessionStorage.getItem("brokername"),
     };
-    const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);    
+    const resultData = await PaperTradingAPI.gettrailingvaluesfromtrailing(requestData);
     if (resultData != null) {
-      
+
       if (resultData.length > 0) {
-        if(slEdit===false){     
-            updateGlobalStopLoss(resultData[0].stopLoss);
+        if (slEdit === false) {
+          updateGlobalStopLoss(resultData[0].stopLoss);
         }
-        if(tragetEdit===false){         
+        if (tragetEdit === false) {
           updateGlobalTarget(resultData[0].target);
         }
-        if(tpEdit===false){         
+        if (tpEdit === false) {
           updateGlobalTP(resultData[0].trailingpoint);
         }
       } else {
@@ -2628,10 +2628,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
-      brockername:sessionStorage.getItem("brokername")  ,
+      brockername: sessionStorage.getItem("brokername"),
     };
     const resultData = await PaperTradingAPI.gettrailingvalues(requestData);
-    
+
     if (resultData != null) {
       if (resultData.length > 0) {
         updateGlobalStopLoss(resultData[0].stopLoss);
@@ -2733,7 +2733,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         return data;
       });
       updateGlobleOrderPosition(dataResult);
-     
+
     }
   };
 
@@ -2743,20 +2743,20 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       tradermode: sessionStorage.getItem("tradingtype"),
     };
     const resultData = await PaperTradingAPI.getOrderCompletedList(requestData);
-    if (resultData != null) {       
+    if (resultData != null) {
       updateGlobleOrderList(resultData);
     }
   };
 
   const getOrderClosedList = async () => {
-    
+
     let requestData = {
       clientid: sessionStorage.getItem("clienttoken"),
       tradermode: sessionStorage.getItem("tradingtype"),
     };
     const resultData = await PaperTradingAPI.getOrderClosedList(requestData);
-    if (resultData != null) {       
-     
+    if (resultData != null) {
+
       updateGlobleClosedList(resultData);
     }
   };
@@ -2782,7 +2782,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleFirstPositionLive = (dataInfo, positionmovetype) => {
-    
+
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -2812,19 +2812,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -2839,11 +2839,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -2898,7 +2898,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.firstOutExchangeToken.toString();
       currentltp = dataInfo.firstOutltp;
     }
-    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+    let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
@@ -2976,16 +2976,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(currentltp) +
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(currentltp) -
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(currentltp);
+          : parseFloat(currentltp);
 
     let newCurrentTradingSymbol = Constant.GetTradaingSymbol(
       globleOptionChainList,
@@ -3015,11 +3015,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3079,7 +3079,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     processInsertUpdateOrderBulkMoveInOut(orderArray, message);
   };
   const handdleFirstPositionPaper = (dataInfo, positionmovetype) => {
-    
+
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -3109,19 +3109,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -3136,11 +3136,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3152,15 +3152,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? dataInfo.ltp.toString()
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? dataInfo.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? dataInfo.ltp.toString()
-          : orderprice.toString(),
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -3178,15 +3178,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? "Completed"
-          : "Pending",
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: dataInfo.firstInInstrumentToken.toString(),
       secondInInstrumentToken: dataInfo.secondInInstrumentToken.toString(),
       firstOutInstrumentToken: dataInfo.firstOutInstrumentToken.toString(),
@@ -3219,7 +3219,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.firstOutExchangeToken.toString();
       currentltp = dataInfo.firstOutltp;
     }
-    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+    let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
@@ -3293,16 +3293,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(currentltp) +
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(currentltp) -
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(currentltp);
+          : parseFloat(currentltp);
     let newCurrentTradingSymbol = Constant.GetTradaingSymbol(
       globleOptionChainList,
       dataInfo.positioninstrumentname,
@@ -3331,11 +3331,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3347,12 +3347,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? currentltp.toString()
           : dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
-            ? currentltp.toString()
-            : orderpriceNew.toString()
-          : parseFloat(orderpriceNew) <= parseFloat(currentltp)
-          ? currentltp.toString()
-          : orderpriceNew.toString(),
+            ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
+              ? currentltp.toString()
+              : orderpriceNew.toString()
+            : parseFloat(orderpriceNew) <= parseFloat(currentltp)
+              ? currentltp.toString()
+              : orderpriceNew.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -3370,12 +3370,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderpriceNew) <= parseFloat(currentltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderpriceNew) <= parseFloat(currentltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -3452,19 +3452,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
     let data = {
       strikePrice: dataInfo.strikeprice,
@@ -3479,11 +3479,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3538,7 +3538,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.secondOutExchangeToken.toString();
       currentltp = dataInfo.secondOutltp;
     }
-    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+    let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
@@ -3613,16 +3613,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(currentltp) +
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(currentltp) -
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(currentltp);
+          : parseFloat(currentltp);
 
     let newCurrentTradingSymbol = Constant.GetTradaingSymbol(
       globleOptionChainList,
@@ -3652,11 +3652,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3716,7 +3716,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handdleSecondPositionPaper = (dataInfo, positionmovetype) => {
-    
+
     let message = "";
     var configData = JSON.parse(sessionStorage.getItem("defaultConfig"));
     let configInformation = configData.find(
@@ -3746,21 +3746,21 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? (dataInfo.positionsidetype === "BUY"
+          ? (dataInfo.positionsidetype === "BUY"
             ? "SELL"
             : "BUY"
           ).toLowerCase() === "buy"
-          ? parseFloat(
+            ? parseFloat(
               parseFloat(dataInfo.ltp) +
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(dataInfo.ltp) -
-                (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(dataInfo.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(dataInfo.ltp);
+          : parseFloat(dataInfo.ltp);
 
-        
+
     let data = {
       strikePrice: dataInfo.strikeprice,
       productname: dataInfo.positionproductname,
@@ -3774,11 +3774,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3790,15 +3790,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? dataInfo.ltp.toString()
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? dataInfo.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? dataInfo.ltp.toString()
-          : orderprice.toString(),
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? dataInfo.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -3816,15 +3816,15 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : (dataInfo.positionsidetype === "BUY"
-              ? "SELL"
-              : "BUY"
-            ).toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
-          ? "Completed"
-          : "Pending",
+            ? "SELL"
+            : "BUY"
+          ).toLowerCase() === "buy"
+            ? parseFloat(orderprice) >= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(dataInfo.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: dataInfo.firstInInstrumentToken.toString(),
       secondInInstrumentToken: dataInfo.secondInInstrumentToken.toString(),
       firstOutInstrumentToken: dataInfo.firstOutInstrumentToken.toString(),
@@ -3857,7 +3857,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       currentExchangeToken = dataInfo.secondOutExchangeToken.toString();
       currentltp = dataInfo.secondOutltp;
     }
-    let strikePriceDiff=sessionStorage.getItem("strikePriceDiff");
+    let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let temptype = dataInfo.positionordertype;
     let dataNewStrick = Constant.GetNewStrike(
       dataInfo.positioninstrumentname,
@@ -3932,16 +3932,16 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
       (positiontype === undefined ? "MKT" : positiontype) === "MKT"
         ? dataInfo.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(
+          ? dataInfo.positionsidetype.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(currentltp) +
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(currentltp) -
-                (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(currentltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(currentltp);
+          : parseFloat(currentltp);
 
     let newCurrentTradingSymbol = Constant.GetTradaingSymbol(
       globleOptionChainList,
@@ -3971,11 +3971,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
           dataInfo.positionexpirydate
         ) != null
           ? parseInt(
-              getSetting(
-                dataInfo.positioninstrumentname,
-                dataInfo.positionexpirydate
-              ).defaultQty
-            )
+            getSetting(
+              dataInfo.positioninstrumentname,
+              dataInfo.positionexpirydate
+            ).defaultQty
+          )
           : defaultQty) * parseInt(dataInfo.moveinoutqty)
       ).toString(),
       nooforderlot: dataInfo.moveinoutqty.toString(),
@@ -3987,12 +3987,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? currentltp.toString()
           : dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
-            ? currentltp.toString()
-            : orderpriceNew.toString()
-          : parseFloat(orderpriceNew) <= parseFloat(currentltp)
-          ? currentltp.toString()
-          : orderpriceNew.toString(),
+            ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
+              ? currentltp.toString()
+              : orderpriceNew.toString()
+            : parseFloat(orderpriceNew) <= parseFloat(currentltp)
+              ? currentltp.toString()
+              : orderpriceNew.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -4010,12 +4010,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         (positiontype === undefined ? "MKT" : positiontype) === "MKT"
           ? "Completed"
           : dataInfo.positionsidetype.toLowerCase() === "buy"
-          ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderpriceNew) <= parseFloat(currentltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderpriceNew) >= parseFloat(currentltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderpriceNew) <= parseFloat(currentltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -4053,11 +4053,11 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
   };
 
   const handleRowClick = (e, index) => {
-    debugger;
-    if(e.target.dataset.name==="positiontrailling"){
+
+    if (e.target.dataset.name === "positiontrailling") {
       setOrderPosition((prevRowData) => {
         const updatedTempOrderPosition = prevRowData.map((position, i) => {
-          if (i === index && parseFloat(prevRowData[i].positiontrailling)===0) {
+          if (i === index && parseFloat(prevRowData[i].positiontrailling) === 0) {
             const positionTrailling = "";
             return {
               ...position,
@@ -4068,10 +4068,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         });
         return updatedTempOrderPosition;
       });
-    }else if(e.target.dataset.name==="positiontarget"){
+    } else if (e.target.dataset.name === "positiontarget") {
       setOrderPosition((prevRowData) => {
         const updatedTempOrderPosition = prevRowData.map((position, i) => {
-          if (i === index && parseFloat(prevRowData[i].positiontarget)===0) {
+          if (i === index && parseFloat(prevRowData[i].positiontarget) === 0) {
             const positionTarget = "";
             return {
               ...position,
@@ -4082,10 +4082,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
         });
         return updatedTempOrderPosition;
       });
-    }else{
+    } else {
       setOrderPosition((prevRowData) => {
         const updatedTempOrderPosition = prevRowData.map((position, i) => {
-          if (i === index && parseFloat(prevRowData[i].positionstoploss)===0) {
+          if (i === index && parseFloat(prevRowData[i].positionstoploss) === 0) {
             const positionStoploss = "";
             return {
               ...position,
@@ -4101,46 +4101,46 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
     setEditPositionRowNo(index);
   };
 
-  const handleKeyDownPosition = (e, index,data) => {
-    
+  const handleKeyDownPosition = (e, index, data) => {
+
     if (e.key === "Enter" || e.key === "Tab") {
-      if(!isValidDecimal(data.positionstoploss) && data.positionstoploss!==""){
-        alertify.error("Stoploss value is invalid.");         
+      if (!isValidDecimal(data.positionstoploss) && data.positionstoploss !== "") {
+        alertify.error("Stoploss value is invalid.");
         return;
-    }
-    if(!isValidDecimal(data.positiontrailling) && data.positiontrailling!==""){
-      alertify.error("Trail SL By value is invalid.");       
-      return;
-    }
-    if(!isValidDecimal(data.positiontarget) && data.positiontarget!==""){
-      alertify.error("Target value is invalid.");       
-      return;
-    }
+      }
+      if (!isValidDecimal(data.positiontrailling) && data.positiontrailling !== "") {
+        alertify.error("Trail SL By value is invalid.");
+        return;
+      }
+      if (!isValidDecimal(data.positiontarget) && data.positiontarget !== "") {
+        alertify.error("Target value is invalid.");
+        return;
+      }
 
-    if(parseFloat(data.positiontarget)!=0 && parseFloat(data.positiontarget)<parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="buy"){
-      alertify.error("Target should not be less than ltp.");         
-      return;
-    }
+      if (parseFloat(data.positiontarget) != 0 && parseFloat(data.positiontarget) < parseFloat(data.ltp) && data.positionsidetype.toLowerCase() === "buy") {
+        alertify.error("Target should not be less than ltp.");
+        return;
+      }
 
-    if(parseFloat(data.positiontarget)!=0 && parseFloat(data.positiontarget)>parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="sell"){
-      alertify.error("Target should not be greater than ltp.");       
-      return;
-    }
+      if (parseFloat(data.positiontarget) != 0 && parseFloat(data.positiontarget) > parseFloat(data.ltp) && data.positionsidetype.toLowerCase() === "sell") {
+        alertify.error("Target should not be greater than ltp.");
+        return;
+      }
 
-    if(parseFloat(data.positionstoploss)!=0 && parseFloat(data.positionstoploss)>parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="buy"){
-      alertify.error("Stoploss should not be greater than ltp.");         
-      return;
-    }
+      if (parseFloat(data.positionstoploss) != 0 && parseFloat(data.positionstoploss) > parseFloat(data.ltp) && data.positionsidetype.toLowerCase() === "buy") {
+        alertify.error("Stoploss should not be greater than ltp.");
+        return;
+      }
 
-    if(parseFloat(data.positionstoploss)!=0 && parseFloat(data.positionstoploss)<parseFloat(data.ltp) && data.positionsidetype.toLowerCase()==="sell"){
-      alertify.error("Stoploss should not be less than ltp.");       
-      return;
-    }
+      if (parseFloat(data.positionstoploss) != 0 && parseFloat(data.positionstoploss) < parseFloat(data.ltp) && data.positionsidetype.toLowerCase() === "sell") {
+        alertify.error("Stoploss should not be less than ltp.");
+        return;
+      }
 
 
       setEditPositionRow(false);
       setEditPositionRow("-1");
-      processpositiontrailingData(data.positionid,data.positionstoploss,data.positiontrailling,data.positiontarget,data.ltp);
+      processpositiontrailingData(data.positionid, data.positionstoploss, data.positiontrailling, data.positiontarget, data.ltp);
     }
   };
 
@@ -4160,29 +4160,29 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
   // }
 
-  useEffect(() => {    
-    if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {        
-        let RMSConfig=JSON.parse(sessionStorage.getItem("RMSConfig"));
-        if(RMSConfig!=null){
-          if(RMSConfig.length>0){
-            if(parseFloat(RMSConfig[0].rmslimit)!=0 && parseFloat(RMSConfig[0].rmslimit)>=(parseFloat(globlemltRealized)+parseFloat(mltUnrealized))){
-              updateGlobalProcessRMS(true);
-            } 
+  useEffect(() => {
+    if (parseFloat(globlemltRealized) != 0 || parseFloat(mltUnrealized) != 0) {
+      let RMSConfig = JSON.parse(sessionStorage.getItem("RMSConfig"));
+      if (RMSConfig != null) {
+        if (RMSConfig.length > 0) {
+          if (parseFloat(RMSConfig[0].rmslimit) != 0 && parseFloat(RMSConfig[0].rmslimit) >= (parseFloat(globlemltRealized) + parseFloat(mltUnrealized))) {
+            updateGlobalProcessRMS(true);
           }
-         
         }
-               
+
+      }
+
     }
   }, [globlemltRealized, mltUnrealized]);
-  
-  
+
+
 
   return (
     <>
       <Card className="shadow">
-        <CardHeader className="border-0" style={{padding: "5px 5px 5px !important"}}>
+        <CardHeader className="border-0" style={{ padding: "5px 5px 5px !important" }}>
           <Row className="align-items-center">
-            <Col xl="1"  md="6" xs="12">
+            <Col xl="1" md="6" xs="12">
               <Input
                 className="form-control-alternative"
                 id="input-postal-code"
@@ -4190,64 +4190,64 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </Col>
-            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
-            <div>
-                  <label className="form-control-label" htmlFor="input-username">
-                    Total MTM
-                  </label>
+            <Col xl="2" md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
+              <div>
+                <label className="form-control-label" htmlFor="input-username">
+                  Total MTM
+                </label>
               </div>
               <div>
-                    <span
-                      className={
-                        ((globlemltRealized+mltUnrealized) > 0
-                          ? " text-success"
-                          : (globlemltRealized+mltUnrealized) < 0
-                          ? "text-danger"
-                          : "text-data-secondary") + " m-1 font-14px  text-center"
-                      }
-                    >
-                      {(globlemltRealized+mltUnrealized) > 0 ? "+" : ""}
-                      {Constant.CurrencyFormat((globlemltRealized+mltUnrealized))}
-                    </span>
+                <span
+                  className={
+                    ((globlemltRealized + mltUnrealized) > 0
+                      ? " text-success"
+                      : (globlemltRealized + mltUnrealized) < 0
+                        ? "text-danger"
+                        : "text-data-secondary") + " m-1 font-14px  text-center"
+                  }
+                >
+                  {(globlemltRealized + mltUnrealized) > 0 ? "+" : ""}
+                  {Constant.CurrencyFormat((globlemltRealized + mltUnrealized))}
+                </span>
               </div>
             </Col>
-            <Col xl="2"  md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
+            <Col xl="2" md="6" xs="12" style={{ height: "25px", lineHeight: "15px" }}>
               <div>
-                    <label className="form-control-label" htmlFor="input-username">
-                        Unrealised MTM
-                    </label>
+                <label className="form-control-label" htmlFor="input-username">
+                  Unrealised MTM
+                </label>
               </div>
               <div>
-                    <span
-                      className={
-                        (mltUnrealized > 0
-                          ? " text-success"
-                          : mltUnrealized < 0
-                          ? "text-danger"
-                          : "text-data-secondary") + " m-1 font-14px  text-center"
-                      }
-                    >
-                      {mltUnrealized > 0 ? "+" : ""}
-                      {Constant.CurrencyFormat(mltUnrealized)}
-                    </span>
+                <span
+                  className={
+                    (mltUnrealized > 0
+                      ? " text-success"
+                      : mltUnrealized < 0
+                        ? "text-danger"
+                        : "text-data-secondary") + " m-1 font-14px  text-center"
+                  }
+                >
+                  {mltUnrealized > 0 ? "+" : ""}
+                  {Constant.CurrencyFormat(mltUnrealized)}
+                </span>
               </div>
             </Col>
-            <Col xl="1"  md="2" xs="4" className="stoplosstarget">
+            <Col xl="1" md="2" xs="4" className="stoplosstarget">
               <fieldset
                 className="border"
                 onClick={() => {
-                  if(parseFloat(globalStopLoss)===0){
+                  if (parseFloat(globalStopLoss) === 0) {
                     updateGlobalStopLoss("");
-                  }  
+                  }
                   setSLEdit(true);
                 }}
               >
                 <legend align="right">StopLoss</legend>
                 {!slEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalStopLoss) !== 0 && globalStopLoss !== "" 
-                      ?  parseFloat(globalStopLoss).toFixed(2)
-                      :  parseFloat(globalStopLoss) === 0 && parseFloat(globalTP) !== 0 ? parseFloat(globalStopLoss): "---"}
+                    {parseFloat(globalStopLoss) !== 0 && globalStopLoss !== ""
+                      ? parseFloat(globalStopLoss).toFixed(2)
+                      : parseFloat(globalStopLoss) === 0 && parseFloat(globalTP) !== 0 ? parseFloat(globalStopLoss) : "---"}
                   </label>
                 ) : (
                   <Input
@@ -4258,24 +4258,24 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                     min="0"
                     name="globalStopLoss"
                     value={globalStopLoss}
-                    onKeyDown={handleKeyDown}                   
-                    onChange={(e) => {     
-                          updateGlobalStopLoss(e.target.value);
-                          if(e.target.value==="" || parseFloat(e.target.value)===0){
-                            updateGlobalTP(0);
-                          }
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => {
+                      updateGlobalStopLoss(e.target.value);
+                      if (e.target.value === "" || parseFloat(e.target.value) === 0) {
+                        updateGlobalTP(0);
+                      }
                     }}
                   />
                 )}
               </fieldset>
             </Col>
-            <Col xl="1"  md="2" xs="4" className="stoplosstarget">
+            <Col xl="1" md="2" xs="4" className="stoplosstarget">
               <fieldset
                 className="border"
                 onClick={() => {
-                  if(parseFloat(globalTarget)===0){
+                  if (parseFloat(globalTarget) === 0) {
                     updateGlobalTarget("");
-                  }     
+                  }
                   setTragetEdit(true);
                 }}
               >
@@ -4283,7 +4283,7 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
                 {!tragetEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTarget)  !== 0 && globalTarget !== "" 
+                    {parseFloat(globalTarget) !== 0 && globalTarget !== ""
                       ? parseFloat(globalTarget).toFixed(2)
                       : "---"}
                   </label>
@@ -4308,19 +4308,19 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               <fieldset
                 className="border"
                 onClick={() => {
-                  if(globalStopLoss !== "" && parseFloat(globalStopLoss)!==0){
-                    if(parseFloat(globalTP)===0){
+                  if (globalStopLoss !== "" && parseFloat(globalStopLoss) !== 0) {
+                    if (parseFloat(globalTP) === 0) {
                       updateGlobalTP("");
-                    }                    
+                    }
                     setTpEdit(true);
                   }
-                      
+
                 }}
               >
                 <legend align="right">Trail SL By</legend>
                 {!tpEdit ? (
                   <label className="float-right">
-                    {parseFloat(globalTP)  !== 0 && globalTarget !== "" 
+                    {parseFloat(globalTP) !== 0 && globalTarget !== ""
                       ? parseFloat(globalTP).toFixed(2)
                       : "---"}
                   </label>
@@ -4343,12 +4343,12 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
             </Col>
 
             <Col xl="4" md="6" xs="12" className="text-center">
-                
-            <Button
-               disabled={                 
-                isexecuteProcess || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="CE").length===0
-              }
-                className="font-10px btn btn-success buy-light text-success text-bold"                
+
+              <Button
+                disabled={
+                  isexecuteProcess || orderPosition.filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "CE").length === 0
+                }
+                className="font-10px btn btn-success buy-light text-success text-bold"
                 href="#pablo"
                 onClick={(e) => handleExitCEPosition(e)}
                 size="sm"
@@ -4357,10 +4357,10 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
               </Button>
 
               <Button
-               disabled={                 
-                isexecuteProcess  || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true && dataPosition.positionordertype==="PE").length===0
-              }
-                className="font-10px btn btn-danger text-danger text-bold sell-light"                 
+                disabled={
+                  isexecuteProcess || orderPosition.filter((dataPosition) => dataPosition.checkPositionRow === true && dataPosition.positionordertype === "PE").length === 0
+                }
+                className="font-10px btn btn-danger text-danger text-bold sell-light"
                 href="#pablo"
                 onClick={(e) => handleExitPEPosition(e)}
                 size="sm"
@@ -4370,9 +4370,9 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
 
 
               <Button
-               disabled={                 
-                isexecuteProcess || orderPosition.filter((dataPosition)=>dataPosition.checkPositionRow===true).length===0
-              }
+                disabled={
+                  isexecuteProcess || orderPosition.filter((dataPosition) => dataPosition.checkPositionRow === true).length === 0
+                }
                 className="font-10px"
                 color="danger"
                 href="#pablo"
@@ -4400,13 +4400,13 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                 <Table className="align-items-center">
                   <thead className="thead-light">
                     <tr className="text-center">
-                      <th scope="col" style={{width:"3%"}}>
-                      <input 
-                                    type="checkbox" 
-                                    
-                                    checked={selectAll}
-                                    onChange={handleSelectAllClick}
-                                  />
+                      <th scope="col" style={{ width: "3%" }}>
+                        <input
+                          type="checkbox"
+
+                          checked={selectAll}
+                          onChange={handleSelectAllClick}
+                        />
                       </th>
                       <th scope="col" style={{ width: "3%" }}>
                         Side
@@ -4459,418 +4459,415 @@ const AdminOrderPositionDetails = ({ filterOrderPositionList, height }) => {
                       filterOrderPosition?.map((dataInfo, index) => {
                         if (dataInfo) {
                           return (
-                              <tr key={index} className={dataInfo.positionordertype==='CE'?"ce-light":"pe-light"}>
-                                <td>
-                                <input 
-                                    type="checkbox" 
-                                    checked={dataInfo.checkPositionRow}
-                                    onClick={() => handleCheckboxClick(dataInfo.positionid, index)}
-                                    // checked={dataInfo.checkPositionRow} 
-                                    // onClick={() => handleclieckevent(dataInfo.positionid,index)} 
-                                  />
-                                </td>
-                                <td className="text-center">
-                                  <span
-                                    className={
-                                      dataInfo.positionsidetype.toLowerCase() ===
-                                      "buy"
-                                        ? "btn text-success text-bold buy-light"
-                                        : "btn text-danger text-bold sell-light"
-                                    }
-                                  >
-                                    {dataInfo.positionsidetype}
-                                  </span>
-                                </td>
-                                <td className="text-left">
-                                  {dataInfo.strikeprice === "0" ? (
-                                    dataInfo.positioninstrumentname
-                                  ) : (
-                                    <>
-                                      <strong>
-                                        {" "}
-                                        {dataInfo.positioninstrumentname}{" "}
-                                      </strong>{" "}
-                                      {Constant.ConvertShortDate(
-                                        dataInfo.positionexpirydate
-                                      )}{" "}
-                                      {dataInfo.strikeprice}{" "}
-                                      {dataInfo.positionordertype}
-                                    </>
-                                  )}
-                                </td>
-                                <td className="text-center">
-                                  <span
-                                    className={
-                                      dataInfo.positionproductname.toLowerCase() ===
-                                      "mis"
-                                        ? "btn text-product-mis text-bold buy-light"
-                                        : "btn text-product-nmrd text-bold sell-light"
-                                    }
-                                  >
-                                    {dataInfo.positionproductname}
-                                  </span>
-                                </td>
-                                <td className="text-center">
-                                  {/* {dataInfo.positionnetqty} */}
-
-                                  <fieldset className="border">
-                                    <legend align="right">
-                                      {parseInt(dataInfo.positionnetqty) < 0
-                                        ? -1 * dataInfo.positionnetqty
-                                        : dataInfo.positionnetqty}
-                                    </legend>
-                                    {dataInfo.positionnetlot}
-                                  </fieldset>
-                                </td>
-                                <td className="text-right">
-                                  {parseFloat(dataInfo.positionavgprice) < 0
-                                    ? Constant.CurrencyFormat(
-                                        dataInfo.positionavgprice
-                                      )
-                                    : Constant.CurrencyFormat(
-                                        dataInfo.positionavgprice
-                                      )}
-                                </td>
-                                <td className="text-right">
-                                  {Constant.CurrencyFormat(dataInfo.ltp)}
-                                </td>
-                                <td
+                            <tr key={index} className={dataInfo.positionordertype === 'CE' ? "ce-light" : "pe-light"}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={dataInfo.checkPositionRow}
+                                  onClick={() => handleCheckboxClick(dataInfo.positionid, index)}
+                                // checked={dataInfo.checkPositionRow} 
+                                // onClick={() => handleclieckevent(dataInfo.positionid,index)} 
+                                />
+                              </td>
+                              <td className="text-center">
+                                <span
                                   className={
-                                    parseFloat(dataInfo?.unrealisedpnl) > 0
-                                      ? "text-success text-right"
-                                      : parseFloat(dataInfo?.unrealisedpnl) < 0
+                                    dataInfo.positionsidetype.toLowerCase() ===
+                                      "buy"
+                                      ? "btn text-success text-bold buy-light"
+                                      : "btn text-danger text-bold sell-light"
+                                  }
+                                >
+                                  {dataInfo.positionsidetype}
+                                </span>
+                              </td>
+                              <td className="text-left">
+                                {dataInfo.strikeprice === "0" ? (
+                                  dataInfo.positioninstrumentname
+                                ) : (
+                                  <>
+                                    <strong>
+                                      {" "}
+                                      {dataInfo.positioninstrumentname}{" "}
+                                    </strong>{" "}
+                                    {Constant.ConvertShortDate(
+                                      dataInfo.positionexpirydate
+                                    )}{" "}
+                                    {dataInfo.strikeprice}{" "}
+                                    {dataInfo.positionordertype}
+                                  </>
+                                )}
+                              </td>
+                              <td className="text-center">
+                                <span
+                                  className={
+                                    dataInfo.positionproductname.toLowerCase() ===
+                                      "mis"
+                                      ? "btn text-product-mis text-bold buy-light"
+                                      : "btn text-product-nmrd text-bold sell-light"
+                                  }
+                                >
+                                  {dataInfo.positionproductname}
+                                </span>
+                              </td>
+                              <td className="text-center">
+                                {/* {dataInfo.positionnetqty} */}
+
+                                <fieldset className="border">
+                                  <legend align="right">
+                                    {parseInt(dataInfo.positionnetqty) < 0
+                                      ? -1 * dataInfo.positionnetqty
+                                      : dataInfo.positionnetqty}
+                                  </legend>
+                                  {dataInfo.positionnetlot}
+                                </fieldset>
+                              </td>
+                              <td className="text-right">
+                                {parseFloat(dataInfo.positionavgprice) < 0
+                                  ? Constant.CurrencyFormat(
+                                    dataInfo.positionavgprice
+                                  )
+                                  : Constant.CurrencyFormat(
+                                    dataInfo.positionavgprice
+                                  )}
+                              </td>
+                              <td className="text-right">
+                                {Constant.CurrencyFormat(dataInfo.ltp)}
+                              </td>
+                              <td
+                                className={
+                                  parseFloat(dataInfo?.unrealisedpnl) > 0
+                                    ? "text-success text-right"
+                                    : parseFloat(dataInfo?.unrealisedpnl) < 0
                                       ? "text-danger text-right"
                                       : "text-data-secondary text-right"
-                                  }
-                                >
-                                  {parseFloat(dataInfo.unrealisedpnl) < 0
-                                    ? Constant.CurrencyFormat(dataInfo.unrealisedpnl)
-                                    : parseFloat(dataInfo.unrealisedpnl) > 0
-                                    ? "+" +
-                                      Constant.CurrencyFormat(dataInfo.unrealisedpnl)
-                                    : (Constant.CurrencyFormat(dataInfo.unrealisedpnl).includes('-')?Constant.CurrencyFormat(dataInfo.unrealisedpnl).replace('-', ''):Constant.CurrencyFormat(dataInfo.unrealisedpnl))}
-                                </td>
-                                <td
-                                  className="text-right"
-                                  data-name="positiontrailling"
-                                  onClick={(e) => handleRowClick(e, index)}
-                                >
-                                  {editPositionRow === true &&
-                                  editPositionRowNo === index && (parseFloat(dataInfo.positionstoploss)>0 && dataInfo.positionstoploss!=="") ? (
-                                    <Input
-                                      className="form-control-alternative"
-                                      id="input-position-trailling"
-                                      placeholder="Trailling"
-                                      data-name="positiontrailling"
-                                      type="number"
-                                      min="1"
-                                      onKeyDown={(e) =>
-                                        handleKeyDownPosition(e, index,dataInfo)
-                                      }
-                                      value={         
-                                          dataInfo.positiontrailling
-                                      }
-                                      onChange={(e) =>
-                                        handdlePositionTrailling(e, index, dataInfo)
-                                      }
-                                      
-                                    />
-                                  ) : parseFloat(dataInfo.positiontrailling) !== 0 && dataInfo.positiontrailling !== "" ? (
-                                        parseFloat(dataInfo.positiontrailling).toFixed(2)
-                                    ) : (
-                                        "---"
-                                    )
                                 }
-                                </td>
-                                <td
-                                  className="text-right"
-                                  data-name="positiontarget"
-                                  onClick={(e) => handleRowClick(e, index)}
-                                >
-                                  {editPositionRow === true &&
-                                  editPositionRowNo === index ? (
-                                    <Input
-                                      className="form-control-alternative"
-                                      id="input-position-target"
-                                      placeholder="Target"
-                                      data-name="positiontarget"
-                                      type="number"
-                                      min="1"
-                                      onKeyDown={(e) =>
-                                        handleKeyDownPosition(e, index,dataInfo)
-                                      }
-                                      value={
-                                       dataInfo.positiontarget
-                                       }
-                                      onChange={(e) =>
-                                        handdlePositionTarget(e, index, dataInfo)
-                                      }
-                                      
-                                    />
-                                  ) :                              
-                                  parseFloat(dataInfo.positiontarget) !== 0 && dataInfo.positiontarget !== "" ? (
-                                        parseFloat(dataInfo.positiontarget).toFixed(2)
-                                    ) : (
-                                        "---"
-                                    )
-                                  
-                                  
-                                  }
-                                </td>
-                                <td
-                                  className="text-right"
-                                  data-name="positionstoploss"
-                                  onClick={(e) => handleRowClick(e, index)}
-                                >
-                                  {editPositionRow === true &&
-                                  editPositionRowNo === index ? (
-                                    <Input
-                                      className="form-control-alternative"
-                                      id="input-position-stoploss"
-                                       data-name="positionstoploss"
-                                      placeholder="StopLoss"
-                                      type="number"
-                                      min="1"
-                                      onKeyDown={(e) =>
-                                        handleKeyDownPosition(e, index,dataInfo)
-                                      }
-                                      value={
-                                      dataInfo.positionstoploss
-                                      }
-                                      onChange={(e) =>
-                                        handdlePositionStopLoss(e, index, dataInfo)
-                                      }
-                                      
-                                    />
-                                  ) : 
-                                   parseFloat(dataInfo.positionstoploss) !== 0 && dataInfo.positionstoploss !== "" ? (
-                                        parseFloat(dataInfo.positionstoploss).toFixed(2)
-                                    ) : (
-                                        "---"
-                                    )
-                                   }
-                                </td>
+                              >
+                                {parseFloat(dataInfo.unrealisedpnl) < 0
+                                  ? Constant.CurrencyFormat(dataInfo.unrealisedpnl)
+                                  : parseFloat(dataInfo.unrealisedpnl) > 0
+                                    ? "+" +
+                                    Constant.CurrencyFormat(dataInfo.unrealisedpnl)
+                                    : (Constant.CurrencyFormat(dataInfo.unrealisedpnl).includes('-') ? Constant.CurrencyFormat(dataInfo.unrealisedpnl).replace('-', '') : Constant.CurrencyFormat(dataInfo.unrealisedpnl))}
+                              </td>
+                              <td
+                                className="text-right"
+                                data-name="positiontrailling"
+                                onClick={(e) => handleRowClick(e, index)}
+                              >
+                                {editPositionRow === true &&
+                                  editPositionRowNo === index && (parseFloat(dataInfo.positionstoploss) > 0 && dataInfo.positionstoploss !== "") ? (
+                                  <Input
+                                    className="form-control-alternative"
+                                    id="input-position-trailling"
+                                    placeholder="Trailling"
+                                    data-name="positiontrailling"
+                                    type="number"
+                                    min="1"
+                                    onKeyDown={(e) =>
+                                      handleKeyDownPosition(e, index, dataInfo)
+                                    }
+                                    value={
+                                      dataInfo.positiontrailling
+                                    }
+                                    onChange={(e) =>
+                                      handdlePositionTrailling(e, index, dataInfo)
+                                    }
 
-                                <td className="text-center" style={{ width: "4%" }}>
-                                  {dataInfo.positionordertype.toLowerCase() ===
-                                  "fut" ? (
-                                    ""
+                                  />
+                                ) : parseFloat(dataInfo.positiontrailling) !== 0 && dataInfo.positiontrailling !== "" ? (
+                                  parseFloat(dataInfo.positiontrailling).toFixed(2)
+                                ) : (
+                                  "---"
+                                )
+                                }
+                              </td>
+                              <td
+                                className="text-right"
+                                data-name="positiontarget"
+                                onClick={(e) => handleRowClick(e, index)}
+                              >
+                                {editPositionRow === true &&
+                                  editPositionRowNo === index ? (
+                                  <Input
+                                    className="form-control-alternative"
+                                    id="input-position-target"
+                                    placeholder="Target"
+                                    data-name="positiontarget"
+                                    type="number"
+                                    min="1"
+                                    onKeyDown={(e) =>
+                                      handleKeyDownPosition(e, index, dataInfo)
+                                    }
+                                    value={
+                                      dataInfo.positiontarget
+                                    }
+                                    onChange={(e) =>
+                                      handdlePositionTarget(e, index, dataInfo)
+                                    }
+
+                                  />
+                                ) :
+                                  parseFloat(dataInfo.positiontarget) !== 0 && dataInfo.positiontarget !== "" ? (
+                                    parseFloat(dataInfo.positiontarget).toFixed(2)
                                   ) : (
-                                    <div
-                                      className="moveinout"
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <button
-                                        className="btn btn-danger text-black  movein-light mr-1"
-                                        disabled={
-                                          !(parseFloat(dataInfo.secondInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
-                                        }                                         
-                                        onClick={(e) =>
-                                          handdleSecondPosition(dataInfo, "in")
-                                        }
-                                      >
-                                        <b> {dataInfo.secondInStrike} </b>(
-                                        {dataInfo.secondInltp})
-                                      </button>
-                                      <button
-                                        className="btn btn-danger text-black  movein-light mr-1"
-                                        disabled={
-                                          !(parseFloat(dataInfo.firstInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
-                                        }                                           
-                                        onClick={(e) =>
-                                          handdleFirstPosition(dataInfo, "in")
-                                        }
-                                      >
-                                        <b> {dataInfo.firstInStrike}</b> (
-                                        {dataInfo.firstInltp})
-                                      </button>
-                                    </div>
-                                  )}
-                                </td>
-                                <td className="text-center" style={{ width: "5%" }}>
-                                  {dataInfo.positionordertype.toLowerCase() ===
-                                  "fut" ? (
                                     "---"
+                                  )
+
+
+                                }
+                              </td>
+                              <td
+                                className="text-right"
+                                data-name="positionstoploss"
+                                onClick={(e) => handleRowClick(e, index)}
+                              >
+                                {editPositionRow === true &&
+                                  editPositionRowNo === index ? (
+                                  <Input
+                                    className="form-control-alternative"
+                                    id="input-position-stoploss"
+                                    data-name="positionstoploss"
+                                    placeholder="StopLoss"
+                                    type="number"
+                                    min="1"
+                                    onKeyDown={(e) =>
+                                      handleKeyDownPosition(e, index, dataInfo)
+                                    }
+                                    value={
+                                      dataInfo.positionstoploss
+                                    }
+                                    onChange={(e) =>
+                                      handdlePositionStopLoss(e, index, dataInfo)
+                                    }
+
+                                  />
+                                ) :
+                                  parseFloat(dataInfo.positionstoploss) !== 0 && dataInfo.positionstoploss !== "" ? (
+                                    parseFloat(dataInfo.positionstoploss).toFixed(2)
                                   ) : (
-                                    <fieldset className="border">
-                                      <legend align="right">
-                                        {dataInfo.moveinouttotalqty}
-                                      </legend>
-                                      <Input
-                                        style={{padding:"0.74rem !important" ,textAlign:"center"}}
-                                        className="form-control-alternative"
-                                        id="input-postal-code"
-                                        placeholder="Qty"
-                                        type="number"
-                                        min="1"
-                                        value={dataInfo.moveinoutqty}
-                                        onChange={(e) =>
-                                          handdleMoveInOutQtyChange(
-                                            e,
-                                            index,
-                                            dataInfo
-                                          )
-                                        }
-                                      />
-                                    </fieldset>
-                                  )}
-                                </td>
-                                <td
-                                  className="text-center moveinout"
-                                  style={{ width: "4%" }}
-                                >
-                                  {dataInfo.positionordertype.toLowerCase() ===
+                                    "---"
+                                  )
+                                }
+                              </td>
+
+                              <td className="text-center" style={{ width: "4%" }}>
+                                {dataInfo.positionordertype.toLowerCase() ===
                                   "fut" ? (
-                                    ""
-                                  ) : (
-                                    <div
-                                      className="moveinout"
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <button
-                                        className="btn btn-success moveout-light text-black  mr-1"
-                                        disabled={
-                                          !(parseFloat(dataInfo.firstOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
-                                        }
-                                        onClick={(e) =>
-                                          handdleFirstPosition(dataInfo, "out")
-                                        }
-                                      >
-                                        <b> {dataInfo.firstOutStrike}</b> (
-                                        {dataInfo.firstOutltp})
-                                      </button>
-                                      <button
-                                        className="btn btn-success moveout-light text-black     ml-1"
-                                        disabled={
-                                          !(parseFloat(dataInfo.secondOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
-                                        }                                       
-                                        onClick={(e) =>
-                                          handdleSecondPosition(dataInfo, "out")
-                                        }
-                                      >
-                                        <b> {dataInfo.secondOutStrike}</b> (
-                                        {dataInfo.secondOutltp})
-                                      </button>
-                                    </div>
-                                  )}
-                                </td>
-                                <td className="text-center">
-                                  <div className="form-group addexistnewqty">
+                                  ""
+                                ) : (
+                                  <div
+                                    className="moveinout"
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
                                     <button
-                                      className={`btn hide btn-danger text-danger text-bold sell-light mr-0 ${
-                                        parseFloat(dataInfo.ltp) < 0 ||
-                                        dataInfo.ltp === undefined
-                                          ? "disabled"
-                                          : ""
-                                      }`}
-                                      onClick={() =>
-                                        handdleAddExistQty(dataInfo, "exit")
-                                      }
+                                      className="btn btn-danger text-black  movein-light mr-1"
                                       disabled={
-                                        parseFloat(dataInfo.ltp) < 0 ||
-                                        dataInfo.ltp === undefined
-                                          ? true
-                                          : false
+                                        !(parseFloat(dataInfo.secondInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                      }
+                                      onClick={(e) =>
+                                        handdleSecondPosition(dataInfo, "in")
                                       }
                                     >
-                                      <i className="fas fa-close"></i>
+                                      <b> {dataInfo.secondInStrike} </b>(
+                                      {dataInfo.secondInltp})
                                     </button>
-                                    <fieldset className="border">
-                                      <legend align="right">
-                                        {dataInfo.newaddtotalqty}
-                                      </legend>
-                                      <Input
-                                      style={{width: "100%", padding:"0.74rem !important",textAlign:"center"}}
-                                        className="form-control-alternative"
-                                        
-                                        id="input-postal-code"
-                                        placeholder="Qty"
-                                        type="number"
-                                        min="1"
-                                        value={dataInfo.newqty}
-                                        onChange={(e) =>
-                                          handdleNewQtyChange(e, index, dataInfo)
-                                        }
-                                      />
-                                    </fieldset>
                                     <button
-                                      className={`btn btn-success buy-light text-success text-bold ml-1 ${
-                                        !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.newqty)
-                                          ? "disabled"
-                                          : ""
-                                      }`}
-                                      onClick={() =>
-                                        handdleAddExistQty(dataInfo, "add")
-                                      }
+                                      className="btn btn-danger text-black  movein-light mr-1"
                                       disabled={
-                                        !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.newqty)||
-                                        isexecuteProcess
+                                        !(parseFloat(dataInfo.firstInltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                      }
+                                      onClick={(e) =>
+                                        handdleFirstPosition(dataInfo, "in")
                                       }
                                     >
-                                      ADD
+                                      <b> {dataInfo.firstInStrike}</b> (
+                                      {dataInfo.firstInltp})
                                     </button>
                                   </div>
-                                </td>
-                                <td className="text-center">
-                                  <div className="form-group">
-                                    <fieldset className="border">
-                                      <legend align="right">
-                                        {dataInfo.exittotalqty}
-                                      </legend>
-                                      <Input
-                                        style={{width: "100%", padding:"0.74rem !important" ,textAlign:"center"}}
-                                        className="form-control-alternative"
-                                        id="input-postal-code"
-                                        placeholder="Qty"
-                                        type="number"
-                                        min="1"
-                                        value={dataInfo.exitqty}
-                                        onChange={(e) =>
-                                          handdleExitQtyChange(e, index, dataInfo)
-                                        }
-                                      />
-                                    </fieldset>
-                                    <button
-                                      className={`btn btn-danger text-danger text-bold sell-light ml-1 ${
-                                        !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.exitqty)
-                                          ? "disabled"
-                                          : ""
-                                      }`}
-                                      disabled={
-                                        !parseFloat(dataInfo.ltp) ||
-                                        !parseInt(dataInfo.exitqty)||
-                                        isexecuteProcess
+                                )}
+                              </td>
+                              <td className="text-center" style={{ width: "5%" }}>
+                                {dataInfo.positionordertype.toLowerCase() ===
+                                  "fut" ? (
+                                  "---"
+                                ) : (
+                                  <fieldset className="border">
+                                    <legend align="right">
+                                      {dataInfo.moveinouttotalqty}
+                                    </legend>
+                                    <Input
+                                      style={{ padding: "0.74rem !important", textAlign: "center" }}
+                                      className="form-control-alternative"
+                                      id="input-postal-code"
+                                      placeholder="Qty"
+                                      type="number"
+                                      min="1"
+                                      value={dataInfo.moveinoutqty}
+                                      onChange={(e) =>
+                                        handdleMoveInOutQtyChange(
+                                          e,
+                                          index,
+                                          dataInfo
+                                        )
                                       }
-                                      onClick={() => handdleOrderExist(dataInfo)}
+                                    />
+                                  </fieldset>
+                                )}
+                              </td>
+                              <td
+                                className="text-center moveinout"
+                                style={{ width: "4%" }}
+                              >
+                                {dataInfo.positionordertype.toLowerCase() ===
+                                  "fut" ? (
+                                  ""
+                                ) : (
+                                  <div
+                                    className="moveinout"
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <button
+                                      className="btn btn-success moveout-light text-black  mr-1"
+                                      disabled={
+                                        !(parseFloat(dataInfo.firstOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                      }
+                                      onClick={(e) =>
+                                        handdleFirstPosition(dataInfo, "out")
+                                      }
                                     >
-                                      EXIT
+                                      <b> {dataInfo.firstOutStrike}</b> (
+                                      {dataInfo.firstOutltp})
+                                    </button>
+                                    <button
+                                      className="btn btn-success moveout-light text-black     ml-1"
+                                      disabled={
+                                        !(parseFloat(dataInfo.secondOutltp) > 0 && dataInfo.moveinoutqty > 0 && !isexecuteProcess)
+                                      }
+                                      onClick={(e) =>
+                                        handdleSecondPosition(dataInfo, "out")
+                                      }
+                                    >
+                                      <b> {dataInfo.secondOutStrike}</b> (
+                                      {dataInfo.secondOutltp})
                                     </button>
                                   </div>
-                                </td>
-                                <td className="text-center">
+                                )}
+                              </td>
+                              <td className="text-center">
+                                <div className="form-group addexistnewqty">
                                   <button
-                                   disabled={                                     
+                                    className={`btn hide btn-danger text-danger text-bold sell-light mr-0 ${parseFloat(dataInfo.ltp) < 0 ||
+                                        dataInfo.ltp === undefined
+                                        ? "disabled"
+                                        : ""
+                                      }`}
+                                    onClick={() =>
+                                      handdleAddExistQty(dataInfo, "exit")
+                                    }
+                                    disabled={
+                                      parseFloat(dataInfo.ltp) < 0 ||
+                                        dataInfo.ltp === undefined
+                                        ? true
+                                        : false
+                                    }
+                                  >
+                                    <i className="fas fa-close"></i>
+                                  </button>
+                                  <fieldset className="border">
+                                    <legend align="right">
+                                      {dataInfo.newaddtotalqty}
+                                    </legend>
+                                    <Input
+                                      style={{ width: "100%", padding: "0.74rem !important", textAlign: "center" }}
+                                      className="form-control-alternative"
+
+                                      id="input-postal-code"
+                                      placeholder="Qty"
+                                      type="number"
+                                      min="1"
+                                      value={dataInfo.newqty}
+                                      onChange={(e) =>
+                                        handdleNewQtyChange(e, index, dataInfo)
+                                      }
+                                    />
+                                  </fieldset>
+                                  <button
+                                    className={`btn btn-success buy-light text-success text-bold ml-1 ${!parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.newqty)
+                                        ? "disabled"
+                                        : ""
+                                      }`}
+                                    onClick={() =>
+                                      handdleAddExistQty(dataInfo, "add")
+                                    }
+                                    disabled={
+                                      !parseFloat(dataInfo.ltp) ||
+                                      !parseInt(dataInfo.newqty) ||
+                                      isexecuteProcess
+                                    }
+                                  >
+                                    ADD
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="text-center">
+                                <div className="form-group">
+                                  <fieldset className="border">
+                                    <legend align="right">
+                                      {dataInfo.exittotalqty}
+                                    </legend>
+                                    <Input
+                                      style={{ width: "100%", padding: "0.74rem !important", textAlign: "center" }}
+                                      className="form-control-alternative"
+                                      id="input-postal-code"
+                                      placeholder="Qty"
+                                      type="number"
+                                      min="1"
+                                      value={dataInfo.exitqty}
+                                      onChange={(e) =>
+                                        handdleExitQtyChange(e, index, dataInfo)
+                                      }
+                                    />
+                                  </fieldset>
+                                  <button
+                                    className={`btn btn-danger text-danger text-bold sell-light ml-1 ${!parseFloat(dataInfo.ltp) ||
+                                        !parseInt(dataInfo.exitqty)
+                                        ? "disabled"
+                                        : ""
+                                      }`}
+                                    disabled={
+                                      !parseFloat(dataInfo.ltp) ||
+                                      !parseInt(dataInfo.exitqty) ||
+                                      isexecuteProcess
+                                    }
+                                    onClick={() => handdleOrderExist(dataInfo)}
+                                  >
+                                    EXIT
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="text-center">
+                                <button
+                                  disabled={
                                     isexecuteProcess
                                   }
-                                    className="btn btn-warning ml-1"
-                                    onClick={() => handdleReverseOrderExist(dataInfo)}
-                                  >
-                                    REVERSE
-                                  </button>
-                                </td>
-                              </tr>
+                                  className="btn btn-warning ml-1"
+                                  onClick={() => handdleReverseOrderExist(dataInfo)}
+                                >
+                                  REVERSE
+                                </button>
+                              </td>
+                            </tr>
                           );
                         }
-                    })}
+                      })}
                   </tbody>
                 </Table>
               </div>

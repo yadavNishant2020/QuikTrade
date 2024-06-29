@@ -191,7 +191,7 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
 
   useEffect(() => {
     if (tempStraddleData?.length > 0 && strikePrices > 0) {
-      debugger;
+
       let strikeDiff = 0;
       if (globleSymbol === "NIFTY") {
         strikeDiff = 50;
@@ -392,16 +392,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? data.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(data.ltp) +
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(data.ltp) -
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(data.ltp);
+          : parseFloat(data.ltp);
     let temptype = "CE";
     let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let dataNewStrick = Constant.GetNewStrike(
@@ -540,16 +540,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? data.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(data.ltp) +
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(data.ltp) -
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(data.ltp);
+          : parseFloat(data.ltp);
     let temptype = "CE";
     let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
     let dataNewStrick = Constant.GetNewStrike(
@@ -636,12 +636,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? data.ltp.toString()
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(data.ltp)
-            ? data.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(data.ltp)
-          ? data.ltp.toString()
-          : orderprice.toString(),
+            ? parseFloat(orderprice) >= parseFloat(data.ltp)
+              ? data.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(data.ltp)
+              ? data.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -656,12 +656,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? "Completed"
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(data.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(data.ltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderprice) >= parseFloat(data.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(data.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -712,16 +712,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? pedata.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(pedata.ltp) +
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(pedata.ltp) -
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(pedata.ltp);
+          : parseFloat(pedata.ltp);
 
     let temptype = "PE";
     let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
@@ -862,16 +862,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? pedata.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(pedata.ltp) +
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(pedata.ltp) -
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(pedata.ltp);
+          : parseFloat(pedata.ltp);
 
     let temptype = "PE";
     let strikePriceDiff = sessionStorage.getItem("strikePriceDiff");
@@ -959,12 +959,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? pedata.ltp.toString()
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(pedata.ltp)
-            ? pedata.ltp.toString()
-            : orderprice.toString()
-          : parseFloat(orderprice) <= parseFloat(pedata.ltp)
-          ? pedata.ltp.toString()
-          : orderprice.toString(),
+            ? parseFloat(orderprice) >= parseFloat(pedata.ltp)
+              ? pedata.ltp.toString()
+              : orderprice.toString()
+            : parseFloat(orderprice) <= parseFloat(pedata.ltp)
+              ? pedata.ltp.toString()
+              : orderprice.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -979,12 +979,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? "Completed"
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderprice) >= parseFloat(pedata.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderprice) <= parseFloat(pedata.ltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderprice) >= parseFloat(pedata.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderprice) <= parseFloat(pedata.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -1107,16 +1107,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? data.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(data.ltp) +
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(data.ltp) -
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(data.ltp);
+          : parseFloat(data.ltp);
     let dataRequestCE = {
       strikePrice: data.strikePrice,
       productname:
@@ -1163,16 +1163,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? pedata.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(pedata.ltp) +
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(pedata.ltp) -
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(pedata.ltp);
+          : parseFloat(pedata.ltp);
 
     temptype = "PE";
     let newFirstInStrike1 = 0;
@@ -1414,16 +1414,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? data.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(data.ltp) +
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(data.ltp) -
-                (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(data.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(data.ltp);
+          : parseFloat(data.ltp);
     let dataRequestCE = {
       strikePrice: data.strikePrice,
       productname:
@@ -1439,12 +1439,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? data.ltp.toString()
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderpricece) >= parseFloat(data.ltp)
-            ? data.ltp.toString()
-            : orderpricece.toString()
-          : parseFloat(orderpricece) <= parseFloat(data.ltp)
-          ? data.ltp.toString()
-          : orderpricece.toString(),
+            ? parseFloat(orderpricece) >= parseFloat(data.ltp)
+              ? data.ltp.toString()
+              : orderpricece.toString()
+            : parseFloat(orderpricece) <= parseFloat(data.ltp)
+              ? data.ltp.toString()
+              : orderpricece.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -1459,12 +1459,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? "Completed"
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderpricece) >= parseFloat(data.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderpricece) <= parseFloat(data.ltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderpricece) >= parseFloat(data.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderpricece) <= parseFloat(data.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -1485,16 +1485,16 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
       (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
         ? pedata.ltp
         : parseFloat(defaultLMTPer) > 0
-        ? side.toLowerCase() === "buy"
-          ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
               parseFloat(pedata.ltp) +
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-          : parseFloat(
+            : parseFloat(
               parseFloat(pedata.ltp) -
-                (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
+              (parseFloat(pedata.ltp) * parseFloat(defaultLMTPer)) / 100
             ).toFixed(2)
-        : parseFloat(pedata.ltp);
+          : parseFloat(pedata.ltp);
 
     temptype = "PE";
     let newFirstInStrike1 = 0;
@@ -1587,12 +1587,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? pedata.ltp.toString()
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderpricepe) >= parseFloat(pedata.ltp)
-            ? pedata.ltp.toString()
-            : orderpricepe.toString()
-          : parseFloat(orderpricepe) <= parseFloat(pedata.ltp)
-          ? pedata.ltp.toString()
-          : orderpricepe.toString(),
+            ? parseFloat(orderpricepe) >= parseFloat(pedata.ltp)
+              ? pedata.ltp.toString()
+              : orderpricepe.toString()
+            : parseFloat(orderpricepe) <= parseFloat(pedata.ltp)
+              ? pedata.ltp.toString()
+              : orderpricepe.toString(),
       tradermode: globleSelectedTradingType,
       orderidbybroker: "",
       clientid: globleSelectedClientInfo,
@@ -1607,12 +1607,12 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? "Completed"
           : side.toLowerCase() === "buy"
-          ? parseFloat(orderpricepe) >= parseFloat(pedata.ltp)
-            ? "Completed"
-            : "Pending"
-          : parseFloat(orderpricepe) <= parseFloat(pedata.ltp)
-          ? "Completed"
-          : "Pending",
+            ? parseFloat(orderpricepe) >= parseFloat(pedata.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderpricepe) <= parseFloat(pedata.ltp)
+              ? "Completed"
+              : "Pending",
       firstInInstrumentToken: newFirstInInstrumentToken.toString(),
       secondInInstrumentToken: newSecondInInstrumentToken.toString(),
       firstOutInstrumentToken: newFirstOutInstrumentToken.toString(),
@@ -1793,337 +1793,331 @@ const AdminStrangle = ({ filterOptionChainList, height }) => {
                   <tbody>
                     {strangleList.length > 0
                       ? strangleList
-                          .filter(
-                            (dataInfo) =>
-                              dataInfo.name === globleSymbol &&
-                              dataInfo.expiryDate === globleExpityvalue
-                          )
-                          .map((data, index) =>
-                            index % 2 === 0 ? (
-                              <tr
-                                className={
-                                  parseFloat(data.strikePrice) === strikePrices
-                                    ? "selected-strike bg-warning-light text-center"
-                                    : "text-center"
-                                }
+                        .filter(
+                          (dataInfo) =>
+                            dataInfo.name === globleSymbol &&
+                            dataInfo.expiryDate === globleExpityvalue
+                        )
+                        .map((data, index) =>
+                          index % 2 === 0 ? (
+                            <tr
+                              className={
+                                parseFloat(data.strikePrice) === strikePrices
+                                  ? "selected-strike bg-warning-light text-center"
+                                  : "text-center"
+                              }
+                            >
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
                               >
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {data?.strikePrice}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {data?.ltp?.toString()}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {data?.atp?.toString()}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  <fieldset className="border">
-                                    <legend align="right">
-                                      {data.celotqty}
-                                    </legend>
+                                {data?.strikePrice}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {data?.ltp?.toString()}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {data?.atp?.toString()}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                <fieldset className="border">
+                                  <legend align="right">
+                                    {data.celotqty}
+                                  </legend>
 
-                                    <Input
-                                      className="form-control-alternative form-row-data"
-                                      id="input-postal-code"
-                                      placeholder="LOT"
-                                      name="defaultQty"
-                                      value={data.celot}
-                                      type="number"
-                                      min="1"
-                                      onChange={(e) =>
-                                        handdleTextBoxEvent(e, index, "celot")
+                                  <Input
+                                    className="form-control-alternative form-row-data"
+                                    id="input-postal-code"
+                                    placeholder="LOT"
+                                    name="defaultQty"
+                                    value={data.celot}
+                                    type="number"
+                                    min="1"
+                                    onChange={(e) =>
+                                      handdleTextBoxEvent(e, index, "celot")
+                                    }
+                                    onKeyPress={(e) => {
+                                      // Prevents non-numeric characters from being entered
+                                      if (isNaN(Number(e.key))) {
+                                        e.preventDefault();
                                       }
-                                      onKeyPress={(e) => {
-                                        // Prevents non-numeric characters from being entered
-                                        if (isNaN(Number(e.key))) {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                    />
-                                  </fieldset>
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "10%" }}
-                                  className="text-center"
-                                >
-                                  <button
-                                    className={`btn btn-success buy-light text-success text-bold ${
-                                      !parseFloat(data.ltp) ||
+                                    }}
+                                  />
+                                </fieldset>
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "10%" }}
+                                className="text-center"
+                              >
+                                <button
+                                  className={`btn btn-success buy-light text-success text-bold ${!parseFloat(data.ltp) ||
                                       !parseInt(data.celot)
-                                        ? "disabled"
-                                        : ""
+                                      ? "disabled"
+                                      : ""
                                     }`}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.celot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForCE(
+                                      e,
+                                      data,
+                                      "Buy"
+                                    )
+                                  }
+                                >
+                                  {" "}
+                                  BUY
+                                </button>
+                                <button
+                                  className={`btn btn-danger text-danger text-bold sell-light ${!parseFloat(data.ltp) ||
                                       !parseInt(data.celot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForCE(
-                                        e,
-                                        data,
-                                        "Buy"
-                                      )
-                                    }
-                                  >
-                                    {" "}
-                                    BUY
-                                  </button>
-                                  <button
-                                    className={`btn btn-danger text-danger text-bold sell-light ${
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.celot)
-                                        ? "disabled"
-                                        : ""
+                                      ? "disabled"
+                                      : ""
                                     }`}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.celot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForCE(
-                                        e,
-                                        data,
-                                        "Sell"
-                                      )
-                                    }
-                                  >
-                                    SELL
-                                  </button>
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.celot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForCE(
+                                      e,
+                                      data,
+                                      "Sell"
+                                    )
+                                  }
                                 >
-                                  {strangleList[index + 1]?.strikePrice}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {strangleList[index + 1]?.ltp}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {strangleList[index + 1]?.atp}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  <fieldset className="border">
-                                    <legend align="right">
-                                      {data.pelotqty}
-                                    </legend>
+                                  SELL
+                                </button>
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {strangleList[index + 1]?.strikePrice}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {strangleList[index + 1]?.ltp}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {strangleList[index + 1]?.atp}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                <fieldset className="border">
+                                  <legend align="right">
+                                    {data.pelotqty}
+                                  </legend>
 
-                                    <Input
-                                      className="form-control-alternative form-row-data"
-                                      id="input-postal-code"
-                                      placeholder="LOT"
-                                      name="defaultQty"
-                                      value={data.pelot}
-                                      type="number"
-                                      min="1"
-                                      onChange={(e) =>
-                                        handdleTextBoxEvent(e, index, "pelot")
+                                  <Input
+                                    className="form-control-alternative form-row-data"
+                                    id="input-postal-code"
+                                    placeholder="LOT"
+                                    name="defaultQty"
+                                    value={data.pelot}
+                                    type="number"
+                                    min="1"
+                                    onChange={(e) =>
+                                      handdleTextBoxEvent(e, index, "pelot")
+                                    }
+                                    onKeyPress={(e) => {
+                                      // Prevents non-numeric characters from being entered
+                                      if (isNaN(Number(e.key))) {
+                                        e.preventDefault();
                                       }
-                                      onKeyPress={(e) => {
-                                        // Prevents non-numeric characters from being entered
-                                        if (isNaN(Number(e.key))) {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                    />
-                                  </fieldset>
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "10%" }}
-                                  className="text-center"
-                                >
-                                  <button
-                                    className={`btn btn-success buy-light text-success text-bold ${
-                                      !parseFloat(data.ltp) ||
+                                    }}
+                                  />
+                                </fieldset>
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "10%" }}
+                                className="text-center"
+                              >
+                                <button
+                                  className={`btn btn-success buy-light text-success text-bold ${!parseFloat(data.ltp) ||
                                       !parseInt(data.pelot)
-                                        ? "disabled"
-                                        : ""
+                                      ? "disabled"
+                                      : ""
                                     }`}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.pelot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForPE(
+                                      e,
+                                      data,
+                                      strangleList[index + 1],
+                                      "Buy",
+                                      "PE"
+                                    )
+                                  }
+                                >
+                                  {" "}
+                                  BUY
+                                </button>
+                                <button
+                                  className={`btn btn-danger text-danger text-bold sell-light ${!parseFloat(data.ltp) ||
                                       !parseInt(data.pelot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForPE(
-                                        e,
-                                        data,
-                                        strangleList[index + 1],
-                                        "Buy",
-                                        "PE"
-                                      )
-                                    }
-                                  >
-                                    {" "}
-                                    BUY
-                                  </button>
-                                  <button
-                                    className={`btn btn-danger text-danger text-bold sell-light ${
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.pelot)
-                                        ? "disabled"
-                                        : ""
+                                      ? "disabled"
+                                      : ""
                                     } `}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.pelot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForPE(
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.pelot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForPE(
+                                      e,
+                                      data,
+                                      strangleList[index + 1],
+                                      "Sell",
+                                      "PE"
+                                    )
+                                  }
+                                >
+                                  {" "}
+                                  SELL
+                                </button>
+                              </td>
+
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {parseFloat(
+                                  parseFloat(data?.ltp) +
+                                  parseFloat(strangleList[index + 1]?.ltp)
+                                ).toFixed(2)}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                {parseFloat(
+                                  parseFloat(data?.atp) +
+                                  parseFloat(strangleList[index + 1]?.atp)
+                                ).toFixed(2)}
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "5%" }}
+                                className="text-center"
+                              >
+                                <fieldset className="border">
+                                  <legend align="right">
+                                    {data.totallotqty}
+                                  </legend>
+
+                                  <Input
+                                    className="form-control-alternative form-row-data"
+                                    id="input-postal-code"
+                                    placeholder="LOT"
+                                    name="defaultQty"
+                                    value={data.totallot}
+                                    type="number"
+                                    min="1"
+                                    onChange={(e) =>
+                                      handdleTextBoxEvent(
                                         e,
-                                        data,
-                                        strangleList[index + 1],
-                                        "Sell",
-                                        "PE"
+                                        index,
+                                        "totallot"
                                       )
                                     }
-                                  >
-                                    {" "}
-                                    SELL
-                                  </button>
-                                </td>
-
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {parseFloat(
-                                    parseFloat(data?.ltp) +
-                                      parseFloat(strangleList[index + 1]?.ltp)
-                                  ).toFixed(2)}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  {parseFloat(
-                                    parseFloat(data?.atp) +
-                                      parseFloat(strangleList[index + 1]?.atp)
-                                  ).toFixed(2)}
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "5%" }}
-                                  className="text-center"
-                                >
-                                  <fieldset className="border">
-                                    <legend align="right">
-                                      {data.totallotqty}
-                                    </legend>
-
-                                    <Input
-                                      className="form-control-alternative form-row-data"
-                                      id="input-postal-code"
-                                      placeholder="LOT"
-                                      name="defaultQty"
-                                      value={data.totallot}
-                                      type="number"
-                                      min="1"
-                                      onChange={(e) =>
-                                        handdleTextBoxEvent(
-                                          e,
-                                          index,
-                                          "totallot"
-                                        )
+                                    onKeyPress={(e) => {
+                                      // Prevents non-numeric characters from being entered
+                                      if (isNaN(Number(e.key))) {
+                                        e.preventDefault();
                                       }
-                                      onKeyPress={(e) => {
-                                        // Prevents non-numeric characters from being entered
-                                        if (isNaN(Number(e.key))) {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                    />
-                                  </fieldset>
-                                </td>
-                                <td
-                                  scope="col"
-                                  style={{ width: "10%" }}
-                                  className="text-center"
+                                    }}
+                                  />
+                                </fieldset>
+                              </td>
+                              <td
+                                scope="col"
+                                style={{ width: "10%" }}
+                                className="text-center"
+                              >
+                                <button
+                                  className={`btn btn-success buy-light text-success text-bold ${!parseFloat(data.ltp) ||
+                                      !parseInt(data.totallot)
+                                      ? "disabled"
+                                      : ""
+                                    }`}
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.totallot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForCombine(
+                                      e,
+                                      data,
+                                      strangleList[index + 1],
+                                      "Buy"
+                                    )
+                                  }
                                 >
-                                  <button
-                                    className={`btn btn-success buy-light text-success text-bold ${
-                                      !parseFloat(data.ltp) ||
+                                  {" "}
+                                  BUY
+                                </button>
+                                <button
+                                  className={`btn btn-danger text-danger text-bold sell-light ${!parseFloat(data.ltp) ||
                                       !parseInt(data.totallot)
-                                        ? "disabled"
-                                        : ""
+                                      ? "disabled"
+                                      : ""
                                     }`}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.totallot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForCombine(
-                                        e,
-                                        data,
-                                        strangleList[index + 1],
-                                        "Buy"
-                                      )
-                                    }
-                                  >
-                                    {" "}
-                                    BUY
-                                  </button>
-                                  <button
-                                    className={`btn btn-danger text-danger text-bold sell-light ${
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.totallot)
-                                        ? "disabled"
-                                        : ""
-                                    }`}
-                                    disabled={
-                                      !parseFloat(data.ltp) ||
-                                      !parseInt(data.totallot)
-                                    }
-                                    onClick={(e) =>
-                                      handdleOrderInformationForCombine(
-                                        e,
-                                        data,
-                                        strangleList[index + 1],
-                                        "Sell"
-                                      )
-                                    }
-                                  >
-                                    {" "}
-                                    SELL
-                                  </button>
-                                </td>
-                              </tr>
-                            ) : (
-                              ""
-                            )
+                                  disabled={
+                                    !parseFloat(data.ltp) ||
+                                    !parseInt(data.totallot)
+                                  }
+                                  onClick={(e) =>
+                                    handdleOrderInformationForCombine(
+                                      e,
+                                      data,
+                                      strangleList[index + 1],
+                                      "Sell"
+                                    )
+                                  }
+                                >
+                                  {" "}
+                                  SELL
+                                </button>
+                              </td>
+                            </tr>
+                          ) : (
+                            ""
                           )
+                        )
                       : ""}
                   </tbody>
                 </Table>
