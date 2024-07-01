@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.4",
-    "@testing-library/react": "^14.1.2",
+    "@testing-library/react": "^12.1.5",
     "sass": "^1.69.5"
   },
   "engines": {
