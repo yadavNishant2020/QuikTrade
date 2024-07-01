@@ -20,6 +20,7 @@ const Login = () => {
     const fnotraderUserid = getQueryStringValue('Fnotrader-Userid');
     const fnotraderSecret = getQueryStringValue('Fnotrader-Secret');
     // const fnotraderUserid = "FT8507";
+    // const fnotraderUserid = "FT8507";
     // const fnotraderSecret = "7d0f604b-9297-43c5-9bfa-5d1e69e7ba21";
     if (fnotraderUserid !== null && fnotraderSecret !== null) {
       sessionStorage.setItem("fnotraderUserid", fnotraderUserid);
