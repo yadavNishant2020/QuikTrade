@@ -1419,3 +1419,66 @@ line-height: 0;
   width: 50px; /* Adjust size as needed */
   height: 50px; /* Adjust size as needed */
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 5px;
+  width: 60vw;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content-list {
+  list-style: none;
+  padding-inline-start: 0;
+  margin-bottom: 0;
+}
+
+.modal-content-item {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-additional-info {
+  background-color: rgb(34 196 234 / 20%);
+  border-radius: 5px;
+  padding: 0 15px;
+  padding-top: 10px;
+}
+
+.modal-additional-info p{
+  font-size: 12px;
+}
+
+.modal-close-button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-close-button:hover {
+  background-color: #155a9c;
+}
