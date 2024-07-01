@@ -1344,6 +1344,7 @@ line-height: 0;
 }
 .busketView_container {
   height: 210px !important;
+  width: 100% !important;
 }
 }
 @media screen and (max-width: 768px) {

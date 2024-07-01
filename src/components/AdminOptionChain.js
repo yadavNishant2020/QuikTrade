@@ -3,7 +3,7 @@ import Switch from "react-switch";
 import Centrifuge from "centrifuge";
 import CustomSwitch from "../CustomSwitch/CustomSwitch.js";
 import { CookiesConfig } from "../Config/CookiesConfig.js";
-import SplitPane from "react-split-pane";
+import { Rnd } from 'react-rnd';
 
 import {
   Container,
@@ -115,8 +115,8 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
       setIsMobile(window.innerWidth <= 767);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
     if (filterOptionChainList?.length > 0 && globleOptionChainType.length > 0) {
@@ -199,7 +199,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
       globleSelectedTradingType.length > 0 &&
       globleSelectedClientInfo.length > 0
     ) {
-
       let basketName =
         "basketName_" + globleSelectedTradingType + globleSelectedClientInfo;
       if (CookiesConfig.getItemWithExpiry(basketName).length > 0) {
@@ -262,10 +261,16 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     if (strikePrices > 0 && globleOptionChainType === "opt") {
       const tableElement = tableRef.current;
       if (tableElement) {
-        const targetRow = tableElement.querySelector("div table tbody tr.selected-strike");
+        const targetRow = tableElement.querySelector(
+          "div table tbody tr.selected-strike"
+        );
         if (targetRow) {
-          const rowIndex = Array.from(targetRow.parentNode.children).indexOf(targetRow);
-          const tableRows = Array.from(tableElement.querySelectorAll("tbody tr"));
+          const rowIndex = Array.from(targetRow.parentNode.children).indexOf(
+            targetRow
+          );
+          const tableRows = Array.from(
+            tableElement.querySelectorAll("tbody tr")
+          );
           const newTargetRow = tableRows[rowIndex - 3];
           tableElement.scrollTop = newTargetRow?.offsetTop + 8;
         }
@@ -273,11 +278,13 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     }
   }, [strikePrices, sortedCurrentOptionChain]);
 
-  const [dataLimit, setDataLimit] = useState('all');
-  const [filteredOptionChain, setFilteredOptionChain] = useState(sortedCurrentOptionChain);
+  const [dataLimit, setDataLimit] = useState("all");
+  const [filteredOptionChain, setFilteredOptionChain] = useState(
+    sortedCurrentOptionChain
+  );
 
   useEffect(() => {
-    if (dataLimit === 'all') {
+    if (dataLimit === "all") {
       setFilteredOptionChain(sortedCurrentOptionChain);
     } else {
       const limit = parseInt(dataLimit, 10);
@@ -319,7 +326,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
   };
 
   const handleBasketQuickBuySell = (chaindata, type, side) => {
-
     let temptype = "";
     if (type === "Call") {
       temptype = "CE";
@@ -505,29 +511,29 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           (data) =>
             data.baskettradingSymbol === chaindata.tradingSymbol &&
             data.bucketProduct ===
-            (defaultProductName === undefined ? "MIS" : defaultProductName) &&
+              (defaultProductName === undefined ? "MIS" : defaultProductName) &&
             data.bucketOrderType ===
-            (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
+              (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
             data.bucketSide === side.toUpperCase()
         );
         if (indexOfBasket === -1) {
           let basketPriceAmt =
             (defaultOrderType === undefined ? "MKT" : defaultOrderType) ===
-              "MKT"
+            "MKT"
               ? chaindata.ltp
               : parseFloat(defaultLMTPer) > 0
-                ? side.toLowerCase() === "buy"
-                  ? parseFloat(
+              ? side.toLowerCase() === "buy"
+                ? parseFloat(
                     parseFloat(chaindata.ltp) +
-                    (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
-                    100
+                      (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
+                        100
                   ).toFixed(2)
-                  : parseFloat(
+                : parseFloat(
                     parseFloat(chaindata.ltp) -
-                    (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
-                    100
+                      (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
+                        100
                   ).toFixed(2)
-                : parseFloat(chaindata.ltp);
+              : parseFloat(chaindata.ltp);
           var stoplosspoint = 0;
           var targetpoint = 0;
           var newStoplosspoint = 0;
@@ -567,12 +573,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
               globleOptionChainType === "opt"
                 ? globleSymbol
                 : chaindata?.name +
-                " " +
-                new Date(chaindata.expiryDate)
-                  .toLocaleDateString("en-US", { month: "short" })
-                  .toUpperCase() +
-                " " +
-                chaindata?.instrumentType,
+                  " " +
+                  new Date(chaindata.expiryDate)
+                    .toLocaleDateString("en-US", { month: "short" })
+                    .toUpperCase() +
+                  " " +
+                  chaindata?.instrumentType,
             bucketStrike: chaindata.strikePrice,
             bucketExpiry: expiryNewDate,
             bucketType: globleOptionChainType === "opt" ? temptype : "FUT",
@@ -665,11 +671,11 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
               (data) =>
                 data.baskettradingSymbol === chaindata.tradingSymbol &&
                 data.bucketProduct ===
-                (defaultProductName === undefined
-                  ? "MIS"
-                  : defaultProductName) &&
+                  (defaultProductName === undefined
+                    ? "MIS"
+                    : defaultProductName) &&
                 data.bucketOrderType ===
-                (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
+                  (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
                 data.bucketSide === side.toUpperCase()
             );
 
@@ -712,21 +718,20 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         );
       }
     } else {
-
       let orderPrice =
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? chaindata.ltp
           : parseFloat(defaultLMTPer) > 0
-            ? side.toLowerCase() === "buy"
-              ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
                 parseFloat(chaindata.ltp) +
-                (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
+                  (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
               ).toFixed(2)
-              : parseFloat(
+            : parseFloat(
                 parseFloat(chaindata.ltp) -
-                (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
+                  (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
               ).toFixed(2)
-            : parseFloat(chaindata.ltp);
+          : parseFloat(chaindata.ltp);
       let data = {
         strikePrice: chaindata.strikePrice,
         productname:
@@ -737,12 +742,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           globleOptionChainType === "opt"
             ? globleSymbol
             : chaindata?.name +
-            " " +
-            new Date(chaindata.expiryDate)
-              .toLocaleDateString("en-US", { month: "short" })
-              .toUpperCase() +
-            " " +
-            chaindata?.instrumentType,
+              " " +
+              new Date(chaindata.expiryDate)
+                .toLocaleDateString("en-US", { month: "short" })
+                .toUpperCase() +
+              " " +
+              chaindata?.instrumentType,
         orderside: globleOptionChainType === "opt" ? temptype : "FUT",
         orderqty:
           defaultShowQty === undefined
@@ -844,36 +849,35 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     defaultQty
   ) => {
     if (switchState === false) {
-
       if (editBucketRow === false) {
         let indexOfBasket = bucketList.findIndex(
           (data) =>
             data.baskettradingSymbol === chaindata.tradingSymbol &&
             data.bucketProduct ===
-            (defaultProductName === undefined ? "MIS" : defaultProductName) &&
+              (defaultProductName === undefined ? "MIS" : defaultProductName) &&
             data.bucketOrderType ===
-            (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
+              (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
             data.bucketSide === side.toUpperCase()
         );
 
         if (indexOfBasket === -1) {
           let basketPriceAmt =
             (defaultOrderType === undefined ? "MKT" : defaultOrderType) ===
-              "MKT"
+            "MKT"
               ? chaindata.ltp
               : parseFloat(defaultLMTPer) > 0
-                ? side.toLowerCase() === "buy"
-                  ? parseFloat(
+              ? side.toLowerCase() === "buy"
+                ? parseFloat(
                     parseFloat(chaindata.ltp) +
-                    (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
-                    100
+                      (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
+                        100
                   ).toFixed(2)
-                  : parseFloat(
+                : parseFloat(
                     parseFloat(chaindata.ltp) -
-                    (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
-                    100
+                      (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) /
+                        100
                   ).toFixed(2)
-                : parseFloat(chaindata.ltp);
+              : parseFloat(chaindata.ltp);
           var stoplosspoint = 0;
           var targetpoint = 0;
           var newStoplosspoint = 0;
@@ -930,12 +934,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
               globleOptionChainType === "opt"
                 ? globleSymbol
                 : chaindata?.name +
-                " " +
-                new Date(chaindata.expiryDate)
-                  .toLocaleDateString("en-US", { month: "short" })
-                  .toUpperCase() +
-                " " +
-                chaindata?.instrumentType,
+                  " " +
+                  new Date(chaindata.expiryDate)
+                    .toLocaleDateString("en-US", { month: "short" })
+                    .toUpperCase() +
+                  " " +
+                  chaindata?.instrumentType,
             bucketStrike: chaindata.strikePrice,
             bucketExpiry: expiryNewDate,
             bucketType: globleOptionChainType === "opt" ? temptype : "FUT",
@@ -1027,11 +1031,11 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
               (data) =>
                 data.baskettradingSymbol === chaindata.tradingSymbol &&
                 data.bucketProduct ===
-                (defaultProductName === undefined
-                  ? "MIS"
-                  : defaultProductName) &&
+                  (defaultProductName === undefined
+                    ? "MIS"
+                    : defaultProductName) &&
                 data.bucketOrderType ===
-                (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
+                  (defaultOrderType === undefined ? "MKT" : defaultOrderType) &&
                 data.bucketSide === side.toUpperCase()
             );
 
@@ -1078,16 +1082,16 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
           ? chaindata.ltp
           : parseFloat(defaultLMTPer) > 0
-            ? side.toLowerCase() === "buy"
-              ? parseFloat(
+          ? side.toLowerCase() === "buy"
+            ? parseFloat(
                 parseFloat(chaindata.ltp) +
-                (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
+                  (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
               ).toFixed(2)
-              : parseFloat(
+            : parseFloat(
                 parseFloat(chaindata.ltp) -
-                (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
+                  (parseFloat(chaindata.ltp) * parseFloat(defaultLMTPer)) / 100
               ).toFixed(2)
-            : parseFloat(chaindata.ltp);
+          : parseFloat(chaindata.ltp);
       let data = {
         strikePrice: chaindata.strikePrice,
         productname:
@@ -1098,12 +1102,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           globleOptionChainType === "opt"
             ? globleSymbol
             : chaindata?.name +
-            " " +
-            new Date(chaindata.expiryDate)
-              .toLocaleDateString("en-US", { month: "short" })
-              .toUpperCase() +
-            " " +
-            chaindata?.instrumentType,
+              " " +
+              new Date(chaindata.expiryDate)
+                .toLocaleDateString("en-US", { month: "short" })
+                .toUpperCase() +
+              " " +
+              chaindata?.instrumentType,
         orderside: globleOptionChainType === "opt" ? temptype : "FUT",
         orderqty:
           defaultShowQty === undefined
@@ -1119,12 +1123,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           defaultOrderType === "MKT"
             ? chaindata.ltp.toString()
             : side.toLowerCase() === "buy"
-              ? parseFloat(orderPrice) >= parseFloat(chaindata.ltp)
-                ? chaindata.ltp.toString()
-                : orderPrice.toString()
-              : parseFloat(orderPrice) <= parseFloat(chaindata.ltp)
-                ? chaindata.ltp.toString()
-                : orderPrice.toString(),
+            ? parseFloat(orderPrice) >= parseFloat(chaindata.ltp)
+              ? chaindata.ltp.toString()
+              : orderPrice.toString()
+            : parseFloat(orderPrice) <= parseFloat(chaindata.ltp)
+            ? chaindata.ltp.toString()
+            : orderPrice.toString(),
         tradermode: globleSelectedTradingType,
         orderidbybroker: "",
         clientid: globleSelectedClientInfo,
@@ -1140,12 +1144,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           (defaultOrderType === undefined ? "MKT" : defaultOrderType) === "MKT"
             ? "Completed"
             : side.toLowerCase() === "buy"
-              ? parseFloat(orderPrice) >= parseFloat(chaindata.ltp)
-                ? "Completed"
-                : "Pending"
-              : parseFloat(orderPrice) <= parseFloat(chaindata.ltp)
-                ? "Completed"
-                : "Pending",
+            ? parseFloat(orderPrice) >= parseFloat(chaindata.ltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(orderPrice) <= parseFloat(chaindata.ltp)
+            ? "Completed"
+            : "Pending",
         firstInInstrumentToken:
           globleOptionChainType === "opt"
             ? newFirstInInstrumentToken.toString()
@@ -1366,7 +1370,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           return sortdata;
         });
       },
-      () => { }
+      () => {}
     );
   };
 
@@ -1405,7 +1409,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           return newUpdatedList;
         });
       },
-      () => { }
+      () => {}
     );
   };
 
@@ -1423,7 +1427,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
             setEditBucketRow(true);
             setEditBucketRowNo(index);
           },
-          () => { }
+          () => {}
         );
       }
     } else {
@@ -1446,7 +1450,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
       changePer = parseFloat(
         ((parseFloat(ltp) - parseFloat(lastDayClosinglp)) /
           parseFloat(lastDayClosinglp)) *
-        100
+          100
       );
     }
     return parseFloat(changePer).toFixed(2);
@@ -1479,7 +1483,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         let bucketMaxQty = prevRowData[index]["bucketMaxQty"];
         let maxLot = parseInt(bucketMaxQty) / parseInt(bucketDefaultQty);
         if (selectedValue > 0) {
-
           let totalQty = bucketDefaultQty * selectedValue;
           prevRowData[index]["bucketLotTotalQty"] = totalQty;
           prevRowData[index][refType] = selectedValue;
@@ -1506,7 +1509,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     setBucketList([]);
   };
   const handleRowClick = (e, index) => {
-
     setEditBucketRow(true);
     setEditBucketRowNo(index);
   };
@@ -1551,15 +1553,15 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
             ? parseFloat(defaultLMTPer) > 0
               ? refValue.toLowerCase() === "sell"
                 ? parseFloat(
-                  parseFloat(filterData.ltp) +
-                  (parseFloat(filterData.ltp) * parseFloat(defaultLMTPer)) /
-                  100
-                ).toFixed(2)
+                    parseFloat(filterData.ltp) +
+                      (parseFloat(filterData.ltp) * parseFloat(defaultLMTPer)) /
+                        100
+                  ).toFixed(2)
                 : parseFloat(
-                  parseFloat(filterData.ltp) -
-                  (parseFloat(filterData.ltp) * parseFloat(defaultLMTPer)) /
-                  100
-                ).toFixed(2)
+                    parseFloat(filterData.ltp) -
+                      (parseFloat(filterData.ltp) * parseFloat(defaultLMTPer)) /
+                        100
+                  ).toFixed(2)
               : parseFloat(filterData.ltp).toString()
             : parseFloat(filterData.ltp).toString();
 
@@ -1577,7 +1579,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           refValue.toLowerCase() === "ce" ? "PE" : "CE";
         let updateAddInfo = sortedCurrentOptionChain.find((infoData) =>
           infoData.strikePrice === bucketStrike &&
-            infoData.instrumentType === "ce"
+          infoData.instrumentType === "ce"
             ? "PE"
             : "CE"
         );
@@ -1601,7 +1603,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         ? setEditBucketRowNo(index)
         : setEditBucketRowNo("-1");
       setBucketList((prevRowData) => {
-
         const updatedRowData = [...prevRowData]; // Create a copy of the array
         // Toggle between BUY and SELL
 
@@ -1611,17 +1612,17 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           ? parseFloat(defaultLMTPer) > 0
             ? updatedRowData[index].bucketSide.toLowerCase() === "buy"
               ? parseFloat(
-                parseFloat(updatedRowData[index].bucketltp) +
-                (parseFloat(updatedRowData[index].bucketltp) *
-                  parseFloat(defaultLMTPer)) /
-                100
-              ).toFixed(2)
+                  parseFloat(updatedRowData[index].bucketltp) +
+                    (parseFloat(updatedRowData[index].bucketltp) *
+                      parseFloat(defaultLMTPer)) /
+                      100
+                ).toFixed(2)
               : parseFloat(
-                parseFloat(updatedRowData[index].bucketltp) -
-                (parseFloat(updatedRowData[index].bucketltp) *
-                  parseFloat(defaultLMTPer)) /
-                100
-              ).toFixed(2)
+                  parseFloat(updatedRowData[index].bucketltp) -
+                    (parseFloat(updatedRowData[index].bucketltp) *
+                      parseFloat(defaultLMTPer)) /
+                      100
+                ).toFixed(2)
             : updatedRowData[index].bucketStickePrice.toString()
           : updatedRowData[index].bucketStickePrice.toString();
         //     processBasketMargin(updatedRowData)
@@ -1816,12 +1817,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           bucketOrderType === "MKT"
             ? bucketltp.toString()
             : bucketSide.toLowerCase() === "buy"
-              ? parseFloat(bucketStickePrice) >= parseFloat(bucketltp)
-                ? bucketltp.toString()
-                : bucketStickePrice.toString()
-              : parseFloat(bucketStickePrice) <= parseFloat(bucketltp)
-                ? bucketltp.toString()
-                : bucketStickePrice.toString(),
+            ? parseFloat(bucketStickePrice) >= parseFloat(bucketltp)
+              ? bucketltp.toString()
+              : bucketStickePrice.toString()
+            : parseFloat(bucketStickePrice) <= parseFloat(bucketltp)
+            ? bucketltp.toString()
+            : bucketStickePrice.toString(),
         tradermode: globleSelectedTradingType,
         orderidbybroker: "",
         clientid: globleSelectedClientInfo,
@@ -1836,12 +1837,12 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
           bucketOrderType === "MKT"
             ? "Completed"
             : bucketSide.toLowerCase() === "buy"
-              ? parseFloat(bucketStickePrice) >= parseFloat(bucketltp)
-                ? "Completed"
-                : "Pending"
-              : parseFloat(bucketStickePrice) <= parseFloat(bucketltp)
-                ? "Completed"
-                : "Pending",
+            ? parseFloat(bucketStickePrice) >= parseFloat(bucketltp)
+              ? "Completed"
+              : "Pending"
+            : parseFloat(bucketStickePrice) <= parseFloat(bucketltp)
+            ? "Completed"
+            : "Pending",
         firstInInstrumentToken: basketFirstInInstrumentToken,
         secondInInstrumentToken: basketSecondInInstrumentToken,
         firstOutInstrumentToken: basketFirstOutInstrumentToken,
@@ -1864,7 +1865,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     processInsertUpdateOrderBulk(newBucketList);
   };
   const getSetting = (instrumentname, expiryDate) => {
-
     const dataSetting = globalConfigPostionData.find(
       (data) =>
         data.instrumentname === instrumentname && data.expirydate === expiryDate
@@ -1915,7 +1915,6 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
     }
   };
   const processBasketMargin = async () => {
-
     if (bucketList != null) {
       if (bucketList.length > 0) {
         const processBasket = bucketList.map(
@@ -1952,11 +1951,10 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         setBucketList((previousData) => {
           if (previousData !== null && previousData !== undefined) {
             const updatedOrderPosition = previousData.map((position, index) => {
-
               const matchingOption = data.orders.find((item) => {
                 return (
                   item.tradingsymbol ===
-                  position?.baskettradingSymbol.toString() &&
+                    position?.baskettradingSymbol.toString() &&
                   item.exchange === position.basketexchange &&
                   data.orders.indexOf(item) === index
                 );
@@ -1987,13 +1985,25 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
         <Card className="shadow">
           <CardBody>
             <Row>
-              <SplitPane
-                split="vertical"
-                defaultSize={400}
-                maxSize={600}
-                minSize={350}
-                primary="first"
-                style={{ position: "relative", height: "auto", zIndex: "0" }}
+              <Rnd
+                default={{
+                  x: 0,
+                  y: 0,
+                  width: 400, // defaultSize
+                  height: "100%",
+                }}
+                minWidth={350} // minSize
+                maxWidth={400} // maxSize
+                disableDragging={true} // Disable dragging
+                enableResizing={{ right: true }} // Only allow resizing from the right edge
+                style={{
+                  borderRight: "2px solid #ccc",
+                  overflow: "auto",
+                  position: "relative",
+                  height: "auto",
+                  zIndex: 0,
+                  overflowX:"hidden"
+                }}
               >
                 <div>
                   <Col xl="12">
@@ -2021,7 +2031,10 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                       </Col>
                       <Row className="mt-2 px-2">
                         <Col xl="10">
-                          <select onChange={handleDataLimitChange} value={dataLimit}>
+                          <select
+                            onChange={handleDataLimitChange}
+                            value={dataLimit}
+                          >
                             <option value="all">All</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
@@ -2127,7 +2140,8 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                                   index % 2 === 0 ? (
                                     <tr
                                       className={
-                                        parseFloat(data.strikePrice) === strikePrices
+                                        parseFloat(data.strikePrice) ===
+                                        strikePrices
                                           ? "selected-strike text-center"
                                           : "text-center"
                                       }
@@ -2178,7 +2192,8 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                                       </td>
                                       <td
                                         className={
-                                          parseFloat(data.strikePrice) === strikePrices
+                                          parseFloat(data.strikePrice) ===
+                                          strikePrices
                                             ? "bg-warning-light text-bold"
                                             : ""
                                         }
@@ -2256,13 +2271,15 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                               <tbody>
                                 {sortedCurrentOptionChain.map((data, index) => (
                                   <tr>
-                                    <td className="text-center">{`${data?.name
-                                      } ${new Date(data.expiryDate)
-                                        .toLocaleDateString("en-US", {
-                                          month: "short",
-                                        })
-                                        .toUpperCase()} ${data?.instrumentType
-                                      }`}</td>
+                                    <td className="text-center">{`${
+                                      data?.name
+                                    } ${new Date(data.expiryDate)
+                                      .toLocaleDateString("en-US", {
+                                        month: "short",
+                                      })
+                                      .toUpperCase()} ${
+                                      data?.instrumentType
+                                    }`}</td>
                                     <td className="text-center">
                                       {data.ltp}{" "}
                                       <span
@@ -2327,7 +2344,8 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                     )}
                   </Col>
                 </div>
-                <div>
+                </Rnd>
+                <div style={{width: "70vw"}}>
                   <Col
                     xl="12"
                     className="busketList"
@@ -2391,115 +2409,159 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                             </thead>
                             <tbody>
                               {bucketList !== undefined &&
-                                bucketList !== null &&
-                                bucketList.length > 0
+                              bucketList !== null &&
+                              bucketList.length > 0
                                 ? bucketList?.map((data, index) =>
-                                  data != undefined ? (
-                                    <tr key={index}>
-                                      <td
-                                        style={{ width: "8%" }}
-                                        className="text-center cursor-row"
-                                        onClick={() =>
-                                          handdleRowChange(
-                                            data.bucketSide,
-                                            index,
-                                            "side"
-                                          )
-                                        }
-                                      >
-                                        <span
-                                          className={
-                                            data?.bucketSide?.toLowerCase() ===
-                                              "buy"
-                                              ? "text-success text-bold buy-light"
-                                              : "text-danger text-bold sell-light"
-                                          }
-                                        >
-                                          {data.bucketSide}
-                                        </span>
-                                      </td>
-                                      <td className="text-left">
-                                        {data?.bucketSymbol}
-                                      </td>
-                                      <td className="text-center">
-                                        {data.bucketStrike === "0"
-                                          ? "---"
-                                          : data?.bucketStrike}
-                                      </td>
-                                      <td className="text-center">
-                                        {Constant.ConvertShortDate(
-                                          data?.bucketExpiry
-                                        )}
-                                      </td>
-                                      <td
-                                        className="text-center cursor-row"
-                                        onClick={() =>
-                                          data?.bucketType !== "FUT"
-                                            ? handdleRowChange(
-                                              data.bucketType,
+                                    data != undefined ? (
+                                      <tr key={index}>
+                                        <td
+                                          style={{ width: "8%" }}
+                                          className="text-center cursor-row"
+                                          onClick={() =>
+                                            handdleRowChange(
+                                              data.bucketSide,
                                               index,
-                                              "bucketType"
+                                              "side"
                                             )
-                                            : null
-                                        }
-                                      >
-                                        {data?.bucketType}
-                                      </td>
-                                      <td
-                                        className="text-center cursor-row"
-                                        onClick={() =>
-                                          handdleRowChange(
-                                            data.bucketProduct,
-                                            index,
-                                            "bucketProduct"
-                                          )
-                                        }
-                                      >
-                                        <span
-                                          className={
-                                            data.bucketProduct.toLowerCase() ===
-                                              "mis"
-                                              ? "text-product-mis text-bold buy-light"
-                                              : "text-product-nmrd text-bold sell-light"
                                           }
                                         >
-                                          {data.bucketProduct}
-                                        </span>
-                                      </td>
-                                      <td
-                                        className="text-center cursor-row"
-                                        onClick={() =>
-                                          handdleRowChange(
-                                            data.bucketOrderType,
-                                            index,
-                                            "bucketOrderType"
-                                          )
-                                        }
-                                      >
-                                        {data.bucketOrderType}
-                                      </td>
-                                      <td
-                                        className="text-center defaultqty"
-                                        onClick={(e) =>
-                                          handleRowClick(e, index)
-                                        }
-                                      >
-                                        <fieldset className="border">
-                                          <legend align="right">
-                                            {data.bucketLotTotalQty}
-                                          </legend>
-                                          {editBucketRow === true &&
+                                          <span
+                                            className={
+                                              data?.bucketSide?.toLowerCase() ===
+                                              "buy"
+                                                ? "text-success text-bold buy-light"
+                                                : "text-danger text-bold sell-light"
+                                            }
+                                          >
+                                            {data.bucketSide}
+                                          </span>
+                                        </td>
+                                        <td className="text-left">
+                                          {data?.bucketSymbol}
+                                        </td>
+                                        <td className="text-center">
+                                          {data.bucketStrike === "0"
+                                            ? "---"
+                                            : data?.bucketStrike}
+                                        </td>
+                                        <td className="text-center">
+                                          {Constant.ConvertShortDate(
+                                            data?.bucketExpiry
+                                          )}
+                                        </td>
+                                        <td
+                                          className="text-center cursor-row"
+                                          onClick={() =>
+                                            data?.bucketType !== "FUT"
+                                              ? handdleRowChange(
+                                                  data.bucketType,
+                                                  index,
+                                                  "bucketType"
+                                                )
+                                              : null
+                                          }
+                                        >
+                                          {data?.bucketType}
+                                        </td>
+                                        <td
+                                          className="text-center cursor-row"
+                                          onClick={() =>
+                                            handdleRowChange(
+                                              data.bucketProduct,
+                                              index,
+                                              "bucketProduct"
+                                            )
+                                          }
+                                        >
+                                          <span
+                                            className={
+                                              data.bucketProduct.toLowerCase() ===
+                                              "mis"
+                                                ? "text-product-mis text-bold buy-light"
+                                                : "text-product-nmrd text-bold sell-light"
+                                            }
+                                          >
+                                            {data.bucketProduct}
+                                          </span>
+                                        </td>
+                                        <td
+                                          className="text-center cursor-row"
+                                          onClick={() =>
+                                            handdleRowChange(
+                                              data.bucketOrderType,
+                                              index,
+                                              "bucketOrderType"
+                                            )
+                                          }
+                                        >
+                                          {data.bucketOrderType}
+                                        </td>
+                                        <td
+                                          className="text-center defaultqty"
+                                          onClick={(e) =>
+                                            handleRowClick(e, index)
+                                          }
+                                        >
+                                          <fieldset className="border">
+                                            <legend align="right">
+                                              {data.bucketLotTotalQty}
+                                            </legend>
+                                            {editBucketRow === true &&
                                             editBucketRowNo === index ? (
+                                              <Input
+                                                className="form-control-alternative form-row-data"
+                                                id="input-postal-code"
+                                                placeholder="LOT"
+                                                name="defaultQty"
+                                                type="number"
+                                                min="1"
+                                                step="1"
+                                                inputMode="numeric"
+                                                value={data.bucketSliceQty}
+                                                onKeyDown={(e) =>
+                                                  handleKeyDown(e, index)
+                                                }
+                                                onChange={(e) =>
+                                                  handdleTextBoxEvent(
+                                                    e,
+                                                    index,
+                                                    "bucketSliceQty"
+                                                  )
+                                                }
+                                                onKeyPress={(e) => {
+                                                  // Prevents non-numeric characters from being entered
+                                                  if (isNaN(Number(e.key))) {
+                                                    e.preventDefault();
+                                                  }
+                                                }}
+                                              />
+                                            ) : (
+                                              <label>
+                                                {data.bucketSliceQty}
+                                              </label>
+                                            )}
+                                          </fieldset>
+                                        </td>
+                                        <td
+                                          className="text-right cursor-row"
+                                          onClick={(e) =>
+                                            data.bucketOrderType === "LMT"
+                                              ? handleRowClick(e, index)
+                                              : null
+                                          }
+                                        >
+                                          {editBucketRow === true &&
+                                          editBucketRowNo === index &&
+                                          data.bucketOrderType === "LMT" ? (
                                             <Input
-                                              className="form-control-alternative form-row-data"
+                                              className="form-control-alternative form-row-data text-right"
                                               id="input-postal-code"
-                                              placeholder="LOT"
+                                              style={{ marginTop: "3px" }}
+                                              placeholder="Price"
                                               name="defaultQty"
                                               type="number"
                                               min="1"
-                                              step="1"
-                                              inputMode="numeric"
-                                              value={data.bucketSliceQty}
+                                              value={data.bucketStickePrice}
                                               onKeyDown={(e) =>
                                                 handleKeyDown(e, index)
                                               }
@@ -2507,196 +2569,152 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                                                 handdleTextBoxEvent(
                                                   e,
                                                   index,
-                                                  "bucketSliceQty"
+                                                  "bucketStickePrice"
                                                 )
                                               }
-                                              onKeyPress={(e) => {
-                                                // Prevents non-numeric characters from being entered
-                                                if (isNaN(Number(e.key))) {
-                                                  e.preventDefault();
-                                                }
-                                              }}
                                             />
+                                          ) : data.bucketOrderType === "MKT" ? (
+                                            "---"
                                           ) : (
-                                            <label>
-                                              {data.bucketSliceQty}
-                                            </label>
+                                            data.bucketStickePrice
                                           )}
-                                        </fieldset>
-                                      </td>
-                                      <td
-                                        className="text-right cursor-row"
-                                        onClick={(e) =>
-                                          data.bucketOrderType === "LMT"
-                                            ? handleRowClick(e, index)
-                                            : null
-                                        }
-                                      >
-                                        {editBucketRow === true &&
-                                          editBucketRowNo === index &&
-                                          data.bucketOrderType === "LMT" ? (
-                                          <Input
-                                            className="form-control-alternative form-row-data text-right"
-                                            id="input-postal-code"
-                                            style={{ marginTop: "3px" }}
-                                            placeholder="Price"
-                                            name="defaultQty"
-                                            type="number"
-                                            min="1"
-                                            value={data.bucketStickePrice}
-                                            onKeyDown={(e) =>
-                                              handleKeyDown(e, index)
-                                            }
-                                            onChange={(e) =>
-                                              handdleTextBoxEvent(
-                                                e,
-                                                index,
-                                                "bucketStickePrice"
-                                              )
-                                            }
-                                          />
-                                        ) : data.bucketOrderType === "MKT" ? (
-                                          "---"
-                                        ) : (
-                                          data.bucketStickePrice
-                                        )}
-                                      </td>
-                                      <td
-                                        className="text-right"
-                                        onClick={(e) =>
-                                          handleRowClick(e, index)
-                                        }
-                                      >
-                                        {editBucketRow === true &&
+                                        </td>
+                                        <td
+                                          className="text-right"
+                                          onClick={(e) =>
+                                            handleRowClick(e, index)
+                                          }
+                                        >
+                                          {editBucketRow === true &&
                                           editBucketRowNo === index ? (
-                                          <Input
-                                            className="form-control-alternative form-row-data text-right"
-                                            id="input-postal-code"
-                                            placeholder="STOPLOSS"
-                                            name="rowstoploss"
-                                            type="number"
-                                            min="0"
-                                            value={data.bucketSL}
-                                            onKeyDown={(e) =>
-                                              handleKeyDown(e, index)
-                                            }
-                                            onChange={(e) =>
-                                              handdleTextBoxEvent(
-                                                e,
-                                                index,
-                                                "bucketSL"
-                                              )
-                                            }
-                                          />
-                                        ) : parseFloat(data.bucketSL) > 0 ? (
-                                          data.bucketSL
-                                        ) : (
-                                          "---"
-                                        )}
-                                      </td>
-                                      <td
-                                        className="text-right"
-                                        onClick={(e) =>
-                                          handleRowClick(e, index)
-                                        }
-                                      >
-                                        {editBucketRow === true &&
+                                            <Input
+                                              className="form-control-alternative form-row-data text-right"
+                                              id="input-postal-code"
+                                              placeholder="STOPLOSS"
+                                              name="rowstoploss"
+                                              type="number"
+                                              min="0"
+                                              value={data.bucketSL}
+                                              onKeyDown={(e) =>
+                                                handleKeyDown(e, index)
+                                              }
+                                              onChange={(e) =>
+                                                handdleTextBoxEvent(
+                                                  e,
+                                                  index,
+                                                  "bucketSL"
+                                                )
+                                              }
+                                            />
+                                          ) : parseFloat(data.bucketSL) > 0 ? (
+                                            data.bucketSL
+                                          ) : (
+                                            "---"
+                                          )}
+                                        </td>
+                                        <td
+                                          className="text-right"
+                                          onClick={(e) =>
+                                            handleRowClick(e, index)
+                                          }
+                                        >
+                                          {editBucketRow === true &&
                                           editBucketRowNo === index ? (
-                                          <Input
-                                            className="form-control-alternative form-row-data text-right"
-                                            id="input-postal-code"
-                                            placeholder="TARGET"
-                                            name="rowTARGET"
-                                            type="number"
-                                            min="0"
-                                            value={data.bucketTarget}
-                                            onKeyDown={(e) =>
-                                              handleKeyDown(e, index)
-                                            }
-                                            onChange={(e) =>
-                                              handdleTextBoxEvent(
-                                                e,
-                                                index,
-                                                "bucketTarget"
-                                              )
-                                            }
-                                          />
-                                        ) : parseFloat(data.bucketTarget) >
-                                          0 ? (
-                                          data.bucketTarget
-                                        ) : (
-                                          "---"
-                                        )}
-                                      </td>
-                                      <td className="text-right">
-                                        {parseFloat(data.bucketMargin) > 0
-                                          ? data.bucketMargin
-                                          : "---"}
-                                      </td>
-                                      <td className="text-center">
-                                        {editBucketRow &&
+                                            <Input
+                                              className="form-control-alternative form-row-data text-right"
+                                              id="input-postal-code"
+                                              placeholder="TARGET"
+                                              name="rowTARGET"
+                                              type="number"
+                                              min="0"
+                                              value={data.bucketTarget}
+                                              onKeyDown={(e) =>
+                                                handleKeyDown(e, index)
+                                              }
+                                              onChange={(e) =>
+                                                handdleTextBoxEvent(
+                                                  e,
+                                                  index,
+                                                  "bucketTarget"
+                                                )
+                                              }
+                                            />
+                                          ) : parseFloat(data.bucketTarget) >
+                                            0 ? (
+                                            data.bucketTarget
+                                          ) : (
+                                            "---"
+                                          )}
+                                        </td>
+                                        <td className="text-right">
+                                          {parseFloat(data.bucketMargin) > 0
+                                            ? data.bucketMargin
+                                            : "---"}
+                                        </td>
+                                        <td className="text-center">
+                                          {editBucketRow &&
                                           editBucketRowNo === index ? (
+                                            <i
+                                              className="fas fa-check px-1 row_action_icon"
+                                              onClick={() =>
+                                                handleBasketEdit("save", index)
+                                              }
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              className="fas fa-edit px-1 row_action_icon"
+                                              onClick={() =>
+                                                handleBasketEdit("edit", index)
+                                              }
+                                            ></i>
+                                          )}
                                           <i
-                                            className="fas fa-check px-1 row_action_icon"
+                                            className="fas fa-copy px-1 row_action_icon"
                                             onClick={() =>
-                                              handleBasketEdit("save", index)
+                                              handleBucketDataCopy(data, index)
                                             }
                                           ></i>
-                                        ) : (
                                           <i
-                                            className="fas fa-edit px-1 row_action_icon"
+                                            className="fas fa-trash px-1 row_action_icon"
                                             onClick={() =>
-                                              handleBasketEdit("edit", index)
+                                              handleBucketDataDelete(data)
                                             }
                                           ></i>
-                                        )}
-                                        <i
-                                          className="fas fa-copy px-1 row_action_icon"
-                                          onClick={() =>
-                                            handleBucketDataCopy(data, index)
-                                          }
-                                        ></i>
-                                        <i
-                                          className="fas fa-trash px-1 row_action_icon"
-                                          onClick={() =>
-                                            handleBucketDataDelete(data)
-                                          }
-                                        ></i>
-                                      </td>
-                                      <td>
-                                        {index > 0 ? (
-                                          <button
-                                            className="btn btn-info row_action_icon"
-                                            onClick={() =>
-                                              handleBucketSorting(data, "up")
-                                            }
-                                          >
-                                            <i className="fas fa-arrow-up"></i>{" "}
-                                          </button>
-                                        ) : (
-                                          ""
-                                        )}
-                                        {bucketList.length - 1 !== index ? (
-                                          <button
-                                            className="btn btn-danger row_action_icon"
-                                            onClick={() =>
-                                              handleBucketSorting(
-                                                data,
-                                                "down"
-                                              )
-                                            }
-                                          >
-                                            <i className="fas fa-arrow-down"></i>
-                                          </button>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </td>
-                                    </tr>
-                                  ) : (
-                                    ""
+                                        </td>
+                                        <td>
+                                          {index > 0 ? (
+                                            <button
+                                              className="btn btn-info row_action_icon"
+                                              onClick={() =>
+                                                handleBucketSorting(data, "up")
+                                              }
+                                            >
+                                              <i className="fas fa-arrow-up"></i>{" "}
+                                            </button>
+                                          ) : (
+                                            ""
+                                          )}
+                                          {bucketList.length - 1 !== index ? (
+                                            <button
+                                              className="btn btn-danger row_action_icon"
+                                              onClick={() =>
+                                                handleBucketSorting(
+                                                  data,
+                                                  "down"
+                                                )
+                                              }
+                                            >
+                                              <i className="fas fa-arrow-down"></i>
+                                            </button>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </td>
+                                      </tr>
+                                    ) : (
+                                      ""
+                                    )
                                   )
-                                )
                                 : ""}
                             </tbody>
                           </Table>
@@ -2790,7 +2808,7 @@ const AdminOptionChain = ({ filterOptionChainList, height }) => {
                     </Row>
                   </Col>
                 </div>
-              </SplitPane>
+              
             </Row>
           </CardBody>
         </Card>

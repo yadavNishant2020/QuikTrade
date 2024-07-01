@@ -38,7 +38,6 @@ import { CookiesConfig } from "../Config/CookiesConfig.js";
 import AdminClosedOrder from "../components/AdminClosedOrder.js";
 import AdminLogs from "../components/AdminLogs.js";
 import AdminFunds from "../components/AdminFunds.js";
-import SplitPane from "react-split-pane";
 import ModalComponent from "../components/modal.js";
 
 const TreadingDashboard = () => {
@@ -731,19 +730,7 @@ const TreadingDashboard = () => {
             }
             ref={divRef}
           >
-            <SplitPane
-              split="horizontal"
-              defaultSize={300}
-              maxSize={300}
-              minSize={150}
-              style={{
-                position: "relative",
-                zIndex: "99",
-                overflowY: "auto",
-                scrollbarWidth: "none",
-              }}
-              primary="first"
-            >
+            
               <Row
                 className="dashboard mt-1 optionchaindashboard"
                 id="_optionchaindashboard_id"
@@ -859,7 +846,6 @@ const TreadingDashboard = () => {
                   </Tabs>
                 </Col>
               </Row>
-            </SplitPane>
 
             <Row className="dashboard mt-1 orderdashboardlist"></Row>
             <AdminFooter />
