@@ -1,3 +1,4 @@
 
 # quiktrade
 Quiktrade frontend
+# QuikTrade
