@@ -39,7 +39,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:digitalocean": "npm install --production=false && npm run build && npm ci"
+    "build:digitalocean": "rm -rf node_modules && rm -rf package-lock.json && npm cache clean –force  && npm install --production=false"
   },
   "eslintConfig": {
     "extends": [
